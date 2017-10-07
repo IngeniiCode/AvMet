@@ -112,10 +112,11 @@ public class AvMet {
 		traffic.getFastest(); 
 
 		// Slowest speed ( greater than 25 kts)
-		
-	
-		// Highest altitude
+		traffic.getSlowest();
 
+		// Highest altitude
+		traffic.getHighest();
+				
 		// Lowest altitude ( greater than 0 )
 
 		// Most contact events
@@ -124,12 +125,15 @@ public class AvMet {
 
 		// Closest contact
 
+		
 		// Furthest contact
 
+		
 		// Squawk counts
 
 		// Emergency Squawk events
-
+		traffic.reportEmergencies();
+		
 		// Flyover events (less than 1nm range)
 
 

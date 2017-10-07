@@ -32,7 +32,7 @@ public class traffic {
 	public void getFastest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 order by speed desc limit 1";
+		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY speed desc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -41,16 +41,148 @@ public class traffic {
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
 				
-				String ICOA24 = Tools.int2ICAO24(result.getInt("Icao_addr"));
+				int    Icao_addr = result.getInt("Icao_addr");
+				String ICOA24    = Tools.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String Tail      = findTail(result.getString("Tail"),Icao_addr);
 
 				// there was something there.
-				System.out.printf("FASTEST: %s (%d)@ %d Kts\n",ICOA24,result.getInt("Icao_addr"),result.getInt("speed"));
+				System.out.printf("FASTEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
 
 			}
 		}
 		catch (Exception ex){
 			
 		}
+	}
+	
+	/**
+	 * 
+	 * @return Object slowest contact. 
+	 */
+	public void getSlowest(){
+		
+		// define query to find fastest aircraft
+		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by speed asc limit 1";
+		
+		try {
+			// prepare, execute query and get resultSet
+			ResultSet result = traffic.DB.getResultSet(sql);
+
+			// check results to see if they make any sense.
+			if (traffic.DB.getResultNextRecord(result)) {
+				
+				int    Icao_addr = result.getInt("Icao_addr");
+				String ICOA24    = Tools.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String Tail      = findTail(result.getString("Tail"),Icao_addr);
+
+				// there was something there.
+				System.out.printf("SLOWEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
+
+			}
+		}
+		catch (Exception ex){
+			
+		}
+		
+	}	
+	
+	/**
+	 * 
+	 * @return Object highest altitude contact. 
+	 */
+	public void getHighest(){
+		
+		// define query to find fastest aircraft
+		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt desc limit 1";
+		
+		try {
+			// prepare, execute query and get resultSet
+			ResultSet result = traffic.DB.getResultSet(sql);
+
+			// check results to see if they make any sense.
+			if (traffic.DB.getResultNextRecord(result)) {
+				
+				int    Icao_addr = result.getInt("Icao_addr");
+				String ICOA24    = Tools.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String Tail      = findTail(result.getString("Tail"),Icao_addr);
+
+				// there was something there.
+				System.out.printf("HIGHEST: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
+
+			}
+		}
+		catch (Exception ex){
+			
+		}
+		
+	}
+	
+	
+	public void reportEmergencies(){
+		
+		String sql  = "SELECT DISTINCT Icao_addr,Squawk FROM traffic WHERE Squawk IN(7500,7600,7700,7777) order by Alt desc";
+		
+		try {
+			// prepare, execute query and get resultSet
+			ResultSet result = traffic.DB.getResultSet(sql);
+			
+			if(!result.isBeforeFirst()){
+				// No emergencies to report
+				System.out.println("No Emergencies Detected");
+				return;  // Bail Out!
+			}
+
+			// check results to see if they make any sense.
+			if (traffic.DB.getResultNextRecord(result)) {
+				
+				int    Icao_addr = result.getInt("Icao_addr");
+				String ICOA24    = Tools.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String Tail      = findTail(result.getString("Tail"),Icao_addr);
+
+				// there was something there.
+				System.out.printf("HIGHEST: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
+
+			}
+		}
+		catch (Exception ex){
+			
+		}
+		
+		
+		
+		
+	}
+	
+	/**
+	 * Check to see if the tail number was in the main record, if not then search the other records to see if appeared at any time
+	 * 
+	 * @param tailnum
+	 * 
+	 * @return tailnumber  
+	 */
+	private String findTail(String tailnum, int Icao_addr){
+		
+		if(tailnum.isEmpty()) {
+			// define query to find fastest aircraft
+			String sql  = String.format("SELECT Tail FROM traffic WHERE Icao_addr=%d AND Tail>'' LIMIT 1",Icao_addr);
+
+			try {
+				// prepare, execute query and get resultSet
+				ResultSet result = traffic.DB.getResultSet(sql);
+
+				// check results to see if they make any sense.
+				if (traffic.DB.getResultNextRecord(result)) {
+					 tailnum = result.getString("Tail");
+				}
+
+			}
+			catch (Exception ex){
+				// ToDo
+			}
+			
+		}
+		
+		return tailnum;
 	}
 	
 	/**

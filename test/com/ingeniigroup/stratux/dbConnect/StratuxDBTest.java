@@ -19,6 +19,7 @@ import static org.junit.Assert.*;
 public class StratuxDBTest {
 	
 	private static String dbTestFilename;
+	private static Gunzip GZ;
 	
 	public StratuxDBTest() {
 	}
@@ -26,9 +27,7 @@ public class StratuxDBTest {
 	@BeforeClass
 	public static void setUpClass() {
 		
-		Gunzip GZ = new Gunzip();
-		// reference the good reference database checking into testdbs
-		StratuxDBTest.dbTestFilename = GZ.unzipDB("testdbs/stratux.sqlite.01.gz");
+		GZ = new Gunzip();
 		
 	}
 	
@@ -45,13 +44,30 @@ public class StratuxDBTest {
 	}
 
 	@Test
-	public void testBasicConnection() {
+	public void testBasicConnection_real_DB() {
+		
+		// reference the good reference database checking into testdbs
+		StratuxDBTest.dbTestFilename = GZ.unzipDB("testdbs/stratux.sqlite.01.gz");
 		
 		System.out.printf("Testing DB File: %s\n",StratuxDBTest.dbTestFilename);
 		StratuxDB DB = new StratuxDB(StratuxDBTest.dbTestFilename);
 		
 		boolean connected = DB.Connected();
 		assertTrue(connected);
+		
+	}
+	
+	@Test
+	public void testBasicConnection_fake_DB() {
+		
+		// reference the good reference database checking into testdbs
+		StratuxDBTest.dbTestFilename = GZ.unzipDB("testdbs/filename.test.01.gz");
+		
+		System.out.printf("Testing DB File: %s\n",StratuxDBTest.dbTestFilename);
+		StratuxDB DB = new StratuxDB(StratuxDBTest.dbTestFilename);
+		
+		boolean connected = DB.Connected();
+		assertFalse(connected);
 		
 	}
 	

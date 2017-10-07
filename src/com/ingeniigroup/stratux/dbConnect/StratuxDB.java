@@ -154,7 +154,7 @@ public class StratuxDB {
 	}
 	
 	/**
-	 * Test Validity of a Connection
+	 * Test Connection and determine if this looks like a STRATUX database
 	 * 
 	 * @param conn
 	 *          a JDBC connection object
@@ -163,6 +163,45 @@ public class StratuxDB {
 	 *         false.
 	 */
 	private boolean testConnection() {
+
+		// Prepare and get result set.
+		ResultSet result = getResultSet("SELECT id FROM traffic ORDER BY id DESC limit 1;");
+		
+		try {
+			
+			if (result.next()) {
+				
+				// connection object is valid and passes integrity check
+				if (!result.getString(1).isEmpty()){
+					return true;
+				}
+				
+				// database fails integrity check.
+				System.err.print("Database does not contain expected <traiffic> table!\n");
+				throw new Exception("ERR 114 - Database is not STRATUX\n");
+			}
+			
+			// it's garbage
+			throw new Exception("ERR 141 - Unable to read as SQLite database\n");
+
+		} 
+		catch (Exception ex) {
+			System.err.printf("ERROR!!  %s\n", ex.getMessage());
+			System.err.print(ex.getStackTrace());
+			return false;
+		} 
+    }
+	
+	/**
+	 * Test Integrity of the Database 
+	 * 
+	 * @param conn
+	 *          a JDBC connection object
+	 *
+	 * @return true if a given connection object is a valid one; otherwise return
+	 *         false.
+	 */
+	private boolean testIntegrity() {
 
 		// Prepare and get result set.
 		ResultSet result = getResultSet("pragma integrity_check;");
