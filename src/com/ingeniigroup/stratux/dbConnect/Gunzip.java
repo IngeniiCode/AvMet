@@ -29,7 +29,7 @@ public class Gunzip {
 	private String  dbFname   = "";
 	private String  filename  = "";
 	
-	public String Gunzip(String filename){
+	public String unzipDB(String filename){
 	
 		this.filename = filename; // set back into class
 		

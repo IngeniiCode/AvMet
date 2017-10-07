@@ -49,7 +49,9 @@ public class AvMet {
 		
 		// init and execute
 		Gunzip GZ = new Gunzip();
-		AvMet.dbFname = GZ.Gunzip(fName);
+		AvMet.dbFname = GZ.unzipDB(fName);
+		
+		System.out.printf("Was Zipped = %s\n", GZ.wasZipped());
 		
 		if(AvMet.dbFname.isEmpty()){
 			System.err.printf("ERROR: Unable to located a suitable DB file; unable to use (%s)\n",fName);
