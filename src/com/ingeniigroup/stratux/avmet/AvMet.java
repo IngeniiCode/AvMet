@@ -28,6 +28,8 @@
 package com.ingeniigroup.stratux.AvMet;
 
 import com.ingeniigroup.stratux.dbConnect.*;
+import com.ingeniigroup.stratux.dbReader.*;
+import com.ingeniigroup.stratux.Contact.Contact;
 
 /**
  * @author David DeMartini - Ingenii Group LLC
@@ -50,7 +52,7 @@ public class AvMet {
 		setDBconn();
 		
 		// report the metrics
-		//reportMetrics();
+		reportMetrics();
 		
 		
 		
@@ -103,9 +105,14 @@ public class AvMet {
 	 */
 	private static void reportMetrics(){
 		
+		// setup the interfaces
+		traffic traffic = new traffic(AvMet.DB);
+		
 		// Highest speed 
+		traffic.getFastest(); 
 
 		// Slowest speed ( greater than 25 kts)
+		
 	
 		// Highest altitude
 

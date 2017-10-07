@@ -27,6 +27,7 @@ public class StratuxDBTest {
 	public static void setUpClass() {
 		
 		Gunzip GZ = new Gunzip();
+		// reference the good reference database checking into testdbs
 		StratuxDBTest.dbTestFilename = GZ.unzipDB("testdbs/stratux.sqlite.01.gz");
 		
 	}

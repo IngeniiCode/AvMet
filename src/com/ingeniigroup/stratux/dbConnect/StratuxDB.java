@@ -68,6 +68,62 @@ public class StratuxDB {
 		return this.db;
 	}
 	
+	/**
+	 * getResultSet()
+	 * 
+	 * Create Statement, prepare and execute Query (sql), test for valid 
+	 * ResultSet handle, return if !null, throw exceptions if null
+	 * 
+	 * @param sql
+	 * 
+	 * @return  valid result set
+	 */
+	public ResultSet getResultSet(String sql){
+		
+		ResultSet result    = null;
+		Statement statement = null;
+		
+		try {
+			statement = this.db.createStatement();
+			
+			if (statement == null) {
+				throw new Exception("ERR 118 - Unable to prepare statement");
+			}
+			
+			result = statement.executeQuery(sql);
+			
+			if (result == null) {
+				System.err.print("Unable to get Query Result\n");
+				throw new Exception("ERR 126 - Unable to communicate with database\n");
+			}
+
+		} 
+		catch (Exception ex) {
+			System.err.printf("ERROR!!  %s\n", ex.getMessage());
+			System.err.print(ex.getStackTrace());
+		} 
+		
+		return result;
+	}
+	
+	public boolean getResultNextRecord(ResultSet result){
+		
+		try {
+			if(result.isAfterLast()){
+				// no more results to return -- not unusual
+				return false;
+			}
+			// iterate to the next record and hand back the handle
+			result.next();  // increment pointer to next record
+		} 
+		catch (Exception ex) {
+			System.err.printf("ERROR!!  %s\n", ex.getMessage());
+			System.err.print(ex.getStackTrace());
+		} 
+		
+		return true;
+	}
+	
 	/*
 	 *  Connect to the mighty SQLite3 Datafile
 	 *  
@@ -108,23 +164,11 @@ public class StratuxDB {
 	 */
 	private boolean testConnection() {
 
-		ResultSet result    = null;
-		Statement statement = null;
+		// Prepare and get result set.
+		ResultSet result = getResultSet("pragma integrity_check;");
 		
 		try {
-			statement = this.db.createStatement();
 			
-			if (statement == null) {
-				throw new Exception("ERR 118 - Unable to prepare statement");
-			}
-			
-			result = statement.executeQuery("pragma integrity_check;");
-			
-			if (result == null) {
-				System.err.print("Unable to locate 'status' table in database -- does not look like STRATUX\n");
-				throw new Exception("ERR 126 - Not STRATUX database");
-			}
-
 			if (result.next()) {
 				
 				// connection object is valid and passes integrity check
