@@ -10,6 +10,16 @@
 <project name="AvMet" default="default" basedir=".">
     <description>Builds, tests, and runs the project AvMet.</description>
     <import file="nbproject/build-impl.xml"/>
+
+    <target name="-post-jar">
+        <jar jarfile="dist/AvMetFinal.jar">
+        <zipfileset src="${dist.jar}" excludes="META-INF/*" />
+<!--        <zipfileset src="lib/commons-io-1.4.jar" excludes="META-INF/*" /> -->
+        <manifest>
+            <attribute name="Main-Class" value="com.ingeniigroup.stratux.AvMet.main"/>
+        </manifest>
+    </jar>
+</target>
     <!--
 
     There exist several targets which are by default empty and which can be 

@@ -27,17 +27,38 @@
  */
 package com.ingeniigroup.stratux.AvMet;
 
+import com.ingeniigroup.stratux.dbConnect.Gunzip;
+
 /**
- *
  * @author David DeMartini - Ingenii Group LLC
  */
 public class AvMet {
-
+	
+	private static boolean rezip;  // flag telling process to re-zip the file
+	private static String  dbFname;
+	
 	/**
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
+		
 		// TODO code application logic here
+		String fName = args[0];
+		
+		System.out.printf("Attmpting to use input file '%s'\n",fName);
+		
+		// init and execute
+		Gunzip GZ = new Gunzip();
+		AvMet.dbFname = GZ.Gunzip(fName);
+		
+		if(AvMet.dbFname.isEmpty()){
+			System.err.printf("ERROR: Unable to located a suitable DB file; unable to use (%s)\n",fName);
+			System.exit(9);
+		}
+		else {
+			
+			System.out.printf("Using Database File: '%s'\n",AvMet.dbFname);
+		}
 	}
 	
 }
