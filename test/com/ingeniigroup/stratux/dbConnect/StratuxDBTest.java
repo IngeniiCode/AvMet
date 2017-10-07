@@ -44,7 +44,7 @@ public class StratuxDBTest {
 	}
 
 	@Test
-	public void testSomeMethod() {
+	public void testBasicConnection() {
 		
 		System.out.printf("Testing DB File: %s\n",StratuxDBTest.dbTestFilename);
 		StratuxDB DB = new StratuxDB(StratuxDBTest.dbTestFilename);

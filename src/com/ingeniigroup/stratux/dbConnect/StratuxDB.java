@@ -51,6 +51,7 @@ public class StratuxDB {
 		catch (Exception ex){
 			System.err.printf("Fatal Error Connecting to DB at [%s]\nError: %s\n",this.dbFname,ex.getMessage());
 		}
+		
 	}
 	
 	/*
@@ -58,6 +59,13 @@ public class StratuxDB {
 	*/
 	public boolean Connected(){
 		return this.connected;
+	}
+	
+	/* 
+	 *  Return the connection object
+	 */
+	public Connection db(){
+		return this.db;
 	}
 	
 	/*
@@ -107,27 +115,36 @@ public class StratuxDB {
 			statement = this.db.createStatement();
 			
 			if (statement == null) {
-				return false;
+				throw new Exception("ERR 118 - Unable to prepare statement");
 			}
-
-			result = statement.executeQuery("SELECT timestamp_id FROM status LIMIT 1");
+			
+			result = statement.executeQuery("pragma integrity_check;");
+			
 			if (result == null) {
-				return false;
+				System.err.print("Unable to locate 'status' table in database -- does not look like STRATUX\n");
+				throw new Exception("ERR 126 - Not STRATUX database");
 			}
 
 			if (result.next()) {
-				// connection object is valid and answers a query
-				return true;
+				
+				// connection object is valid and passes integrity check
+				if (result.getString(1).equals("ok")){
+					return true;
+				}
+				
+				// database fails integrity check.
+				System.err.printf("Database appears to be corrupted!\n%s\n",result.getString(1));
+				throw new Exception("ERR 134 - Database is corrupted\n");
 			}
 			
 			// it's garbage
-			return false;
+			throw new Exception("ERR 141 - Unable to read as SQLite database\n");
 
 		} 
-		catch (Exception e) {
+		catch (Exception ex) {
+			System.err.printf("ERROR!!  %s\n", ex.getMessage());
+			System.err.print(ex.getStackTrace());
 			return false;
 		} 
     }
-
-	
 }
