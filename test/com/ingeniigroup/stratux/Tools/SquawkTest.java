@@ -92,5 +92,4 @@ public class SquawkTest {
 		assertEquals(expResult,result);
 	}
 	
-	
 }

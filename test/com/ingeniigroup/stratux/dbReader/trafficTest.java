@@ -5,6 +5,11 @@
  */
 package com.ingeniigroup.stratux.dbReader;
 
+import com.ingeniigroup.stratux.AvMet.AvMet;
+import com.ingeniigroup.stratux.dbConnect.Gunzip;
+import com.ingeniigroup.stratux.dbConnect.StratuxDB;
+import com.ingeniigroup.stratux.dbConnect.StratuxDBTest;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -18,11 +23,22 @@ import static org.junit.Assert.*;
  */
 public class trafficTest {
 	
+	private static String dbTestFilename;
+	private static Gunzip GZ;
+	private static StratuxDB DB;
+	
 	public trafficTest() {
 	}
 	
 	@BeforeClass
 	public static void setUpClass() {
+		GZ = new Gunzip();
+		
+		// reference the good reference database checking into testdbs
+		trafficTest.dbTestFilename = GZ.unzipDB("testdbs/stratux.sqlite.01.gz");
+		
+		System.out.printf("Testing DB File: %s\n",trafficTest.dbTestFilename);
+		trafficTest.DB = new StratuxDB(trafficTest.dbTestFilename);
 	}
 	
 	@AfterClass
@@ -43,10 +59,10 @@ public class trafficTest {
 	@Test
 	public void testGetFastest() {
 		System.out.println("getFastest");
-		traffic instance = null;
-		instance.getFastest();
+		traffic instance = new traffic(trafficTest.DB);
+		boolean result = instance.getFastest();
 		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
+		assertTrue(result);
 	}
 
 	/**
@@ -55,10 +71,10 @@ public class trafficTest {
 	@Test
 	public void testGetSlowest() {
 		System.out.println("getSlowest");
-		traffic instance = null;
-		instance.getSlowest();
+		traffic instance = new traffic(trafficTest.DB);
+		boolean result = instance.getSlowest();
 		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
+		assertTrue(result);
 	}
 
 	/**
@@ -67,10 +83,10 @@ public class trafficTest {
 	@Test
 	public void testGetHighest() {
 		System.out.println("getHighest");
-		traffic instance = null;
-		instance.getHighest();
+		traffic instance = new traffic(trafficTest.DB);
+		boolean result = instance.getHighest();
 		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
+		assertTrue(result);
 	}
 
 	/**
@@ -79,10 +95,10 @@ public class trafficTest {
 	@Test
 	public void testReportEmergencies() {
 		System.out.println("reportEmergencies");
-		traffic instance = null;
-		instance.reportEmergencies();
+		traffic instance = new traffic(trafficTest.DB);
+		boolean result = instance.reportEmergencies();
 		// TODO review the generated test code and remove the default call to fail.
-		fail("The test case is a prototype.");
+		assertFalse(result); // no emergencies should be in the test case
 	}
 	
 }

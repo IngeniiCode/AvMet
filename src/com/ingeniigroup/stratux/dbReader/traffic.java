@@ -10,6 +10,7 @@ import java.util.Map;
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
 import com.ingeniigroup.stratux.Tools.ICAO;
 import com.ingeniigroup.stratux.Contact.Contact;
+import com.ingeniigroup.stratux.Tools.Squawk;
 import java.sql.ResultSet;
 
 
@@ -29,7 +30,7 @@ public class traffic {
 	 * 
 	 * @return Object fastest contact. 
 	 */
-	public void getFastest(){
+	public boolean getFastest(){
 		
 		// define query to find fastest aircraft
 		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY speed desc limit 1";
@@ -48,18 +49,21 @@ public class traffic {
 				// there was something there.
 				System.out.printf("FASTEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
 
+				return true;
 			}
 		}
 		catch (Exception ex){
 			
 		}
+		
+		return false;
 	}
 	
 	/**
 	 * 
 	 * @return Object slowest contact. 
 	 */
-	public void getSlowest(){
+	public boolean getSlowest(){
 		
 		// define query to find fastest aircraft
 		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by speed asc limit 1";
@@ -78,19 +82,22 @@ public class traffic {
 				// there was something there.
 				System.out.printf("SLOWEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
 
+				return true;
+				
 			}
 		}
 		catch (Exception ex){
 			
 		}
 		
+		return false;
 	}	
 	
 	/**
 	 * 
 	 * @return Object highest altitude contact. 
 	 */
-	public void getHighest(){
+	public boolean getHighest(){
 		
 		// define query to find fastest aircraft
 		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt desc limit 1";
@@ -109,12 +116,14 @@ public class traffic {
 				// there was something there.
 				System.out.printf("HIGHEST: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
 
+				return true;
 			}
 		}
 		catch (Exception ex){
 			
 		}
 		
+		return false;
 	}
 	
 	/**
@@ -126,7 +135,7 @@ public class traffic {
 	 *   * 7700 - General Emergency
 	 *   * 7777 - Military Intercept Operations
 	 */
-	public void reportEmergencies(){
+	public boolean reportEmergencies(){
 		
 		String sql  = "SELECT DISTINCT Icao_addr,Tail,Squawk FROM traffic WHERE Squawk IN(7500,7600,7700,7777) order by Alt desc";
 		
@@ -136,8 +145,8 @@ public class traffic {
 			
 			if(!result.isBeforeFirst()){
 				// No emergencies to report
-				System.out.println("No Emergencies Detected");
-				return;  // Bail Out!
+				System.out.println("No Alerts Detected");
+				return false;  // Bail Out!
 			}
 
 			do {
@@ -146,25 +155,24 @@ public class traffic {
 					int    Icao_addr = result.getInt("Icao_addr");
 					String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
 					String Tail      = findTail(result.getString("Tail"),Icao_addr);
-					//String Emergency = squawkMessage(result.getInt("Squawk"));
+					String Message   = Squawk.getMessage(result.getInt("Squawk"));
 
 					// there was something there.
-					System.out.printf("EMERGENCY: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
+					System.out.printf("ALERT: %s [%s] @ %d ft - %s\n",Tail,ICOA24,result.getInt("Alt"),Message);
 
 				}
 				
-			} while (!result.isAfterLast());
+			} while (!result.isAfterLast());  // be looping.. 
 			
 			// check results to see if they make any sense.
 			
+			return true;
 		}
 		catch (Exception ex){
-			
-		}
+			//  ToDo
+ 		}
 		
-		
-		
-		
+		return false;
 	}
 	
 	/**
@@ -193,7 +201,6 @@ public class traffic {
 			catch (Exception ex){
 				// ToDo
 			}
-			
 		}
 		
 		return tailnum;
