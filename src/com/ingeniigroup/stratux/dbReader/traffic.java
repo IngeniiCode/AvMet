@@ -8,7 +8,7 @@ import java.sql.Connection;
 import java.util.Map;
 
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
-import com.ingeniigroup.stratux.ICAO.Tools;
+import com.ingeniigroup.stratux.Tools.ICAO;
 import com.ingeniigroup.stratux.Contact.Contact;
 import java.sql.ResultSet;
 
@@ -42,7 +42,7 @@ public class traffic {
 			if (traffic.DB.getResultNextRecord(result)) {
 				
 				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = Tools.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
 				String Tail      = findTail(result.getString("Tail"),Icao_addr);
 
 				// there was something there.
@@ -72,7 +72,7 @@ public class traffic {
 			if (traffic.DB.getResultNextRecord(result)) {
 				
 				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = Tools.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
 				String Tail      = findTail(result.getString("Tail"),Icao_addr);
 
 				// there was something there.
@@ -103,7 +103,7 @@ public class traffic {
 			if (traffic.DB.getResultNextRecord(result)) {
 				
 				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = Tools.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
 				String Tail      = findTail(result.getString("Tail"),Icao_addr);
 
 				// there was something there.
@@ -117,10 +117,18 @@ public class traffic {
 		
 	}
 	
-	
+	/**
+	 *  Check Squawk codes to see if any emergencies where announced.
+	 * 
+	 *  <Codes>
+	 *   * 7500 - Hijacking
+	 *   * 7600 - Radio Failure
+	 *   * 7700 - General Emergency
+	 *   * 7777 - Military Intercept Operations
+	 */
 	public void reportEmergencies(){
 		
-		String sql  = "SELECT DISTINCT Icao_addr,Squawk FROM traffic WHERE Squawk IN(7500,7600,7700,7777) order by Alt desc";
+		String sql  = "SELECT DISTINCT Icao_addr,Tail,Squawk FROM traffic WHERE Squawk IN(7500,7600,7700,7777) order by Alt desc";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -132,17 +140,23 @@ public class traffic {
 				return;  // Bail Out!
 			}
 
-			// check results to see if they make any sense.
-			if (traffic.DB.getResultNextRecord(result)) {
+			do {
+				if (traffic.DB.getResultNextRecord(result)) {
 				
-				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = Tools.int2ICAO24(Icao_addr);  // convert the integer into expected format
-				String Tail      = findTail(result.getString("Tail"),Icao_addr);
+					int    Icao_addr = result.getInt("Icao_addr");
+					String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
+					String Tail      = findTail(result.getString("Tail"),Icao_addr);
+					//String Emergency = squawkMessage(result.getInt("Squawk"));
 
-				// there was something there.
-				System.out.printf("HIGHEST: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
+					// there was something there.
+					System.out.printf("EMERGENCY: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
 
-			}
+				}
+				
+			} while (!result.isAfterLast());
+			
+			// check results to see if they make any sense.
+			
 		}
 		catch (Exception ex){
 			
