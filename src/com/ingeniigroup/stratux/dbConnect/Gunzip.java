@@ -8,8 +8,10 @@
  * 
  * @since 6 October 2017
  * @author David DeMartini
+ * @serial ig0003-am
  * @version 0.0.1
  * @see http://www.ingeniigroup.com/stratux/avmet
+ * @repo https://github.com/IngeniiCode/AvMet
  * 
  */
 package com.ingeniigroup.stratux.dbConnect;
@@ -72,16 +74,23 @@ public class Gunzip {
 		=== P R I V A T E === 
 	*/
 	
-	/*
+	/**
 	 *  Perform testing to see if the file is real, and if so, does it need 
 	 *  to be unzipped.. and if it appears to require that.. return the new 
 	 *  name, otherwise return the original name.
+	 *  
+	 *  Performance testing indicated the optimal buffer size for this process
+	 *  is 4096.  Started with a buffer of 1024, then increased buffer size by
+	 *  factor of 2 until the point of diminshing return.  Unzipping the SQLite3 
+	 *  database files hit that point with a buffer size of 4096  
 	 *
 	 */
 	private void getDBFile(String filename){
 			
 		int length      = 0;
-		byte[] iobuffer = new byte[1024];
+		//byte[] iobuffer = new byte[1024]; // starting buffer size
+		byte[] iobuffer = new byte[4096];   // bumping 4x decreased time by 25% 8x and 16x had not benefit - dad
+		
 		boolean legit   = test4file(filename);
 
 		if(legit){

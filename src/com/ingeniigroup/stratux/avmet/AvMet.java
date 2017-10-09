@@ -23,6 +23,8 @@
  * @serial ig0003-am
  * @version 0.0.1
  * @see http://www.ingeniigroup.com/stratux/avmet
+ * @repo https://github.com/IngeniiCode/AvMet
+ * 
  * 
  */
 package com.ingeniigroup.stratux.AvMet;
@@ -36,8 +38,11 @@ import com.ingeniigroup.stratux.Contact.Contact;
  */
 public class AvMet {
 	
-	private static boolean rezip;  // flag telling process to re-zip the file
-	private static String  dbFname;
+	private static boolean   waszipped;  // flag indicating original file was gzipped
+	private static boolean   rezip;      // flag telling process to re-zip the file
+	private static boolean   keepdb;     // flag telling process to keep original DB 
+	private static boolean   untaintdb;  // run a detaining process on the DB
+	private static String    dbFname;
 	private static StratuxDB DB;
 	
 	/**
@@ -45,8 +50,8 @@ public class AvMet {
 	 */
 	public static void main(String[] args) {
 		
-		// set dbFname
-		setFname(args[0]);
+		// perform initializations
+		init(args);
 		
 		// set DB connection
 		setDBconn();
@@ -54,7 +59,8 @@ public class AvMet {
 		// report the metrics
 		reportMetrics();
 		
-		
+		// cleanup
+		cleanup();
 		
 	}
 	
@@ -63,6 +69,37 @@ public class AvMet {
 	 *        P R I V A T E   
 	 *  =============================
 	*/
+	
+	/**
+	 * Init  do some prep work before running 
+	 */
+	private static void init(String[] args){
+	
+		// set dbFname
+		setFname(args[0]);
+		
+		// set keep flag if there is an arg.
+		if(args.length>1){
+			for(int i=0;i<args.length;i++){
+				// look for options and set where found.
+				switch(args[i].toLowerCase()){
+					case "keep":
+					case "keepdb":
+						AvMet.keepdb = true;
+						break;
+					case "untaint":
+					case "untaintdb":
+					case "scrub":
+					case "scrubdb":
+						AvMet.untaintdb = true;
+						break;
+					default:
+						
+				}
+			}
+		}
+	}
+	
 	
 	/**
 	 *   using supplied parameter, process filename, unzip if necessary
@@ -74,7 +111,8 @@ public class AvMet {
 		// init and execute
 		Gunzip GZ = new Gunzip();
 		//System.out.printf("Was Zipped = %s\n", GZ.wasZipped());
-		AvMet.dbFname = GZ.unzipDB(fName);
+		AvMet.dbFname   = GZ.unzipDB(fName);
+		AvMet.waszipped = GZ.wasZipped();    // set flag to cleanup after execution
 		
 		if(AvMet.dbFname.isEmpty()){
 			System.err.printf("ERROR: Unable to located a suitable DB file; unable to use (%s)\n",fName);
@@ -97,6 +135,17 @@ public class AvMet {
 			System.err.printf("ERROR: Unable to connect to database\n");
 			System.exit(19);
 		}
+		
+	}
+	
+	/**
+	 *  Cleanup any leftover files
+	 */
+	private static void cleanup(){
+		
+		// call the db connector's cleanup function, but override the waszipped
+		// action if the 'keep' option was present
+		AvMet.DB.Cleanup((AvMet.keepdb) ? false : AvMet.waszipped);
 		
 	}
 	

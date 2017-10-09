@@ -1,14 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * 
+ * @since 6 October 2017
+ * @author David DeMartini
+ * @serial ig0003-am
+ * @version 0.0.1
+ * @see http://www.ingeniigroup.com/stratux/avmet
+ * @repo https://github.com/IngeniiCode/AvMet
  */
 package com.ingeniigroup.stratux.dbReader;
 
-import com.ingeniigroup.stratux.AvMet.AvMet;
 import com.ingeniigroup.stratux.dbConnect.Gunzip;
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
-import com.ingeniigroup.stratux.dbConnect.StratuxDBTest;
 
 import org.junit.After;
 import org.junit.AfterClass;

@@ -1,21 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * 
+ * 
+ * @since 6 October 2017
+ * @author David DeMartini
+ * @serial ig0003-am
+ * @version 0.0.1
+ * @see http://www.ingeniigroup.com/stratux/avmet
+ * @repo https://github.com/IngeniiCode/AvMet
  */
 package com.ingeniigroup.stratux.dbConnect;
 
-import java.io.FileNotFoundException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.File;
+import java.util.List;
+//import java.util.Arrays;
+import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import javax.swing.JOptionPane;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import org.sqlite.SQLiteDataSource;
-import org.sqlite.SQLiteJDBCLoader;
 
 /**
  *
@@ -54,19 +57,60 @@ public class StratuxDB {
 		
 	}
 	
-	/*
+	/**
 	 *  Return flag indicating db is open for business
 	*/
 	public boolean Connected(){
 		return this.connected;
 	}
 	
-	/* 
+	/** 
 	 *  Return the connection object
 	 */
 	public Connection db(){
 		return this.db;
 	}
+	
+	/**
+	 *  Cleanup 
+	 * 
+	 *  Remove the sqlite3 artifacts after a database is opened.
+	 * 
+	 *  Files are suffixed with  -wal  &  -shm
+	 */
+	public void Cleanup(){
+		Cleanup(false);  // call function and set false flag
+	}
+	public void Cleanup(boolean deleteDBfile){
+		
+		List<String> files = new ArrayList<String>();
+		
+		// these are always removed.
+		files.add(String.format("%s-wal",dbFname));
+		files.add(String.format("%s-shm",dbFname));
+		// optional uncompressed db file removal
+		if(deleteDBfile){
+			files.add(dbFname);  // add name of uncompressed DB
+		}
+		
+		try {
+		
+			System.out.println("Cleaning up artifact files..");
+			
+			files.forEach(filename -> {
+				File unwanted = new File(filename);
+				if(unwanted.exists() && !unwanted.isDirectory()) { 
+					// delete the file!
+					unwanted.delete();
+				}
+			});
+		}
+		catch (Exception ex){
+			System.err.println("Unabled to unlink database artifacts -- you may need to clean them up individually.");
+		}
+		
+	} 
+	
 	
 	/**
 	 * getResultSet()
