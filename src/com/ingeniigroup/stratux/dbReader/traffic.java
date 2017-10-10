@@ -1,6 +1,5 @@
 /**
  * 
- * 
  * @since 6 October 2017
  * @author David DeMartini
  * @serial ig0003-am
@@ -43,9 +42,7 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				
-				System.out.printf("\tStart: %s\n",result.getString("timestamp"));
-				
+				System.out.printf("\tStart: %s\n\t-----------------------------------------\n",result.getString("timestamp"));
 			}
 		}
 		catch (Exception ex){
@@ -158,6 +155,108 @@ public class traffic {
 	}
 	
 	/**
+	 * 
+	 * @return Object highest altitude contact. 
+	 */
+	public boolean getLowest(){
+		
+		// define query to find fastest aircraft
+		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt asc limit 1";
+		
+		try {
+			// prepare, execute query and get resultSet
+			ResultSet result = traffic.DB.getResultSet(sql);
+
+			// check results to see if they make any sense.
+			if (traffic.DB.getResultNextRecord(result)) {
+				
+				int    Icao_addr = result.getInt("Icao_addr");
+				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String Tail      = findTail(result.getString("Tail"),Icao_addr);
+
+				// there was something there.
+				System.out.printf("\tLOWEST: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
+
+				return true;
+			}
+		}
+		catch (Exception ex){
+			System.err.printf("DB Error: %s\n",ex.getMessage());
+			ex.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return Object closest off-ground contact. 
+	 */
+	public boolean getClosest(){
+		
+		// define query to find fastest aircraft
+		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance asc limit 1";
+		
+		try {
+			// prepare, execute query and get resultSet
+			ResultSet result = traffic.DB.getResultSet(sql);
+
+			// check results to see if they make any sense.
+			if (traffic.DB.getResultNextRecord(result)) {
+				
+				int    Icao_addr = result.getInt("Icao_addr");
+				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String Tail      = findTail(result.getString("Tail"),Icao_addr);
+				String Distance  = (result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles"));
+				// there was something there.
+				System.out.printf("\tCLOSEST: %s [%s] %s mi @ %d ft\n",Tail,ICOA24,Distance,result.getInt("Alt"));
+
+				return true;
+			}
+		}
+		catch (Exception ex){
+			System.err.printf("DB Error: %s\n",ex.getMessage());
+			ex.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return Object closest off-ground contact. 
+	 */
+	public boolean getFurthest(){
+		
+		// define query to find fastest aircraft
+		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance desc limit 1";
+		
+		try {
+			// prepare, execute query and get resultSet
+			ResultSet result = traffic.DB.getResultSet(sql);
+
+			// check results to see if they make any sense.
+			if (traffic.DB.getResultNextRecord(result)) {
+				
+				int    Icao_addr = result.getInt("Icao_addr");
+				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
+				String Tail      = findTail(result.getString("Tail"),Icao_addr);
+				String Distance  = (result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles"));
+				// there was something there.
+				System.out.printf("\tFURTHEST: %s [%s] %s mi @ %d ft\n",Tail,ICOA24,Distance,result.getInt("Alt"));
+
+				return true;
+			}
+		}
+		catch (Exception ex){
+			System.err.printf("DB Error: %s\n",ex.getMessage());
+			ex.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	/**
 	 *  Check Squawk codes to see if any emergencies where announced.
 	 * 
 	 *  <Codes>
@@ -168,7 +267,7 @@ public class traffic {
 	 */
 	public boolean reportEmergencies(){
 		
-		String sql  = "SELECT DISTINCT Icao_addr,Tail,Squawk FROM traffic WHERE Squawk IN(7500,7600,7700,7777) order by Alt desc";
+		String sql  = "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk IN(7500,7600,7700,7777) order by Alt desc";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -176,7 +275,7 @@ public class traffic {
 			
 			if(!result.isBeforeFirst()){
 				// No emergencies to report
-				System.out.println("\tNo Alerts Detected");
+				//System.out.println("\tNo Alerts Detected");
 				return false;  // Bail Out!
 			}
 
@@ -190,6 +289,68 @@ public class traffic {
 
 					// there was something there.
 					System.out.printf("\tALERT: %s [%s] @ %d ft - %s\n",Tail,ICOA24,result.getInt("Alt"),Message);
+
+				}
+				
+			} while (!result.isAfterLast());  // be looping.. 
+			
+			// check results to see if they make any sense.
+			
+			return true;
+		}
+		catch (Exception ex){
+			System.err.printf("DB Error: %s\n",ex.getMessage());
+			ex.printStackTrace();
+ 		}
+		
+		return false;
+	}
+	
+	/**
+	 *  Check Squawk codes to see if any interesing squawks in use
+	 * 
+	 *  <Codes>
+	 *   * 7500 - Hijacking
+	 *   * 7600 - Radio Failure
+	 *   * 7700 - General Emergency
+	 *   * 7777 - Military Intercept Operations
+	 */
+	public boolean reportSpecialIdents(){
+		
+		String sql  = "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk IN(1276,1277)"      // Air defense and SAR missions
+				+ " UNION "
+				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk IN(4000,5000,5400)"     // Military / NORAD 
+				+ " UNION "
+				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 4400 AND 4500"  // Various Law Enforcement and USAF recon
+				+ " UNION "
+				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 5100 AND 5300"  // DOD aircraft
+				+ " UNION "
+				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 7501 AND 7577"   // Special NORAD
+				+ " UNION "
+				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 7601 AND 7607"   // FAA Special Use
+				+ " UNION "
+				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 7701 AND 7707";   // FAA Special Use
+		
+		try {
+			// prepare, execute query and get resultSet
+			ResultSet result = traffic.DB.getResultSet(sql);
+			
+			if(!result.isBeforeFirst()){
+				// No emergencies to report
+				//System.out.println("\tNo Alerts Detected");
+				return false;  // Bail Out!
+			}
+
+			do {
+				if (traffic.DB.getResultNextRecord(result)) {
+				
+					int    Icao_addr = result.getInt("Icao_addr");
+					String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
+					String Tail      = findTail(result.getString("Tail"),Icao_addr);
+					String Message   = Squawk.getMessage(result.getInt("Squawk"));
+
+					// there was something there.
+					System.out.printf("\tALERT: %s [%s] %d kts @ %d ft. - %s\n",Tail,ICOA24,result.getInt("speed"),result.getInt("Alt"),Message);
 
 				}
 				

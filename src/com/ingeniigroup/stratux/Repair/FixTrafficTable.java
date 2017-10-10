@@ -23,6 +23,7 @@ public class FixTrafficTable {
 	private static StratuxDB DB;
 	private static List<Integer> aircraft;
 	private static boolean condense;
+	private static boolean verbose;
 	private static int  total_contacts   = 0;
 	private static int  error_contacts   = 0;
 	private static int  deleted_contacts = 0;
@@ -32,8 +33,12 @@ public class FixTrafficTable {
 	 * @param dbconn 
 	 */
 	public static void Fix(StratuxDB dbconn){
-		
+		Fix(dbconn,false);
+	}
+	public static void Fix(StratuxDB dbconn,boolean verbose){	
 		System.out.println("Scrubbing tainted data");
+		
+		FixTrafficTable.verbose  = verbose;
 		
 		FixTrafficTable.DB = dbconn;  // import the connection
 		
@@ -53,15 +58,17 @@ public class FixTrafficTable {
 	 * @param dbconn 
 	 */
 	public static void Condense(StratuxDB dbconn){
-		
+		Condense(dbconn,false);
+	}
+	public static void Condense(StratuxDB dbconn,boolean verbose){
 		// set the condenser flag
 		FixTrafficTable.condense = true;
+		FixTrafficTable.verbose  = verbose;
 		
 		// call the fix function
 		Fix(dbconn);
 		
 		System.out.printf("Removed %d duplicates\n",FixTrafficTable.deleted_contacts);
-		
 	}
 	
 	/**
@@ -87,7 +94,7 @@ public class FixTrafficTable {
 	private static boolean fixAircraftLog(int Iaco){
 		
 		// iterate through the aircraft's records
-		String sql = String.format("SELECT id,Icao_addr,Tail,Alt,Speed FROM traffic WHERE Icao_addr=%d ORDER BY id ASC;",Iaco);
+		String sql = String.format("SELECT id,Icao_addr,Tail,Alt,Speed,Distance FROM traffic WHERE Icao_addr=%d ORDER BY id ASC;",Iaco);
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -104,8 +111,10 @@ public class FixTrafficTable {
 			int id             = -1;
 			int speed          = -1;
 			int altitude       = -1;
+			int distance       = -1;
 			int prev_speed;
 			int prev_altitude;
+			int prev_distance;
 			
 			// id,Iaco_addr,Alt,Speed
 			do {
@@ -113,15 +122,17 @@ public class FixTrafficTable {
 				// set last record found into previous vars
 				prev_speed    = speed;
 				prev_altitude = altitude;
+				prev_distance = distance;
 				
 				if (FixTrafficTable.DB.getResultNextRecord(result)) {
 					id       = result.getInt("id");
 					speed    = result.getInt("speed");
 					altitude = result.getInt("Alt");
+					distance = result.getInt("Distance");
 					
 					// test altitude
 					if(badAltitude(altitude,prev_altitude)){
-						System.out.printf("%d -- Bad Altitude detected\t %d  -->  %d\n",Iaco,prev_altitude,altitude);
+						if(FixTrafficTable.verbose) System.out.printf("%d -- Bad Altitude detected\t %d  -->  %d\n",Iaco,prev_altitude,altitude);
 						FixTrafficTable.DB.deleteRecord("traffic","id",id);
 						FixTrafficTable.error_contacts++;
 						continue;
@@ -129,7 +140,16 @@ public class FixTrafficTable {
 					
 					// test speed
 					if(badSpeed(speed,prev_speed)){
-						System.out.printf("%d -- Bad Speed detected\t %d  -->  %d\n",Iaco,prev_altitude,altitude);
+						if(FixTrafficTable.verbose) System.out.printf("%d -- Bad Speed detected\t %d  -->  %d\n",Iaco,prev_altitude,altitude);
+						FixTrafficTable.DB.deleteRecord("traffic","id",id);
+						FixTrafficTable.error_contacts++;
+						continue;
+					}
+					
+					// test distance
+					if(badSpeed(distance,prev_distance)){
+						//if(FixTrafficTable.verbose) 
+						System.out.printf("%d -- Bad Distance detected\t %d  -->  %d\n",Iaco,prev_distance,distance);
 						FixTrafficTable.DB.deleteRecord("traffic","id",id);
 						FixTrafficTable.error_contacts++;
 						continue;
@@ -140,7 +160,7 @@ public class FixTrafficTable {
 						if(isDuplicate(altitude,speed,prev_altitude,prev_speed)){
 							FixTrafficTable.DB.deleteRecord("traffic","id",id);
 							FixTrafficTable.deleted_contacts++;
-							continue;
+							continue; 
 						}
 					}
 				}
@@ -153,7 +173,7 @@ public class FixTrafficTable {
 			return true;
 		}
 		catch (Exception ex){
-			System.err.printf("Fix Error: %s\n",ex.getMessage());
+			System.err.printf("fixAircraftLog Error: %s\n",ex.getMessage());
 			ex.printStackTrace();
  		}
 		
@@ -257,8 +277,7 @@ public class FixTrafficTable {
 		catch (Exception ex){
 			System.err.printf("Fix Error: %s\n",ex.getMessage());
 			ex.printStackTrace();
- 		}
-		 
+ 		}	 
 		return false;
 	}
 }

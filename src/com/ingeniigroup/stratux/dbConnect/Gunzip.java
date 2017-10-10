@@ -121,7 +121,7 @@ public class Gunzip {
 					}
 				
 					// announce file use
-					System.out.printf("Extract ( %s ) -->  [ %s ]\n",this.filename,this.dbFname);
+					System.out.printf("Extracting ( %s ) -->  [ %s ]\n",this.filename,this.dbFname);
 					// Gzip IOs
 					GZIPInputStream gzipInStream   = new GZIPInputStream(new FileInputStream(filename));
 					FileOutputStream gzipOutStream = new FileOutputStream(this.dbFname);

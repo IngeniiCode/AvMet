@@ -209,8 +209,8 @@ public class StratuxDB {
 			//System.out.println(query);
 		} 
 		catch (SQLException ex) {
-           System.err.printf("Fatal Error: %s in %s\n",ex.getMessage(),query);
-        }
+			System.err.printf("Fatal Error: %s in %s\n",ex.getMessage(),query);
+		}
 		
 		return true;
 	}
@@ -228,19 +228,18 @@ public class StratuxDB {
 	public boolean Connect() throws ClassNotFoundException {
 		
 		String dbURL = "jdbc:sqlite:" + this.dbFname.trim();
-		System.out.printf("Opening %s\n", dbURL);
 			   
-        try {
+		try {
 			// declare what driver to use for DriverManager
 			Class.forName("org.sqlite.JDBC");
 			
 			this.db = DriverManager.getConnection(dbURL);
 			
 			return testConnection();  // return opposite of test.
-        } 
+		} 
 		catch (SQLException ex) {
-           System.err.printf("Fatal Error Connecting to DB at [%s]\nError: %s\n",dbURL,ex.getMessage());
-        }
+			System.err.printf("Fatal Error Connecting to DB at [%s]\nError: %s\n",dbURL,ex.getMessage());
+		}
 		
 		return false;
 	}

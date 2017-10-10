@@ -105,24 +105,24 @@ public class AvMet {
 				switch(args[i].toLowerCase()){
 					case "keep":
 					case "keepdb":
-						System.out.println("Keep DB!");
+						//System.out.println("Keep DB!");
 						AvMet.keepdb = true;
 						break;
 					case "untaint":
 					case "untaintdb":
 					case "scrub":
 					case "scrubdb":
-						System.out.println("Scrub DB!");
+						//System.out.println("Scrub DB!");
 						AvMet.scrubdb = true;
 						break;
 					case "cond":
 					case "condense":
-						System.out.println("Condense DB!");
+						//System.out.println("Condense DB!");
 						AvMet.condense = true;
 						break;
 					case "tempdb":
 					case "usetemp":
-						System.out.println("Condense DB!");
+						//System.out.println("Condense DB!");
 						AvMet.usetemp = true;
 						break;
 					default:
@@ -141,9 +141,6 @@ public class AvMet {
 	 *   using supplied parameter, process filename, unzip if necessary
 	 */
 	private static void setFname(){
-		
-		
-		System.out.printf("Attmpting to use input file '%s'\n",AvMet.sourcefile);
 		
 		// init and execute
 		Gunzip GZ = new Gunzip();
@@ -209,24 +206,31 @@ public class AvMet {
 		traffic.getHighest();
 				
 		// Lowest altitude ( greater than 0 )
+		traffic.getLowest();
 
 		// Most contact events
+		
 
 		// Fewest contact events
+		
 
 		// Closest contact
-
+		traffic.getClosest();
 		
 		// Furthest contact
-
+		traffic.getFurthest();
 		
 		// Squawk counts
+		
 
 		// Emergency Squawk events
 		traffic.reportEmergencies();
 		
+		// Non-Emergency special Squawk events
+		traffic.reportSpecialIdents();
+				
 		// Flyover events (less than 1nm range)
-
+		
 
 	}
 }
