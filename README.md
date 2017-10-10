@@ -1,21 +1,24 @@
-# AvMet
+AvMet
+=====
 Aviation Metrics Project -- Extract data from STRATUX daily database logs
 
-# What's cool
-Nothing yet.. but it's getting there!   (Oct 2017)
+What's New - October 2017
+=========================
+Nothing yet.. but it's getting there!  
 
-# Running AvMet
+Running AvMet
+=============
 AvMet expects the first parameter to be path to STRATUX database file.  File can 
 be compressed (.giz only at this time).
 
 ex:
   *   java -jar dist/AvMet.jar  <path_to_db>
 
-*Required parameter*
+### Required parameter
 Must declare the path (must be resolvable from current path) to input data file; 
 either an SQLite3 db file, or a Gzip compressed SQLite3 db file.
 
-
+### Optional parameters
 Optional extra parameters where can be in any order after the database
 
  * keep - This will leave the uncompressed DB (other artifact files are still 
