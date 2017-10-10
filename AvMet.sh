@@ -1,1 +1,1 @@
-java -jar dist/AvMet.jar $1
+java -jar dist/AvMet.jar $1 $2
