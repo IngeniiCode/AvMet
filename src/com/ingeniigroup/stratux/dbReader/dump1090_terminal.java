@@ -16,3 +16,13 @@ package com.ingeniigroup.stratux.dbReader;
 public class dump1090_terminal {
 	
 }
+
+/**
+ * SCHEMA dump1090_terminal
+ * 
+ *	id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+ *  Text           TEXT
+ *  Source         TEXT
+ *  timestamp_id   INTEGER
+ * 
+ */

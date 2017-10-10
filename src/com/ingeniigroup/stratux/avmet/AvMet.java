@@ -31,30 +31,44 @@ package com.ingeniigroup.stratux.AvMet;
 
 import com.ingeniigroup.stratux.dbConnect.*;
 import com.ingeniigroup.stratux.dbReader.*;
-import com.ingeniigroup.stratux.Contact.Contact;
+import com.ingeniigroup.stratux.Repair.FixTrafficTable;
+
 
 /**
  * @author David DeMartini - Ingenii Group LLC
  */
 public class AvMet {
 	
-	private static boolean   waszipped;  // flag indicating original file was gzipped
-	private static boolean   rezip;      // flag telling process to re-zip the file
-	private static boolean   keepdb;     // flag telling process to keep original DB 
-	private static boolean   untaintdb;  // run a detaining process on the DB
+	private static boolean   waszipped;  // original file was gzipped
+	private static boolean   rezip;      // re-zip the file
+	private static boolean   keepdb;     // keep original DB 
+	private static boolean   scrubdb;    // run a detainting process on the DB
+	private static boolean   condense;   // remove adjacent similar records in database
+	private static boolean   usetemp;    // write the extracted database to a temp file.
+	private static String    sourcefile; // origin database file
 	private static String    dbFname;
 	private static StratuxDB DB;
 	
 	/**
 	 * @param args the command line arguments
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		
 		// perform initializations
 		init(args);
-		
+
 		// set DB connection
 		setDBconn();
+		
+		// check for cleaning and condensing operations
+		if(AvMet.condense){
+			// condense also performs the scrub operation
+			FixTrafficTable.Condense(AvMet.DB);
+		}
+		else if (AvMet.scrubdb){
+			// performs only the scrubbing operation
+			FixTrafficTable.Fix(AvMet.DB);
+		}
 		
 		// report the metrics
 		reportMetrics();
@@ -73,49 +87,72 @@ public class AvMet {
 	/**
 	 * Init  do some prep work before running 
 	 */
-	private static void init(String[] args){
+	private static void init(String[] args) throws Exception{
 	
-		// set dbFname
-		setFname(args[0]);
+		if(args.length < 1){
+			// No database file defined.. this is a fatal event
+			throw new Exception("Must declare a database file to open as first parameter");
+		}
+		
+		// store the sourcefile
+		AvMet.sourcefile = args[0];
 		
 		// set keep flag if there is an arg.
 		if(args.length>1){
-			for(int i=0;i<args.length;i++){
+			
+			for(int i=1; i < args.length; i++){
 				// look for options and set where found.
 				switch(args[i].toLowerCase()){
 					case "keep":
 					case "keepdb":
+						System.out.println("Keep DB!");
 						AvMet.keepdb = true;
 						break;
 					case "untaint":
 					case "untaintdb":
 					case "scrub":
 					case "scrubdb":
-						AvMet.untaintdb = true;
+						System.out.println("Scrub DB!");
+						AvMet.scrubdb = true;
+						break;
+					case "cond":
+					case "condense":
+						System.out.println("Condense DB!");
+						AvMet.condense = true;
+						break;
+					case "tempdb":
+					case "usetemp":
+						System.out.println("Condense DB!");
+						AvMet.usetemp = true;
 						break;
 					default:
-						
+						// no options selected.. 
 				}
 			}
 		}
+		
+		// Begin processing the input file
+		setFname();
+		
 	}
 	
 	
 	/**
 	 *   using supplied parameter, process filename, unzip if necessary
 	 */
-	private static void setFname(String fName){
+	private static void setFname(){
 		
-		System.out.printf("Attmpting to use input file '%s'\n",fName);
+		
+		System.out.printf("Attmpting to use input file '%s'\n",AvMet.sourcefile);
 		
 		// init and execute
 		Gunzip GZ = new Gunzip();
 		//System.out.printf("Was Zipped = %s\n", GZ.wasZipped());
-		AvMet.dbFname   = GZ.unzipDB(fName);
+		AvMet.dbFname   = GZ.unzipDB(AvMet.sourcefile,AvMet.usetemp); 
 		AvMet.waszipped = GZ.wasZipped();    // set flag to cleanup after execution
 		
 		if(AvMet.dbFname.isEmpty()){
-			System.err.printf("ERROR: Unable to located a suitable DB file; unable to use (%s)\n",fName);
+			System.err.printf("ERROR: Unable to located a suitable DB file; unable to use (%s)\n",AvMet.sourcefile);
 			System.exit(13);
 		}
 		else {
@@ -142,6 +179,8 @@ public class AvMet {
 	 *  Cleanup any leftover files
 	 */
 	private static void cleanup(){
+
+		AvMet.DB.Disonnect();  // make call to disconnect.
 		
 		// call the db connector's cleanup function, but override the waszipped
 		// action if the 'keep' option was present
@@ -156,6 +195,9 @@ public class AvMet {
 		
 		// setup the interfaces
 		traffic traffic = new traffic(AvMet.DB);
+		
+		// Display start time
+		traffic.getFirstTime();
 		
 		// Highest speed 
 		traffic.getFastest(); 

@@ -16,3 +16,14 @@ package com.ingeniigroup.stratux.dbReader;
 public class timestamp {
 	
 }
+
+/**
+ * SCHEMA
+ * 
+ *   id                     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+ *   Time_type_preference   INTEGER
+ *   StratuxClock_value     STRING
+ *   GPSClock_value         STRING
+ *   PreferredTime_value    STRING
+ *   StartupID              INTEGER
+ */

@@ -31,13 +31,24 @@ public class Gunzip {
 	private String  dbFname   = "";
 	private String  filename  = "";
 	
+	/**
+	 * Perform the extraction of database, if it's zipped
+	 * 
+	 * @param filename
+	 * @param usetemp
+	 * 
+	 * @return path to filename that will be used 
+	 */
 	public String unzipDB(String filename){
-	
+		// no flag was provided for <usetemp> parameter, send <false>
+		return unzipDB(filename,false);  // call the unified method
+	}	
+	public String unzipDB(String filename,boolean usetemp){
 		this.filename = filename; // set back into class
 		
 		try {
 			// establish there is a file to be opened
-			getDBFile(filename);  // get the file handle
+			getDBFile(filename,usetemp);  // get the file handle
 	
 			return this.dbFname;
 		} 
@@ -85,13 +96,13 @@ public class Gunzip {
 	 *  database files hit that point with a buffer size of 4096  
 	 *
 	 */
-	private void getDBFile(String filename){
+	private void getDBFile(String filename, boolean usetemp){
 			
 		int length      = 0;
 		//byte[] iobuffer = new byte[1024]; // starting buffer size
 		byte[] iobuffer = new byte[4096];   // bumping 4x decreased time by 25% 8x and 16x had not benefit - dad
 		
-		boolean legit   = test4file(filename);
+		boolean legit = test4file(filename);
 
 		if(legit){
 			
@@ -102,8 +113,15 @@ public class Gunzip {
 		
 				// process the filename to see if it has a .gz extenstion
 				if(isZipped(filename)){ 
+					
+					// Check for 'usetemp' flag
+					if(usetemp){
+						// change the final output target of gzip expansion
+						this.dbFname = "./sqlite-stratux-temp";
+					}
 				
-					System.out.printf("Extracting  %s  from  %s\n",this.dbFname,this.filename);
+					// announce file use
+					System.out.printf("Extract ( %s ) -->  [ %s ]\n",this.filename,this.dbFname);
 					// Gzip IOs
 					GZIPInputStream gzipInStream   = new GZIPInputStream(new FileInputStream(filename));
 					FileOutputStream gzipOutStream = new FileOutputStream(this.dbFname);
@@ -125,10 +143,6 @@ public class Gunzip {
 				System.exit(9);
 			}
 		}
-		// attempt to unzip the file, if that fails just return the 
-		// original filename as it might have already been unzipped
-		
-		return;
 	}
 	
 	/*

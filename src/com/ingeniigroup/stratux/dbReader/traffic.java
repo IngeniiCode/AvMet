@@ -10,16 +10,10 @@
  */
 package com.ingeniigroup.stratux.dbReader;
 
-import java.sql.Connection;
-
-import java.util.Map;
-
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
 import com.ingeniigroup.stratux.Tools.ICAO;
-import com.ingeniigroup.stratux.Contact.Contact;
 import com.ingeniigroup.stratux.Tools.Squawk;
 import java.sql.ResultSet;
-
 
 /**
  *
@@ -31,6 +25,33 @@ public class traffic {
 	
 	public traffic(StratuxDB dbconn){
 		traffic.DB = dbconn;  // import the connection
+	}
+	
+	/**
+	 * Get dataset start time from traffic database
+	 * 
+	 * @return  String timestamp  
+	 */
+	public void getFirstTime(){
+		
+		// define query to find fastest aircraft
+		String sql  = "SELECT MIN(timestamp) as timestamp FROM traffic";
+		
+		try {
+			// prepare, execute query and get resultSet
+			ResultSet result = traffic.DB.getResultSet(sql);
+
+			// check results to see if they make any sense.
+			if (traffic.DB.getResultNextRecord(result)) {
+				
+				System.out.printf("\tStart: %s\n",result.getString("timestamp"));
+				
+			}
+		}
+		catch (Exception ex){
+			System.err.printf("DB Error: %s\n",ex.getMessage());
+			ex.printStackTrace();
+		}
 	}
 	
 	/**
@@ -54,13 +75,14 @@ public class traffic {
 				String Tail      = findTail(result.getString("Tail"),Icao_addr);
 
 				// there was something there.
-				System.out.printf("FASTEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
+				System.out.printf("\tFASTEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
 
 				return true;
 			}
 		}
 		catch (Exception ex){
-			
+			System.err.printf("DB Error: %s\n",ex.getMessage());
+			ex.printStackTrace();
 		}
 		
 		return false;
@@ -87,14 +109,15 @@ public class traffic {
 				String Tail      = findTail(result.getString("Tail"),Icao_addr);
 
 				// there was something there.
-				System.out.printf("SLOWEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
+				System.out.printf("\tSLOWEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
 
 				return true;
 				
 			}
 		}
 		catch (Exception ex){
-			
+			System.err.printf("DB Error: %s\n",ex.getMessage());
+			ex.printStackTrace();
 		}
 		
 		return false;
@@ -121,13 +144,14 @@ public class traffic {
 				String Tail      = findTail(result.getString("Tail"),Icao_addr);
 
 				// there was something there.
-				System.out.printf("HIGHEST: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
+				System.out.printf("\tHIGHEST: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
 
 				return true;
 			}
 		}
 		catch (Exception ex){
-			
+			System.err.printf("DB Error: %s\n",ex.getMessage());
+			ex.printStackTrace();
 		}
 		
 		return false;
@@ -152,7 +176,7 @@ public class traffic {
 			
 			if(!result.isBeforeFirst()){
 				// No emergencies to report
-				System.out.println("No Alerts Detected");
+				System.out.println("\tNo Alerts Detected");
 				return false;  // Bail Out!
 			}
 
@@ -165,7 +189,7 @@ public class traffic {
 					String Message   = Squawk.getMessage(result.getInt("Squawk"));
 
 					// there was something there.
-					System.out.printf("ALERT: %s [%s] @ %d ft - %s\n",Tail,ICOA24,result.getInt("Alt"),Message);
+					System.out.printf("\tALERT: %s [%s] @ %d ft - %s\n",Tail,ICOA24,result.getInt("Alt"),Message);
 
 				}
 				
@@ -176,7 +200,8 @@ public class traffic {
 			return true;
 		}
 		catch (Exception ex){
-			//  ToDo
+			System.err.printf("DB Error: %s\n",ex.getMessage());
+			ex.printStackTrace();
  		}
 		
 		return false;
@@ -206,7 +231,8 @@ public class traffic {
 
 			}
 			catch (Exception ex){
-				// ToDo
+				System.err.printf("DB Error: %s\n",ex.getMessage());
+				ex.printStackTrace();
 			}
 		}
 		

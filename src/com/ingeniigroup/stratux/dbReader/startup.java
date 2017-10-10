@@ -16,3 +16,10 @@ package com.ingeniigroup.stratux.dbReader;
 public class startup {
 	
 }
+
+/**
+ *  SCHEMA
+ * 
+ *   id     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+ *   Fill   TEXT
+ */

@@ -16,3 +16,21 @@ package com.ingeniigroup.stratux.dbReader;
 public class settings {
 	
 }
+
+/**
+ * SCHEMA
+ * 
+ *   id                     INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+ *   UAT_Enabled            INTEGER, 
+ *   ES_Enabled             INTEGER, 
+ *   Ping_Enabled           INTEGER, 
+ *   GPS_Enabled            INTEGER, 
+ *   DisplayTrafficSource   INTEGER, 
+ *   DEBUG                  INTEGER, 
+ *   ReplayLog              INTEGER, 
+ *   PPM                    INTEGER, 
+ *   OwnshipModeS           TEXT, 
+ *   WatchList              TEXT, 
+ *   DeveloperMode          INTEGER, 
+ *   timestamp_id           INTEGER
+ */

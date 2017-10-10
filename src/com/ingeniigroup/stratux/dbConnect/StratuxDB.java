@@ -12,7 +12,6 @@ package com.ingeniigroup.stratux.dbConnect;
 
 import java.io.File;
 import java.util.List;
-//import java.util.Arrays;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -48,7 +47,7 @@ public class StratuxDB {
 			}
 			
 			// return database name and set connected flag
-			System.out.print("Connected....\n");
+			//System.out.print("Connected....\n");
 			
 		}
 		catch (Exception ex){
@@ -108,9 +107,7 @@ public class StratuxDB {
 		catch (Exception ex){
 			System.err.println("Unabled to unlink database artifacts -- you may need to clean them up individually.");
 		}
-		
 	} 
-	
 	
 	/**
 	 * getResultSet()
@@ -150,23 +147,74 @@ public class StratuxDB {
 		return result;
 	}
 	
+	/**
+	 * 
+	 * @param result
+	 * @return 
+	 */
 	public boolean getResultNextRecord(ResultSet result){
 		
 		try {
-			if(result.isAfterLast()){
-				// no more results to return -- not unusual
-				return false;
-			}
 			// iterate to the next record and hand back the handle
-			result.next();  // increment pointer to next record
+			return result.next();  // increment pointer to next record
 		} 
 		catch (Exception ex) {
 			System.err.printf("ERROR!!  %s\n", ex.getMessage());
 			System.err.print(ex.getStackTrace());
 		} 
+		return false;
+	}
+	
+	/**
+	 * Delete a record from table where record_id is an int
+	 * 
+	 * @param table
+	 * @param primary_field
+	 * @param record_id
+	 * 
+	 * @return 
+	 */
+	public boolean deleteRecord(String table, String primary_field, int record_id){
+		
+		String query = String.format("DELETE FROM %s WHERE %s=%d",table,primary_field,record_id);
+		
+		try {	
+			Statement statement = this.db.createStatement();
+			statement.executeUpdate(query);
+			//System.out.println(query);
+		} 
+		catch (SQLException ex) {
+           System.err.printf("Fatal Error: %s in %s\n",ex.getMessage(),query);
+        }
 		
 		return true;
 	}
+	
+	/**
+	 * Delete a record from table where record_id is an String
+	 * 
+	 * @param table
+	 * @param primary_field
+	 * @param record_id
+	 * 
+	 * @return 
+	 */
+	public boolean deleteRecord(String table, String primary_field, String record_id){
+		
+		String query = String.format("DELETE FROM %s WHERE %s='%d'",table,primary_field,record_id);
+		
+		try {
+			Statement statement = this.db.createStatement();
+			statement.executeUpdate(query);
+			//System.out.println(query);
+		} 
+		catch (SQLException ex) {
+           System.err.printf("Fatal Error: %s in %s\n",ex.getMessage(),query);
+        }
+		
+		return true;
+	}
+	
 	
 	/*
 	 *  Connect to the mighty SQLite3 Datafile
@@ -177,7 +225,7 @@ public class StratuxDB {
 	 *         to be required to actually validate that the file was there *and*
 	 *         it is really a database, not a simple text file.
 	 */
-	private boolean Connect() throws ClassNotFoundException {
+	public boolean Connect() throws ClassNotFoundException {
 		
 		String dbURL = "jdbc:sqlite:" + this.dbFname.trim();
 		System.out.printf("Opening %s\n", dbURL);
@@ -195,6 +243,23 @@ public class StratuxDB {
         }
 		
 		return false;
+	}
+	
+	/**
+	 *   Disconnect from DB
+	 */
+	public boolean Disonnect(){
+		
+		try {
+			if(!this.db.isClosed()){
+				this.db.close();
+				return true; // disconnect seemed to work OK.
+			}
+		}
+		catch (Exception ex) {
+			System.err.println("Error occured while trying to close connection\t" + ex.getMessage());
+		}
+		return false;  // disconnect somehow failed.
 	}
 	
 	/**

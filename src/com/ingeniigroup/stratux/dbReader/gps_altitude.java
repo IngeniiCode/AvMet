@@ -16,3 +16,23 @@ package com.ingeniigroup.stratux.dbReader;
 public class gps_altitude {
 	
 }
+
+/**
+ * 
+ * SCHEMA
+ * 
+ *   id             INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, 
+ *   stratuxTime    INTEGER, 
+ *   nmeaTime       REAL, 
+ *   msgType        TEXT, 
+ *   gsf            REAL, 
+ *   coursef        REAL, 
+ *   alt            REAL, 
+ *   vv             REAL, 
+ *   gpsTurnRate    REAL, 
+ *   gpsPitch       REAL, 
+ *   gpsRoll        REAL, 
+ *   gpsLoadFactor  REAL, 
+ *   timestamp_id   INTEGER
+ * 
+ */

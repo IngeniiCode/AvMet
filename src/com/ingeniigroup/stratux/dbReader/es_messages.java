@@ -16,3 +16,14 @@ package com.ingeniigroup.stratux.dbReader;
 public class es_messages {
 	
 }
+
+/**
+ * 
+ * SCHEMA
+ *  
+ *   id               INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT 
+ *   TimeReceived     STRING 
+ *   Data             TEXT 
+ *   timestamp_id     INTEGER
+ * 
+ */
