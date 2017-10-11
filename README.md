@@ -36,3 +36,36 @@ Optional extra parameters where can be in any order after the database
  * usetemp = When extracting a database from SQL, write to a local temp file.  This
              is most useful when the source database is compressed and on a 
              remote or temporary device:  output file will be  ./sqlite-stratux-temp
+
+Data Scrubbing
+==============
+During analysis of example datasets, anomalous entries were detected in nearly each 
+of the databases.  Some of these were very obvious to detect, others were much more 
+complex to handle.  As of  11-Oct-2017 the detection code is not fully bug free.
+
+###  Airbus A319 flying at 119,000 ft. 
+American Airlines A319 that was showing a flight altitude for 119,000 ft. (well
+beyond the edge of space, and obviously bogus).  Inspection of the database showed a
+single entry was involved and a simple delta detection alogrythim was all needed to
+detect and remove when encountered.  
+
+### 8300 Mile Range
+The current challenge is handling cases where more than a single record is in play
+and the simplistic delta vector is insufficient to mitigate reporting errors. 
+For example, in a recent test, the aircraft position data caused a Distance 
+calculation of over 8300 miles.  The expected maximum detection range is around
+60 miles for a fixed ground unit (which I am developing with).
+
+	Start: 2017-10-08 08:07:00.572 +0000 UTC
+	-----------------------------------------
+	FASTEST:  [F8D460] @ 574 kts
+	SLOWEST: N443R [A55739] @ 19 kts
+	HIGHEST: N478EV [A5DF4A] @ 51075 ft
+	LOWEST:  [F8D460] @ 275 ft
+	CLOSEST: N872WH [ABFFC0] 0.22 mi @ 3200 ft
+	*FURTHEST: N202RR [A19AF8] 8331 mi @ 4600 ft*
+
+
+ 
+
+ 
