@@ -1,10 +1,22 @@
 AvMet
 =====
-Aviation Metrics Project -- Extract data from STRATUX daily database logs
+Aviation Metrics Project -- Extract data from STRATUX daily database logs.
 
-What's New - October 2017
-=========================
-Nothing yet.. but it's getting there!  
+Developed by David DeMartini @ Ingenii Group LLC.  
+
+### Contact Information:
+David DeMartini
+Ingenii Group LLC
+
+http://www.daviddemartini.com
+software@ingeniigroup.com
+
+
+Announcements!
+==============
+### 11-OCT-2017
+First Best merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
+ 
 
 Running AvMet
 =============
@@ -37,11 +49,27 @@ Optional extra parameters where can be in any order after the database
              is most useful when the source database is compressed and on a 
              remote or temporary device:  output file will be  ./sqlite-stratux-temp
 
-Data Scrubbing
-==============
+
+Release Notes
+=============
+
+### 11-OCT-2017
+First Best merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
+
+
+
+Development Notes
+=================
+
+## Data Scrubbing
+
+*Note: 11-OCT-2017*
+Scrubbing processor has a bug that prevents it from properly handling more than a 
+single out of range error. 
+
 During analysis of example datasets, anomalous entries were detected in nearly each 
 of the databases.  Some of these were very obvious to detect, others were much more 
-complex to handle.  As of  11-Oct-2017 the detection code is not fully bug free.
+complex to handle.
 
 ###  Airbus A319 flying at 119,000 ft. 
 American Airlines A319 that was showing a flight altitude for 119,000 ft. (well
@@ -63,7 +91,9 @@ calculation of over 8300 miles.  The expected maximum detection range is around
 	HIGHEST: N478EV [A5DF4A] @ 51075 ft
 	LOWEST:  [F8D460] @ 275 ft
 	CLOSEST: N872WH [ABFFC0] 0.22 mi @ 3200 ft
-	*FURTHEST: N202RR [A19AF8] 8331 mi @ 4600 ft*
+	FURTHEST: N202RR [A19AF8] 8331 mi @ 4600 ft
+
+
 
 
  
