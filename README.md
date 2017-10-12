@@ -128,7 +128,7 @@ Development Notes
 
 ## Data Scrubbing
 
-**Note: 11-OCT-2017**
+**Note: 12-OCT-2017**
 Scrubbing processor has a bug that prevents it from properly handling more than a 
 single out of range error. 
 
