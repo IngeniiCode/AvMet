@@ -33,31 +33,30 @@ either an SQLite3 db file, or a Gzip compressed SQLite3 db file.
 ### Optional parameters
 Optional extra parameters where can be in any order after the database
 
- * keep - This will leave the uncompressed DB (other artifact files are still 
-          cleaned up).  If the original file was not compressed, database is 
-          not removed so flag is not required.
+* keep - do not remove extracted db.
+
+...Leave the uncompressed DB (other artifact files are still cleaned up). If the original file was not compressed, database is  not removed so flag is not required.
  
- * scrub - Traverse the <traffic> table, and remove events that do not fit the 
-           expected progression for a specific contact.  This removes transient
-           bad that has been seen in majority live database samples
+* scrub - cleanup *traffic* table before reporting
 
- * condense -  Traverse the <traffic> table, and remove events have identical 
-               Altitude, Speed within a specific contact's dataset, this can 
-               condense the database by 40% to 75%   (11-OCT-2017 disabled due to bug)
+...Traverse the __traffic__ table, and remove events that do not fit the expected progression for a specific contact.  This removes transient bad that has been seen in majority live database samples
 
- * usetemp - When extracting a database from SQL, write to a local temp file.  This
-             is most useful when the source database is compressed and on a 
-             remote or temporary device:  output file will be  ./sqlite-stratux-temp
+* condense - remove similar events to save space
 
- * verbose - Report more detailed scrubbing activity
+...Traverse the __traffic__ table, and remove events have identical Altitude, Speed within a specific contact's dataset, this can condense the database by 40% to 75%   (11-OCT-2017 disabled due to bug)
+
+* usetemp - use a local scratch/temp db file
+...When extracting a database from SQL, write to a local temp file.  This is most useful when the source database is compressed and on a  remote or temporary device:  output file will be  **./sqlite-stratux-temp**
+
+ * verbose - increase progress reporting 
+...Report more details on processing activity.  Warning, it can be VERY verbose when processing very dirty __traffic__ tables
 
 
 Release Notes
 =============
 
 ### 12-OCT-2017
-Refactored reporting process, added String formatting templates, cut about 20 lines
-of code by doing this.  Updated outout looks like this:
+Refactor of reporting process, added String formatting templates, cut about 20 lines of code by doing this.  Updated output looks like this:
 
 	Start: 2017-10-08 08:07:00.572 +0000 UTC
 	-----------------------------------------
@@ -68,11 +67,8 @@ of code by doing this.  Updated outout looks like this:
 	  CLOSEST:  N872WH [ABFFC0]    3200 ft.  @   178 kts.    0.22 mi.
 	 FURTHEST:  N202RR [A19AF8]    4600 ft.  @    70 kts.    8331 mi.
 
-### 12-OCT-2017  
-Bug in the Squawk alerting code is expressing too much data, showing every event
-record for a contact using a notable Squawk code (so far the hits in test datasets
-I have available are all DOD. Also need to express the actual Squawk code flagged
-the event for reporting. (ToDo)
+### 11-OCT-2017  
+Bug in the Squawk alerting code is expressing too much data, showing every event record for a contact using a notable Squawk code (so far the hits in test datasets I have available are all DOD. Also need to express the actual Squawk code flagged the event for reporting. (ToDo)
 
 	[ ... ]
 	ALERT: N579PS [A7712E] 219 kts @ 19050 ft. - DOD aircraft
@@ -96,26 +92,16 @@ Development Notes
 
 ## Data Scrubbing
 
-*Note: 11-OCT-2017*
-Scrubbing processor has a bug that prevents it from properly handling more than a 
-single out of range error. 
+**Note: 11-OCT-2017**
+Scrubbing processor has a bug that prevents it from properly handling more than a single out of range error. 
 
-During analysis of example datasets, anomalous entries were detected in nearly each 
-of the databases.  Some of these were very obvious to detect, others were much more 
-complex to handle.
+During analysis of example datasets, anomalous entries were detected in nearly each of the databases.  Some of these were very obvious to detect, others were much more complex to handle.
 
 ###  Airbus A319 flying at 119,000 ft. 
-American Airlines A319 that was showing a flight altitude for 119,000 ft. (well
-beyond the edge of space, and obviously bogus).  Inspection of the database showed a
-single entry was involved and a simple delta detection algorythim was all needed to
-detect and remove when encountered.  
+American Airlines A319 that was showing a flight altitude for 119,000 ft. (well beyond the edge of space, and obviously bogus).  Inspection of the database showed a single entry was involved and a simple delta detection algorythim was all needed to detect and remove when encountered.  
 
 ### 8300 Mile Range Issue
-The current challenge is handling cases where more than a single record is in play
-and the simplistic delta vector is insufficient to mitigate reporting errors. 
-For example, in a recent test, the aircraft position data caused a Distance 
-calculation of over 8300 miles.  The expected maximum detection range is around
-60 miles for a fixed ground unit (which I am developing with).
+The current challenge is handling cases where more than a single record is in play and the simplistic delta vector is insufficient to mitigate reporting errors. For example, in a recent test, the aircraft position data caused a Distance calculation of over 8300 miles.  The expected maximum detection range is around 60 miles for a fixed ground unit (which I am developing with).
 
 	Start: 2017-10-08 08:07:00.572 +0000 UTC
 	-----------------------------------------
@@ -128,11 +114,7 @@ calculation of over 8300 miles.  The expected maximum detection range is around
 
 
 ### Conflated Contact Events
-Several times within the database, a contact is represented by a small batch of
-contact records, all with an identical timestamp.  In a lot of these cases there
-are other differences in the records (only distance has changed in every case, I
-suspect that could be minor location drifting of the receiver's own GPS device, 
-making the distance calculation drift as well. 
+Several times within the database, a contact is represented by a small batch of contact records, all with an identical timestamp.  In a lot of these cases there are other differences in the records (only distance has changed in every case, I suspect that could be minor location drifting of the receiver's own GPS device, making the distance calculation drift as well. 
 
 Example:
 
