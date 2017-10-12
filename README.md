@@ -15,7 +15,7 @@ software@ingeniigroup.com
 Announcements!
 ==============
 ### 11-OCT-2017
-First Best merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
+First Beta merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
  
 
 Running AvMet
@@ -67,6 +67,23 @@ of code by doing this.  Updated outout looks like this:
 	   LOWEST:         [F8D460]     275 ft.  @   574 kts.       8 mi.
 	  CLOSEST:  N872WH [ABFFC0]    3200 ft.  @   178 kts.    0.22 mi.
 	 FURTHEST:  N202RR [A19AF8]    4600 ft.  @    70 kts.    8331 mi.
+
+### 12-OCT-2017  
+Bug in the Squawk alerting code is expressing too much data, showing every event
+record for a contact using a notable Squawk code (so far the hits in test datasets
+I have available are all DOD. Also need to express the actual Squawk code flagged
+the event for reporting. (ToDo)
+
+	[ ... ]
+	ALERT: N579PS [A7712E] 219 kts @ 19050 ft. - DOD aircraft
+	ALERT: N579PS [A7712E] 220 kts @ 19050 ft. - DOD aircraft
+	ALERT: N579PS [A7712E] 221 kts @ 19050 ft. - DOD aircraft
+	ALERT: N579PS [A7712E] 217 kts @ 19075 ft. - DOD aircraft
+	ALERT: SWA1518 [ABB972] 221 kts @ 4175 ft. - DOD aircraft
+	ALERT: SWA1518 [ABB972] 221 kts @ 4225 ft. - DOD aircraft
+	ALERT: SWA1518 [ABB972] 221 kts @ 4300 ft. - DOD aircraft
+	ALERT: SWA1518 [ABB972] 222 kts @ 4350 ft. - DOD aircraft
+	[ ... ]
 
 ### 11-OCT-2017
 Beta 2 merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
