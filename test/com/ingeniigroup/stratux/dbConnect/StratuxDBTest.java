@@ -75,4 +75,6 @@ public class StratuxDBTest {
 		
 	}
 	
+	// TODO ---  need tests for  Delete and other batch operations.
+	
 }

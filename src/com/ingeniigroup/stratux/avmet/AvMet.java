@@ -45,6 +45,8 @@ public class AvMet {
 	private static boolean   scrubdb;    // run a detainting process on the DB
 	private static boolean   condense;   // remove adjacent similar records in database
 	private static boolean   usetemp;    // write the extracted database to a temp file.
+	private static boolean   verbose;    // show more information during execution
+	private static boolean   keepdupes;  // do not run the duplicate timestamp scrubber
 	private static String    sourcefile; // origin database file
 	private static String    dbFname;
 	private static StratuxDB DB;
@@ -103,27 +105,34 @@ public class AvMet {
 			for(int i=1; i < args.length; i++){
 				// look for options and set where found.
 				switch(args[i].toLowerCase()){
-					case "keep":
 					case "keepdb":
-						//System.out.println("Keep DB!");
+						if(AvMet.verbose) System.out.println("Keep DB!");
 						AvMet.keepdb = true;
+						break;
+					case "keepdupes":
+						if(AvMet.verbose) System.out.println("Keep Dupe Records!");
+						AvMet.keepdupes = true;
 						break;
 					case "untaint":
 					case "untaintdb":
 					case "scrub":
 					case "scrubdb":
-						//System.out.println("Scrub DB!");
+						if(AvMet.verbose) System.out.println("Scrub DB!");
 						AvMet.scrubdb = true;
 						break;
 					case "cond":
 					case "condense":
-						//System.out.println("Condense DB!");
-						AvMet.condense = true;
+						//if(AvMet.verbose) System.out.println("Condense DB!");
+						//AvMet.condense = true;
 						break;
 					case "tempdb":
 					case "usetemp":
-						//System.out.println("Condense DB!");
+						if(AvMet.verbose) System.out.println("Condense DB!");
 						AvMet.usetemp = true;
+						break;
+					case "verbose":
+						AvMet.verbose = true;
+						if(AvMet.verbose) System.out.println("Be Verbose!");
 						break;
 					default:
 						// no options selected.. 
@@ -163,7 +172,10 @@ public class AvMet {
 	private static void setDBconn(){
 		
 		// set the DB connection
-		AvMet.DB = new StratuxDB(AvMet.dbFname);
+		AvMet.DB = new StratuxDB(AvMet.dbFname,AvMet.verbose);
+		
+		// notify of any relevant flags
+		AvMet.DB.KeepDupes(keepdupes);
 		
 		if(!AvMet.DB.Connected()){
 			System.err.printf("ERROR: Unable to connect to database\n");

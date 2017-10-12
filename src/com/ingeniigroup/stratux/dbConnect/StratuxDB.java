@@ -10,6 +10,7 @@
  */
 package com.ingeniigroup.stratux.dbConnect;
 
+import com.ingeniigroup.stratux.Repair.FixTrafficTable;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.util.Iterator;
 
 /**
  *
@@ -26,6 +28,8 @@ import java.sql.DriverManager;
 public class StratuxDB {
 	
 	private boolean connected;
+	private boolean verbose;
+	private boolean keepdupes;
 	private String dbFname;
 	private String dbName;
 	private Connection db;
@@ -33,7 +37,25 @@ public class StratuxDB {
 	/*
 	 *  Make DB Connection and prepare to handle queries.
 	 */
-	public StratuxDB(String dbFname){
+	public StratuxDB(String dbFname) {
+		initDB(dbFname,false);
+	}
+	public StratuxDB(String dbFname, boolean verbose){
+		initDB(dbFname,verbose);
+	}
+	
+	
+	/**
+	 *  Make the required DB connections
+	 * 
+	 * @param String dbFname - filename of SQLite3 database file (or archive)
+ 	 * @param boolean verbose - flag determines verbosity 
+	 * 
+	 */
+	public void initDB(String dbFname, boolean verbose){
+		
+		// set verbosity
+		this.verbose = verbose;
 		
 		try {
 			
@@ -63,6 +85,23 @@ public class StratuxDB {
 		return this.connected;
 	}
 	
+	/**
+	 *  Set / Clear keepdupes flag
+	 */
+	public boolean KeepDupes(){
+		return this.keepdupes;
+	}
+	public boolean KeepDupes(boolean keepdupes){
+		return this.keepdupes = keepdupes;
+	}
+	
+	/**
+	 *  Return verbosity flag
+	 */
+	public boolean Verbose(){
+		return this.verbose;
+	}
+	
 	/** 
 	 *  Return the connection object
 	 */
@@ -87,6 +126,7 @@ public class StratuxDB {
 		// these are always removed.
 		files.add(String.format("%s-wal",dbFname));
 		files.add(String.format("%s-shm",dbFname));
+		
 		// optional uncompressed db file removal
 		if(deleteDBfile){
 			files.add(dbFname);  // add name of uncompressed DB
@@ -213,6 +253,66 @@ public class StratuxDB {
 		}
 		
 		return true;
+	}
+	
+	/**
+	 * SQL Do Update 
+	 * 
+	 * @param String sql -- query to blindly execute
+	 * 
+	 * @return boolean true|false
+	 * @throws ClassNotFoundException 
+	 */
+	public boolean sqlExecute(String query){
+		
+		try {
+			Statement statement = this.db.createStatement();
+			//statement.executeUpdate(query);
+			statement.execute(query);
+			return true;
+		} 
+		catch (SQLException ex) {
+			System.err.printf("Fatal Error: %s\tquery: { %s }\n",ex.getMessage(),query);
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * SQL Do Update 
+	 * 
+	 * @param String sql -- query to blindly execute
+	 * 
+	 * @return boolean true|false
+	 * @throws ClassNotFoundException 
+	 */
+	public boolean sqlBatch(List<String> batch){
+		
+		try {
+			
+			if(this.verbose) System.out.printf("Processing %d batch records\n",batch.size());
+			Statement statement = this.db.createStatement();
+
+			// create an iterator
+			Iterator<String> sqlIterator = batch.iterator();
+
+			// iterate 
+			while (sqlIterator.hasNext()) {
+				statement.addBatch(sqlIterator.next());
+			}
+			
+			// write that batch
+			statement.executeBatch();
+			
+		} 
+		catch (SQLException ex) {
+			System.err.printf("Fatal Error: %s\tProblems with batch\n",ex.getMessage());
+		}
+		finally {
+			// finally.. we're done?
+		}
+		
+		return false;
 	}
 	
 	

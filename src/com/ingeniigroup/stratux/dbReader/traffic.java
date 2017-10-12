@@ -13,6 +13,7 @@ import com.ingeniigroup.stratux.dbConnect.StratuxDB;
 import com.ingeniigroup.stratux.Tools.ICAO;
 import com.ingeniigroup.stratux.Tools.Squawk;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -21,7 +22,13 @@ import java.sql.ResultSet;
 public class traffic {
 
 	private static StratuxDB DB;
+	private static boolean verbose;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param dbconn     - dbconnector class object
+	 */
 	public traffic(StratuxDB dbconn){
 		traffic.DB = dbconn;  // import the connection
 	}
@@ -58,7 +65,7 @@ public class traffic {
 	public boolean getFastest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY speed desc limit 1";
+		String sql  = "SELECT DISTINCT Icao_addr,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY speed desc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -66,14 +73,7 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				
-				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-				String Tail      = findTail(result.getString("Tail"),Icao_addr);
-
-				// there was something there.
-				System.out.printf("\tFASTEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
-
+				reportStat("FASTEST:",result);
 				return true;
 			}
 		}
@@ -92,7 +92,7 @@ public class traffic {
 	public boolean getSlowest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by speed asc limit 1";
+		String sql  = "SELECT DISTINCT Icao_addr,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by speed asc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -100,16 +100,8 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				
-				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-				String Tail      = findTail(result.getString("Tail"),Icao_addr);
-
-				// there was something there.
-				System.out.printf("\tSLOWEST: %s [%s] @ %d kts\n",Tail,ICOA24,result.getInt("speed"));
-
+				reportStat("SLOWEST:",result);
 				return true;
-				
 			}
 		}
 		catch (Exception ex){
@@ -127,7 +119,7 @@ public class traffic {
 	public boolean getHighest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt desc limit 1";
+		String sql  = "SELECT DISTINCT Icao_addr,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt desc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -135,14 +127,7 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				
-				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-				String Tail      = findTail(result.getString("Tail"),Icao_addr);
-
-				// there was something there.
-				System.out.printf("\tHIGHEST: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
-
+				reportStat("HIGHEST:",result);
 				return true;
 			}
 		}
@@ -161,7 +146,7 @@ public class traffic {
 	public boolean getLowest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt asc limit 1";
+		String sql  = "SELECT DISTINCT Icao_addr,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt asc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -169,14 +154,7 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				
-				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-				String Tail      = findTail(result.getString("Tail"),Icao_addr);
-
-				// there was something there.
-				System.out.printf("\tLOWEST: %s [%s] @ %d ft\n",Tail,ICOA24,result.getInt("Alt"));
-
+				reportStat("LOWEST:",result);
 				return true;
 			}
 		}
@@ -195,22 +173,15 @@ public class traffic {
 	public boolean getClosest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance asc limit 1";
+		String sql  = "SELECT DISTINCT Icao_addr,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance asc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
 			ResultSet result = traffic.DB.getResultSet(sql);
 
 			// check results to see if they make any sense.
-			if (traffic.DB.getResultNextRecord(result)) {
-				
-				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-				String Tail      = findTail(result.getString("Tail"),Icao_addr);
-				String Distance  = (result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles"));
-				// there was something there.
-				System.out.printf("\tCLOSEST: %s [%s] %s mi @ %d ft\n",Tail,ICOA24,Distance,result.getInt("Alt"));
-
+			if (traffic.DB.getResultNextRecord(result)) {		
+				reportStat("CLOSEST:",result);
 				return true;
 			}
 		}
@@ -229,7 +200,7 @@ public class traffic {
 	public boolean getFurthest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Reg,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance desc limit 1";
+		String sql  = "SELECT DISTINCT Icao_addr,Tail,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance desc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -237,14 +208,7 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				
-				int    Icao_addr = result.getInt("Icao_addr");
-				String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-				String Tail      = findTail(result.getString("Tail"),Icao_addr);
-				String Distance  = (result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles"));
-				// there was something there.
-				System.out.printf("\tFURTHEST: %s [%s] %s mi @ %d ft\n",Tail,ICOA24,Distance,result.getInt("Alt"));
-
+				reportStat("FURTHEST:",result);
 				return true;
 			}
 		}
@@ -379,7 +343,7 @@ public class traffic {
 		
 		if(tailnum.isEmpty()) {
 			// define query to find fastest aircraft
-			String sql  = String.format("SELECT Tail FROM traffic WHERE Icao_addr=%d AND Tail>'' LIMIT 1",Icao_addr);
+			String sql  = String.format("SELECT Reg,Tail FROM traffic WHERE Icao_addr=%d AND (Tail > '' OR Reg > '') LIMIT 1",Icao_addr);
 
 			try {
 				// prepare, execute query and get resultSet
@@ -387,7 +351,8 @@ public class traffic {
 
 				// check results to see if they make any sense.
 				if (traffic.DB.getResultNextRecord(result)) {
-					 tailnum = result.getString("Tail");
+					// pull through Tail and if that is Empty.. use Reg.. and if that is empty.. well.. not much can be done. 
+					tailnum = (result.getString("Tail").isEmpty()) ? result.getString("Reg") : result.getString("Tail");
 				}
 
 			}
@@ -398,6 +363,27 @@ public class traffic {
 		}
 		
 		return tailnum;
+	}
+	
+	/**
+	 * Standardized Event Statistic String Formatter
+	 * 
+	 * @param String type
+	 * @param ResultSet result
+	 * 
+	 * @throws SQLException 
+	 */
+	private void reportStat(String type,ResultSet result) throws SQLException {
+		
+		int    Icao_addr = result.getInt("Icao_addr");
+		int    Altitude  = result.getInt("Alt");
+		int    Speed     = result.getInt("speed");
+		String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
+		String Tail      = findTail(result.getString("Tail"),Icao_addr);
+		String Distance  = (result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles"));
+		// there was something there.
+				
+		System.out.printf("\t%10s %7s [%6s] %7d ft.  @  %4d kts.  %6s mi.\n",type,Tail,ICOA24,Altitude,Speed,Distance);
 	}
 	
 	/**

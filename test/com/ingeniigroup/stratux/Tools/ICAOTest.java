@@ -57,7 +57,7 @@ public class ICAOTest {
 		
 	}
 	
-		@Test
+	@Test
 	public void testInt2ICAO24_3() {
 
 		// TEST 1
@@ -70,6 +70,18 @@ public class ICAOTest {
 		assertEquals(wanted,result);
 		System.out.printf("%d mapped to %s\n",Icao_int,result);
 		// TODO review the generated test code and remove the default call to fail.
+		
+	}
+	
+	@Test
+	public void testicao2int(){
+		String Icao_string = "0D0AAE";
+		int wanted = 854702;
+		System.out.printf("Test strICAO2int - convert %s to ICAO24 address %d\n",Icao_string,wanted);
+		
+		int result = ICAO.strICAO2int(Icao_string);
+		assertEquals(wanted,result);
+		System.out.printf("%s mapped to %d\n",Icao_string,result);
 		
 	}
 	
