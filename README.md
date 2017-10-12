@@ -55,6 +55,19 @@ Optional extra parameters where can be in any order after the database
 Release Notes
 =============
 
+### 12-OCT-2017
+Refactored reporting process, added String formatting templates, cut about 20 lines
+of code by doing this.  Updated outout looks like this:
+
+	Start: 2017-10-08 08:07:00.572 +0000 UTC
+	-----------------------------------------
+	  FASTEST:         [F8D460]     275 ft.  @   574 kts.       8 mi.
+	  SLOWEST:   N443R [A55739]     900 ft.  @    19 kts.    1.81 mi.
+	  HIGHEST:  N478EV [A5DF4A]   51075 ft.  @    95 kts.     482 mi.
+	   LOWEST:         [F8D460]     275 ft.  @   574 kts.       8 mi.
+	  CLOSEST:  N872WH [ABFFC0]    3200 ft.  @   178 kts.    0.22 mi.
+	 FURTHEST:  N202RR [A19AF8]    4600 ft.  @    70 kts.    8331 mi.
+
 ### 11-OCT-2017
 Beta 2 merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
 
