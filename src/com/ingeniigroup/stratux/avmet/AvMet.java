@@ -113,10 +113,7 @@ public class AvMet {
 						if(AvMet.verbose) System.out.println("Keep Dupe Records!");
 						AvMet.keepdupes = true;
 						break;
-					case "untaint":
-					case "untaintdb":
 					case "scrub":
-					case "scrubdb":
 						if(AvMet.verbose) System.out.println("Scrub DB!");
 						AvMet.scrubdb = true;
 						break;

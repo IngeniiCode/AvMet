@@ -79,6 +79,15 @@ Release Notes
 =============
 
 ### 12-OCT-2017
+Fixed bug in Emergency and Special Squawk code alerting to only return a unique
+special Squawk code per aircraft.  If more than one special interest code is 
+used, a single entry for each will be expressed.   EX:
+
+	**ALERT:**  N113MH [A03873] 5216    10050 ft.  @   215 kts.  DOD aircraft
+	**ALERT:**  N579PS [A7712E] 5273    16575 ft.  @   251 kts.  DOD aircraft
+	**ALERT:** SWA1518 [ABB972] 5276    23800 ft.  @   438 kts.  DOD aircraft
+
+### 12-OCT-2017
 Refactor of reporting process, added String formatting templates, cut about 20 
 lines of code by doing this.  Updated output looks like this:
 

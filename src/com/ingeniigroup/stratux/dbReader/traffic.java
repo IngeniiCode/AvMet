@@ -23,6 +23,7 @@ public class traffic {
 
 	private static StratuxDB DB;
 	private static boolean verbose;
+	private static boolean include_5100_5300_DOD;  // future feature to re-include 5100-5300 range as DOD aircraft
 	
 	/**
 	 * Constructor
@@ -245,15 +246,7 @@ public class traffic {
 
 			do {
 				if (traffic.DB.getResultNextRecord(result)) {
-				
-					int    Icao_addr = result.getInt("Icao_addr");
-					String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-					String Tail      = findTail(result.getString("Tail"),Icao_addr);
-					String Message   = Squawk.getMessage(result.getInt("Squawk"));
-
-					// there was something there.
-					System.out.printf("\tALERT: %s [%s] @ %d ft - %s\n",Tail,ICOA24,result.getInt("Alt"),Message);
-
+					reportSquawkEvent("EMERGENCY:",result);
 				}
 				
 			} while (!result.isAfterLast());  // be looping.. 
@@ -281,20 +274,25 @@ public class traffic {
 	 */
 	public boolean reportSpecialIdents(){
 		
-		String sql  = "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk IN(1276,1277)"      // Air defense and SAR missions
+		String sql  = "SELECT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk IN(1276,1277) GROUP BY Icao_addr"      // Air defense and SAR missions
 				+ " UNION "
-				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk IN(4000,5000,5400)"     // Military / NORAD 
+				+ "SELECT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk IN(4000,5000,5400) GROUP BY Icao_addr"     // Military / NORAD 
 				+ " UNION "
-				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 4400 AND 4500"  // Various Law Enforcement and USAF recon
+				+ "SELECT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 4400 AND 4500 GROUP BY Icao_addr"  // Various Law Enforcement and USAF recon
 				+ " UNION "
-				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 5100 AND 5300"  // DOD aircraft
+				+ "SELECT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 7501 AND 7577 GROUP BY Icao_addr"   // Special NORAD
 				+ " UNION "
-				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 7501 AND 7577"   // Special NORAD
+				+ "SELECT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 7601 AND 7607 GROUP BY Icao_addr"   // FAA Special Use
 				+ " UNION "
-				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 7601 AND 7607"   // FAA Special Use
-				+ " UNION "
-				+ "SELECT DISTINCT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 7701 AND 7707";   // FAA Special Use
+				+ "SELECT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 7701 AND 7707 GROUP BY Icao_addr";   // FAA Special Use
 		
+		// add special cases
+		if(traffic.include_5100_5300_DOD){
+			// Possible DOD aircraft
+			sql += " UNION SELECT Icao_addr,Tail,Squawk,Alt,speed FROM traffic WHERE Squawk BETWEEN 5100 AND 5300 GROUP BY Icao_addr";
+		}
+			
+		// execute
 		try {
 			// prepare, execute query and get resultSet
 			ResultSet result = traffic.DB.getResultSet(sql);
@@ -307,15 +305,7 @@ public class traffic {
 
 			do {
 				if (traffic.DB.getResultNextRecord(result)) {
-				
-					int    Icao_addr = result.getInt("Icao_addr");
-					String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-					String Tail      = findTail(result.getString("Tail"),Icao_addr);
-					String Message   = Squawk.getMessage(result.getInt("Squawk"));
-
-					// there was something there.
-					System.out.printf("\tALERT: %s [%s] %d kts @ %d ft. - %s\n",Tail,ICOA24,result.getInt("speed"),result.getInt("Alt"),Message);
-
+					reportSquawkEvent("ALERT:",result);
 				}
 				
 			} while (!result.isAfterLast());  // be looping.. 
@@ -384,6 +374,51 @@ public class traffic {
 		// there was something there.
 				
 		System.out.printf("\t%10s %7s [%6s] %7d ft.  @  %4d kts.  %6s mi.\n",type,Tail,ICOA24,Altitude,Speed,Distance);
+	}
+	
+	/**
+	 * Standardized Squawk Event Statistic String Formatter
+	 * 
+	 * @param type
+	 * @param result
+	 * @throws SQLException 
+	 */
+	private void reportSquawkEvent(String type,ResultSet result) throws SQLException {
+		
+		int    Icao_addr = result.getInt("Icao_addr");
+		int    Altitude  = result.getInt("Alt");
+		int    Speed     = result.getInt("speed");
+		int    SqCode    = result.getInt("Squawk"); 
+		String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
+		String Tail      = findTail(result.getString("Tail"),Icao_addr);
+		//String Distance  = (result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles"));
+		// there was something there.
+		
+		// special string formatting
+		String fmt_prefix    = "\u001b["; //NOI18N
+		String fmt_suffix    = "m";
+		String fmt_separator = ";";
+		String fmt_closer    = fmt_prefix + fmt_suffix;
+		String fmt_escape    = fmt_prefix;
+		String fmt_bold      = fmt_prefix + "1" + fmt_suffix;
+		String color_red     = "31";
+		String color_yellow  = "33";
+				
+		switch(type.toLowerCase()){
+			case "emergnecy":
+			case "emergency:":
+				fmt_escape = fmt_prefix + color_red + fmt_separator + "1" + fmt_suffix;   // red!
+				break;
+			default:
+				fmt_escape = fmt_prefix + color_yellow + fmt_separator + "1" + fmt_suffix;     // bright yellow
+		}
+		
+		String Type       = String.format("%s%s%s",fmt_bold,type,fmt_closer);
+		String Message    = String.format("%s%s%s",fmt_escape,Squawk.getMessage(SqCode),fmt_closer);
+		String SquawkCode = String.format("%s%04d%s",fmt_escape,SqCode,fmt_closer);
+		
+		//System.out.printf("\t%10s %7s [%6s] %7d ft.  @  %4d kts.  %6s mi.\n",type,Tail,ICOA24,Altitude,Speed,Distance);		
+		System.out.printf("\t**%10s %7s [%6s] %s  %7d ft.  @  %4d kts.  %s\n",Type,Tail,ICOA24,SquawkCode,Altitude,Speed,Message);
 	}
 	
 	/**
