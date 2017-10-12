@@ -43,20 +43,23 @@ Optional extra parameters where can be in any order after the database
 
  * condense -  Traverse the <traffic> table, and remove events have identical 
                Altitude, Speed within a specific contact's dataset, this can 
-               condense the database by 40% to 75% 
+               condense the database by 40% to 75%   (11-OCT-2017 disabled due to bug)
 
- * usetemp = When extracting a database from SQL, write to a local temp file.  This
+ * usetemp - When extracting a database from SQL, write to a local temp file.  This
              is most useful when the source database is compressed and on a 
              remote or temporary device:  output file will be  ./sqlite-stratux-temp
+
+ * verbose - Report more detailed scrubbing activity
 
 
 Release Notes
 =============
 
 ### 11-OCT-2017
-First Best merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
+Beta 2 merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
 
-
+###  9-OCT-2017
+First Beta merged to master.  
 
 Development Notes
 =================
@@ -74,10 +77,10 @@ complex to handle.
 ###  Airbus A319 flying at 119,000 ft. 
 American Airlines A319 that was showing a flight altitude for 119,000 ft. (well
 beyond the edge of space, and obviously bogus).  Inspection of the database showed a
-single entry was involved and a simple delta detection alogrythim was all needed to
+single entry was involved and a simple delta detection algorythim was all needed to
 detect and remove when encountered.  
 
-### 8300 Mile Range
+### 8300 Mile Range Issue
 The current challenge is handling cases where more than a single record is in play
 and the simplistic delta vector is insufficient to mitigate reporting errors. 
 For example, in a recent test, the aircraft position data caused a Distance 
@@ -94,8 +97,22 @@ calculation of over 8300 miles.  The expected maximum detection range is around
 	FURTHEST: N202RR [A19AF8] 8331 mi @ 4600 ft
 
 
+### Conflated Contact Events
+Several times within the database, a contact is represented by a small batch of
+contact records, all with an identical timestamp.  In a lot of these cases there
+are other differences in the records (only distance has changed in every case, I
+suspect that could be minor location drifting of the receiver's own GPS device, 
+making the distance calculation drift as well. 
 
+Example:
 
+	Icao_addr | Reg    | Tail   | Alt   | Speed | Distance         | Timestamp
+	10870602  | N478EV | N478EV | 51075 | 95    | 776868.38301342  | 2017-10-08 16:30:30.067041328 +0000 UTC
+	10870602  | N478EV | N478EV | 51075 | 95    | 776868.38301342  | 2017-10-08 16:30:30.067041328 +0000 UTC
+	10870602  | N478EV | N478EV | 51075 | 95    | 776868.38301342  | 2017-10-08 16:30:30.067041328 +0000 UTC
+	10870602  | N478EV | N478EV | 51075 | 95    | 776868.594938619 | 2017-10-08 16:30:30.067041328 +0000 UTC
+	10870602  | N478EV | N478EV | 51075 | 95    | 776868.806863807 | 2017-10-08 16:30:30.067041328 +0000 UTC
+	10870602  | N478EV | N478EV | 51075 | 95    | 776869.018789002 | 2017-10-08 16:30:30.067041328 +0000 UTC
  
+*NOTE: Removing the dupes seemed to resolve the <8300 Mile Range Issue> as a side-effect
 
- 
