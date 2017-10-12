@@ -14,6 +14,8 @@ software@ingeniigroup.com
 
 Announcements!
 ==============
+
+
 ### 11-OCT-2017
 First Beta merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
  
@@ -27,8 +29,14 @@ ex:
   *   java -jar dist/AvMet.jar  <path_to_db>
 
 ### Required parameter
-Must declare the path (must be resolvable from current path) to input data file; 
-either an SQLite3 db file, or a Gzip compressed SQLite3 db file.
+
+* **<path_do_db>** - Location of a valid STRATUX SQLite database,  
+Gzip compressed SQLite3 db file 
+
+* **nodb** - no db file.
+
+   Perform operations that do not require an import database. Ex:  mysql scheam or 
+data loader file operations such as __export_mysql_schema__  or __export_squawk_mysql__
 
 ### Optional parameters
 Optional extra parameters where can be in any order after the database
@@ -74,9 +82,51 @@ AvMet, add the __keepdb__ option
    Report more details on processing activity.  Warning, it can be VERY verbose 
 when processing very dirty `traffic` tables
 
+ * **usetemp** - write data to a local temp file.
+
+   When extracting a database from SQL, write to a local temp file.  This is most 
+useful when the source database is compressed and on a remote or temporary device:  output file will be  ./sqlite-stratux-temp
+
+ * **verbose** - announce activity details
+
+   Report more detailed scrubbing activity
+
+ * **export_mysql** - Export data in MySQL DB Load format.
+
+ * **export_mysql_schema** - Generate a Database Schema file 
+
+   Create a MySQL Schema file with necessary CREATE TABLE commands.  This also includes the 
+squawk table loading data.  Default output file name is __./stratix.mysql.schema.sql__
+
+ * **export_squawk_mysql** - Generate a database Insert command file for Squawk Codes
+
+   Create a MySQL Schema file with necessary CREATE TABLE command for the `squawk` table.  This also includes the 
+squawk table loading data.  Default output file name is __./stratix.mysql.load.squawk.sql__
+
+   Generate a MySQL database schema file, that will create the required tables if they do not
+exist, and load the squawk table with records (this will __overwrite existing squawk records__)
+
+ * **export_xlsx** - Export data in  XLSX format.
+
 
 Release Notes
 =============
+
+### 18-OCT-2017
+New options to allow using tool to simply export MySQL or other database configurations:
+
+**nodb** - run without an input database
+
+**export_squawk_mysql** - generate a Squawk database (in JSON) or bulk SQL inserts
+
+
+### 16-OCT-2017
+Internally refactoring some file IO methods
+Updated the JavaDoc blocks where sparse
+
+### 15-OCT-2017
+Adding feature to export data into a MySQL import / load file.
+
 
 ### 12-OCT-2017
 Fixed bug in Emergency and Special Squawk code alerting to only return a unique
