@@ -33,40 +33,54 @@ either an SQLite3 db file, or a Gzip compressed SQLite3 db file.
 ### Optional parameters
 Optional extra parameters where can be in any order after the database
 
-* keep - do not remove extracted db.
+* **keep** - do not remove extracted db
 
    Leave the uncompressed DB (other artifact files are still cleaned up). If the 
 original file was not compressed, database is  not removed so flag is not required.
  
-* scrub - cleanup *traffic* table before reporting
+* **scrub** - cleanup `traffic` table before reporting
 
-   Traverse the __traffic__ table, and remove events that do not fit the expected 
+   Traverse the `traffic` table, and remove events that do not fit the expected 
 progression for a specific contact.  This removes transient bad that has been seen 
 in majority live database samples
 
-* condense - remove similar events to save space
+   Part of the __scrub__ process will remove event records within an airframe's
+dataset that have identical `Timestamp` values.  If you with to disable this 
+feature of scrub, add the __keepdupes__ flag to parameter list
 
-   Traverse the __traffic__ table, and remove events have identical Altitude, 
+* **keepdupes** - do not remove duplicate `Timestamp` events
+
+   Part of the __scrub__ process will remove duplicate `Timestamp` records within 
+an airframe's dataset.  This flag has no effect unless also using the __scrub__
+option
+
+* **condense** - remove similar events to save space
+
+   Traverse the `traffic` table, and remove events have identical Altitude, 
 Speed within a specific contact's dataset, this can condense the database by 
 40% to 75%   (11-OCT-2017 disabled due to bug)
 
-* usetemp - use a local scratch/temp db file
+* **usetemp** - use a local scratch/temp db file
 
    When extracting a database from SQL, write to a local temp file.  This is most 
 useful when the source database is compressed and on a  remote or temporary device:  
-output file will be  **./sqlite-stratux-temp**
+output file will be  `./sqlite-stratux-temp`
 
- * verbose - increase progress reporting 
+   If you wish to keep the temporary database for further analysis after running
+AvMet, add the __keepdb__ option
+
+ * **verbose** - increase progress reporting 
 
    Report more details on processing activity.  Warning, it can be VERY verbose 
-when processing very dirty __traffic__ tables
+when processing very dirty `traffic` tables
 
 
 Release Notes
 =============
 
 ### 12-OCT-2017
-Refactor of reporting process, added String formatting templates, cut about 20 lines of code by doing this.  Updated output looks like this:
+Refactor of reporting process, added String formatting templates, cut about 20 
+lines of code by doing this.  Updated output looks like this:
 
 	Start: 2017-10-08 08:07:00.572 +0000 UTC
 	-----------------------------------------
@@ -78,7 +92,10 @@ Refactor of reporting process, added String formatting templates, cut about 20 l
 	 FURTHEST:  N202RR [A19AF8]    4600 ft.  @    70 kts.    8331 mi.
 
 ### 11-OCT-2017  
-Bug in the Squawk alerting code is expressing too much data, showing every event record for a contact using a notable Squawk code (so far the hits in test datasets I have available are all DOD. Also need to express the actual Squawk code flagged the event for reporting. (ToDo)
+Bug in the Squawk alerting code is expressing too much data, showing every event 
+record for a contact using a notable Squawk code (so far the hits in test datasets 
+I have available are all DOD. Also need to express the actual Squawk code flagged 
+the event for reporting. (ToDo)
 
 	[ ... ]
 	ALERT: N579PS [A7712E] 219 kts @ 19050 ft. - DOD aircraft
@@ -92,7 +109,7 @@ Bug in the Squawk alerting code is expressing too much data, showing every event
 	[ ... ]
 
 ### 11-OCT-2017
-Beta 2 merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
+Beta 2 merged to master for user evaluations!!  Welcome to Aviation Metrics (**AvMet**).
 
 ###  9-OCT-2017
 First Beta merged to master.  
@@ -103,15 +120,25 @@ Development Notes
 ## Data Scrubbing
 
 **Note: 11-OCT-2017**
-Scrubbing processor has a bug that prevents it from properly handling more than a single out of range error. 
+Scrubbing processor has a bug that prevents it from properly handling more than a 
+single out of range error. 
 
-During analysis of example datasets, anomalous entries were detected in nearly each of the databases.  Some of these were very obvious to detect, others were much more complex to handle.
+During analysis of example datasets, anomalous entries were detected in nearly each 
+of the databases.  Some of these were very obvious to detect, others were much 
+more complex to handle.
 
 ###  Airbus A319 flying at 119,000 ft. 
-American Airlines A319 that was showing a flight altitude for 119,000 ft. (well beyond the edge of space, and obviously bogus).  Inspection of the database showed a single entry was involved and a simple delta detection algorythim was all needed to detect and remove when encountered.  
+American Airlines A319 that was showing a flight altitude for 119,000 ft. (well 
+beyond the edge of space, and obviously bogus).  Inspection of the database showed 
+a single entry was involved and a simple delta detection algorythim was all needed 
+to detect and remove when encountered.  
 
 ### 8300 Mile Range Issue
-The current challenge is handling cases where more than a single record is in play and the simplistic delta vector is insufficient to mitigate reporting errors. For example, in a recent test, the aircraft position data caused a Distance calculation of over 8300 miles.  The expected maximum detection range is around 60 miles for a fixed ground unit (which I am developing with).
+The current challenge is handling cases where more than a single record is in play 
+and the simplistic delta vector is insufficient to mitigate reporting errors. For 
+example, in a recent test, the aircraft position data caused a Distance calculation 
+of over 8300 miles.  The expected maximum detection range is around 60 miles for a 
+fixed ground unit (which I am developing with).
 
 	Start: 2017-10-08 08:07:00.572 +0000 UTC
 	-----------------------------------------
@@ -124,7 +151,11 @@ The current challenge is handling cases where more than a single record is in pl
 
 
 ### Conflated Contact Events
-Several times within the database, a contact is represented by a small batch of contact records, all with an identical timestamp.  In a lot of these cases there are other differences in the records (only distance has changed in every case, I suspect that could be minor location drifting of the receiver's own GPS device, making the distance calculation drift as well. 
+Several times within the database, a contact is represented by a small batch of 
+contact records, all with an identical timestamp.  In a lot of these cases there 
+are other differences in the records (only distance has changed in every case, 
+I suspect that could be minor location drifting of the receiver's own GPS device, 
+making the distance calculation drift as well. 
 
 Example:
 
@@ -136,5 +167,5 @@ Example:
 	10870602  | N478EV | N478EV | 51075 | 95    | 776868.806863807 | 2017-10-08 16:30:30.067041328 +0000 UTC
 	10870602  | N478EV | N478EV | 51075 | 95    | 776869.018789002 | 2017-10-08 16:30:30.067041328 +0000 UTC
  
-*NOTE: Removing the dupes seemed to resolve the <8300 Mile Range Issue> as a side-effect
+*NOTE: Removing the dupes seemed to resolve the *8300 Mile Range Issue* as a side-effect
 
