@@ -1,7 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * SQLite STRATUX <traffic> table repair utility
+ * 
+ * Centralized file testing methods
+ * 
+ * @since 12 October 2017
+ * @author David DeMartini
+ * @serial ig0003-am
+ * @version 0.0.1c
+ * @see http://www.ingeniigroup.com/stratux/avmet
+ * @repo https://github.com/IngeniiCode/AvMet
  */
 package com.ingeniigroup.stratux.Repair;
 

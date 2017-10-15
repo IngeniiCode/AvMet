@@ -9,18 +9,17 @@
  * @since 6 October 2017
  * @author David DeMartini
  * @serial ig0003-am
- * @version 0.0.1
+ * @version 0.0.1c
  * @see http://www.ingeniigroup.com/stratux/avmet
  * @repo https://github.com/IngeniiCode/AvMet
- * 
  */
 package com.ingeniigroup.stratux.dbConnect;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileNotFoundException;
 import java.util.zip.GZIPInputStream;
+
+import com.ingeniigroup.stratux.Tools.FileTest;
 
 /**
  * @author David DeMartini - Ingenii Group LLC
@@ -44,6 +43,7 @@ public class Gunzip {
 		return unzipDB(filename,false);  // call the unified method
 	}	
 	public String unzipDB(String filename,boolean usetemp){
+		
 		this.filename = filename; // set back into class
 		
 		try {
@@ -96,32 +96,37 @@ public class Gunzip {
 	 *  database files hit that point with a buffer size of 4096  
 	 *
 	 */
-	private void getDBFile(String filename, boolean usetemp){
+	private void getDBFile(String filename, boolean usetemp) {
 			
-		int length      = 0;
-		//byte[] iobuffer = new byte[1024]; // starting buffer size
+		int length = 0;
 		byte[] iobuffer = new byte[4096];   // bumping 4x decreased time by 25% 8x and 16x had not benefit - dad
 		
-		boolean legit = test4file(filename);
+		try {
+			if(FileTest.test4file(filename)){
 
-		if(legit){
-			
-			// legit file -- it is expected that the input file is currently
-			// gzipped so try to unzip it first.
-			
-			try {
+				// legit file -- it is expected that the input file is currently
+				// gzipped so try to unzip it first.
+				this.dbFname = filename;
 		
 				// process the filename to see if it has a .gz extenstion
-				if(isZipped(filename)){ 
-					
-					// Check for 'usetemp' flag
+				if(FileTest.looksZipped(filename)){ 	
+					this.wasZipped = true;
+					this.dbFname = FileTest.stripExtention(filename);
+				}
+								
+				// if file looks like it was zipped.. unzip!
+				if(this.wasZipped){
+
+					// Check for 'usetemp' flag -- this only comes into play
+					// if unzipping is being performed and a temp file is defined
 					if(usetemp){
 						// change the final output target of gzip expansion
 						this.dbFname = "./sqlite-stratux-temp";
 					}
-				
+					
 					// announce file use
 					System.out.printf("Extracting ( %s ) -->  [ %s ]\n",this.filename,this.dbFname);
+				
 					// Gzip IOs
 					GZIPInputStream gzipInStream   = new GZIPInputStream(new FileInputStream(filename));
 					FileOutputStream gzipOutStream = new FileOutputStream(this.dbFname);
@@ -136,70 +141,13 @@ public class Gunzip {
 					gzipInStream.close();
 					gzipOutStream.close();
 				}
-				
-			}
-			catch (Exception ex){
-				System.err.printf("Unable to process [%s] Error: %s\n", filename, ex.getMessage());
-				System.exit(9);
 			}
 		}
-	}
-	
-	/*
-	 *  check file extention to see if it ends in .gz
-	 */
-	private boolean isZipped(String filename){
-		
-		// extention storage
-		String extension = "";
-		this.dbFname     = filename;  // set the filename, assuming it's NOT a gzip
-		
-		// get the extension
-		int i = filename.lastIndexOf('.');
-		int p = Math.max(filename.lastIndexOf('/'), filename.lastIndexOf('\\'));
-		// iterate
-		if (i > p) {
-			extension = filename.substring(i+1);
-		}
-		
-		// perform simple case insenstive extention testing -- everything should
-		// be  .gz, but what if it's a case-agnostic filesystem like Windows, or
-		// certain MacOS FS's..   is this a completely robust solution... NO, but it 
-		// does suffice for the task at hand.  <Perfection is the enemy of Good>.
-		if(extension.equalsIgnoreCase("gz")){
-			this.wasZipped = true;
-			this.dbFname = filename.substring(0,filename.lastIndexOf("."));
-			return true;
-		}
-		
-		// not a gzipped file so return the unadultrated filename
-		this.dbFname = filename;
-		return false;
-	}
-	
-	/*  
-	 * handle locating the file... kick back an error if it's not found
-	 */
-	private boolean test4file(String filename){
-		
-		try {
-			// declare file handle
-			File dbfile = new File(filename);
-		
-			// check to see if file exists, throw exception if it does not
-			if(dbfile.exists() && !dbfile.isDirectory()) { 
-				// return the file handle
-				return true;
-			}
-			else {
-				throw new FileNotFoundException(filename);
-			}
-		} 
 		catch (Exception ex){
-			System.err.printf("DB File Open Error: %s\n", ex.getMessage());
+			System.err.printf("Unable to process [%s] Error: %s\n", filename, ex.getMessage());
+			System.exit(9);
 		}
-		
-		return false;  // empty handle
+
 	}
-	
+		
 }

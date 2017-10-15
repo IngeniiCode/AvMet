@@ -96,4 +96,31 @@ public class SquawkTest {
 		assertEquals(expResult,result);
 	}
 	
+	@Test
+	public void test_dec2oct_50() {
+		int dec = 50;
+		int expResult = 62;
+		System.out.printf("%d => %s\n",dec,expResult);
+		int result = Squawk.dec2oct(dec);
+		assertEquals(expResult,result);
+	}
+	
+	@Test
+	public void test_dec2oct_4095() {
+		int dec = 4095;
+		int expResult = 7777;
+		System.out.printf("%d => %s\n",dec,expResult);
+		int result = Squawk.dec2oct(dec);
+		assertEquals(expResult,result);
+	}
+	
+	@Test
+	public void test_oct2dec_7777(){
+		int oct = 7777;
+		int expResult = 4095;
+		System.out.printf("%d => %s\n",oct,expResult);
+		int result = Squawk.oct2dec(oct);
+		assertEquals(expResult,result);
+	}
+	
 }
