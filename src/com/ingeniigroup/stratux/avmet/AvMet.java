@@ -21,7 +21,7 @@
  * @since 6 October 2017
  * @author David DeMartini
  * @serial ig0003-am
- * @version 0.0.1
+ * @version 0.0.1c
  * @see http://www.ingeniigroup.com/stratux/avmet
  * @repo https://github.com/IngeniiCode/AvMet
  * 
@@ -31,7 +31,10 @@ package com.ingeniigroup.stratux.AvMet;
 
 import com.ingeniigroup.stratux.dbConnect.*;
 import com.ingeniigroup.stratux.dbReader.*;
+import com.ingeniigroup.stratux.Export.DB.*;
+import com.ingeniigroup.stratux.Export.File.*;
 import com.ingeniigroup.stratux.Repair.FixTrafficTable;
+import java.io.IOException;
 
 
 /**
@@ -39,17 +42,27 @@ import com.ingeniigroup.stratux.Repair.FixTrafficTable;
  */
 public class AvMet {
 	
-	private static boolean   waszipped;  // original file was gzipped
-	private static boolean   rezip;      // re-zip the file
-	private static boolean   keepdb;     // keep original DB 
-	private static boolean   scrubdb;    // run a detainting process on the DB
-	private static boolean   condense;   // remove adjacent similar records in database
-	private static boolean   usetemp;    // write the extracted database to a temp file.
-	private static boolean   verbose;    // show more information during execution
-	private static boolean   keepdupes;  // do not run the duplicate timestamp scrubber
-	private static String    sourcefile; // origin database file
+	private static boolean   waszipped;           // original file was gzipped
+	private static boolean   rezip;               // re-zip the file
+	private static boolean   no_database;         // run tool without a source database
+	private static boolean   keepdb;              // keep original DB 
+	private static boolean   scrubdb;             // run a detainting process on the DB
+	private static boolean   condense;            // remove adjacent similar records in database
+	private static boolean   usetemp;             // write the extracted database to a temp file.
+	private static boolean   verbose;             // show more information during execution
+	private static boolean   keepdupes;           // do not run the duplicate timestamp scrubber
+	private static boolean   export_useprefix;    // flag tells export processes to use a local timestamp in file prefixes
+	private static boolean   export_mysql;        // export data in MySQL DB Load format
+	private static boolean   export_mysql_schema; // export the database schema and basic data.
+	private static boolean   export_squawk_mysql; // export Squawk insert commands and DB config.
+	private static boolean   export_xlsx;         // export data in  XLSX format
+
+	private static String    sourcefile;          // origin database file
 	private static String    dbFname;
-	private static StratuxDB DB;
+	
+	private static StratuxDB DB;                  // obejct for SQLite STRATUX db
+	private static MySQL     MySQL;               // object for MYSQL export
+	private static XLSX      XLSX;                // object for XSLS export
 	
 	/**
 	 * @param args the command line arguments
@@ -59,24 +72,35 @@ public class AvMet {
 		// perform initializations
 		init(args);
 
-		// set DB connection
-		setDBconn();
+		// if there is a database to rad, begin processing
+		if(!AvMet.no_database){
+			
+			// Begin processing the input file
+			setFname();
 		
-		// check for cleaning and condensing operations
-		if(AvMet.condense){
-			// condense also performs the scrub operation
-			FixTrafficTable.Condense(AvMet.DB);
+			// set DB connection
+			setDBconn();
+
+			// check for cleaning and condensing operations
+			if(AvMet.condense){
+				// condense also performs the scrub operation
+				FixTrafficTable.Condense(AvMet.DB);
+			}
+			else if (AvMet.scrubdb){
+				// performs only the scrubbing operation
+				FixTrafficTable.Fix(AvMet.DB);
+			}
+
+			// report the metrics
+			reportMetrics();
+			
+			// cleanup
+			cleanup();
+			
 		}
-		else if (AvMet.scrubdb){
-			// performs only the scrubbing operation
-			FixTrafficTable.Fix(AvMet.DB);
-		}
 		
-		// report the metrics
-		reportMetrics();
-		
-		// cleanup
-		cleanup();
+		// create export files if requested  (** this might need to be integrated into the scrubbing processes) 
+		exportData();
 		
 	}
 	
@@ -93,11 +117,20 @@ public class AvMet {
 	
 		if(args.length < 1){
 			// No database file defined.. this is a fatal event
-			throw new Exception("Must declare a database file to open as first parameter");
+			throw new Exception("Must declare a database option (nodb | <db_file_path>) as first parameter");
 		}
 		
-		// store the sourcefile
-		AvMet.sourcefile = args[0];
+		// process the database options fl
+		switch(args[0].toLowerCase().trim()){
+			case "nodb":
+				AvMet.no_database = true;
+				break;
+			case "":
+				throw new Exception("Database option was empty/null");
+			default:
+				// store the sourcefile
+				AvMet.sourcefile = args[0];
+		}
 		
 		// set keep flag if there is an arg.
 		if(args.length>1){
@@ -130,18 +163,30 @@ public class AvMet {
 					case "verbose":
 						AvMet.verbose = true;
 						if(AvMet.verbose) System.out.println("Be Verbose!");
+						break;	
+						
+					/* Export Options */
+					case "useprefix":
+						AvMet.export_useprefix = true;
+						break;
+					case "export_mysql_schema":
+						AvMet.export_mysql_schema = true;
+						break;
+					case "export_mysql":
+						AvMet.export_mysql = true;
+						break;
+					case "export_xlsx":
+						AvMet.export_xlsx = true;
+						break;
+					case "export_squawk_mysql":
+						AvMet.export_squawk_mysql = true;
 						break;
 					default:
 						// no options selected.. 
 				}
 			}
-		}
-		
-		// Begin processing the input file
-		setFname();
-		
+		}		
 	}
-	
 	
 	/**
 	 *   using supplied parameter, process filename, unzip if necessary
@@ -155,7 +200,7 @@ public class AvMet {
 		AvMet.waszipped = GZ.wasZipped();    // set flag to cleanup after execution
 		
 		if(AvMet.dbFname.isEmpty()){
-			System.err.printf("ERROR: Unable to located a suitable DB file; unable to use (%s)\n",AvMet.sourcefile);
+			System.err.printf("ERROR: Unable to locate a suitable DB file; unable to use (%s)\n",AvMet.sourcefile);
 			System.exit(13);
 		}
 		else {
@@ -186,6 +231,7 @@ public class AvMet {
 	 */
 	private static void cleanup(){
 
+		// close connections
 		AvMet.DB.Disonnect();  // make call to disconnect.
 		
 		// call the db connector's cleanup function, but override the waszipped
@@ -242,4 +288,34 @@ public class AvMet {
 		
 
 	}
+	
+	/**
+	 * Export file processing
+	 */
+	private static void exportData() throws IOException{
+		
+		if(AvMet.export_mysql_schema){
+			AvMet.MySQL = new MySQL(AvMet.export_useprefix);
+			AvMet.MySQL.ExportSchema();
+		}
+		
+		if(AvMet.export_mysql){
+			AvMet.MySQL = new MySQL(AvMet.export_useprefix);
+			AvMet.MySQL.ExportData();
+		}
+		
+		if(AvMet.export_xlsx){
+			AvMet.XLSX = new XLSX(AvMet.export_useprefix);
+			AvMet.XLSX.ExportData();
+		}
+		
+	}
 }
+
+/**  ToDo!!  
+ * 
+ *  * add config file capability, look in ~/.avmet.conf  and  ./.avment.conf
+ *    for default program configurations such as output database files, flags
+ *    re-zip options etc. etc.    
+ * 
+ */
