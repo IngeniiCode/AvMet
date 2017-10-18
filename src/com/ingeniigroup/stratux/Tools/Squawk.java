@@ -7,7 +7,7 @@
  * @since 6 October 2017
  * @author David DeMartini
  * @serial ig0003-am
- * @version 0.0.1c
+ * @version 0.0.2
  * @see http://www.ingeniigroup.com/stratux/avmet
  * @repo https://github.com/IngeniiCode/AvMet
  */
@@ -32,7 +32,7 @@ public class Squawk {
         codes = new HashMap<Integer,String>();
    
 		/* unremarkable codes */
-		codes.put(0000, "ATTRC En Route Safety and Operations Support");
+		codes.put(0000, "ATTRC En Route Safety and Operations Support");  // this is in fact defined in the 7110.66E spec!
 		codes.put(0021, "VFR below 5000ft.");
 		codes.put(0022, "VFR above 5000ft.");
 		codes.put(0033, "Parachute Drop Operations");
@@ -209,7 +209,7 @@ public class Squawk {
 	}
 	
 	/**
-	 * Convert a decimal value to the correct numberics 
+	 * Convert a decimal value to the correct numerics 
 	 * for a Squawk code octal.
 	 * 
 	 * @param octint
@@ -222,7 +222,7 @@ public class Squawk {
 		int i        = 1;
 		int j        = i;
 		int quot     = decint;
-		String temp  = "";
+		String temp  = "0";
 		
 		// disassemble
 		while(quot != 0) {

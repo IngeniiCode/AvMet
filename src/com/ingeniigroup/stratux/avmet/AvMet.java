@@ -21,7 +21,7 @@
  * @since 6 October 2017
  * @author David DeMartini
  * @serial ig0003-am
- * @version 0.0.1c
+ * @version 0.0.2
  * @see http://www.ingeniigroup.com/stratux/avmet
  * @repo https://github.com/IngeniiCode/AvMet
  * 
@@ -55,6 +55,7 @@ public class AvMet {
 	private static boolean   export_mysql;        // export data in MySQL DB Load format
 	private static boolean   export_mysql_schema; // export the database schema and basic data.
 	private static boolean   export_squawk_mysql; // export Squawk insert commands and DB config.
+	private static boolean   export_squawk_json;  // export Squawk Data as JSON.
 	private static boolean   export_xlsx;         // export data in  XLSX format
 
 	private static String    sourcefile;          // origin database file
@@ -62,6 +63,7 @@ public class AvMet {
 	
 	private static StratuxDB DB;                  // obejct for SQLite STRATUX db
 	private static MySQL     MySQL;               // object for MYSQL export
+	private static JSON      JSON;                // object for JSON export
 	private static XLSX      XLSX;                // object for XSLS export
 	
 	/**
@@ -113,11 +115,12 @@ public class AvMet {
 	/**
 	 * Init  do some prep work before running 
 	 */
-	private static void init(String[] args) throws Exception{
+	private static void init(String[] args) throws Exception {
 	
 		if(args.length < 1){
 			// No database file defined.. this is a fatal event
-			throw new Exception("Must declare a database option (nodb | <db_file_path>) as first parameter");
+			System.out.println("Must declare a database option (nodb | <db_file_path>) as first parameter");
+			throw new Exception("Missing required parameter");
 		}
 		
 		// process the database options fl
@@ -126,7 +129,7 @@ public class AvMet {
 				AvMet.no_database = true;
 				break;
 			case "":
-				throw new Exception("Database option was empty/null");
+				throw new Exception("Database option was empty/null");  // no need for a break; here
 			default:
 				// store the sourcefile
 				AvMet.sourcefile = args[0];
@@ -181,11 +184,22 @@ public class AvMet {
 					case "export_squawk_mysql":
 						AvMet.export_squawk_mysql = true;
 						break;
+					case "export_squawk_json":
+						AvMet.export_squawk_json = true;
+						break;
 					default:
+						System.out.println("Invalid option " + args[i]);
 						// no options selected.. 
 				}
 			}
-		}		
+		}
+		else {
+			if(AvMet.no_database){
+				// no database defiend by no other options selected, this a non-op exception
+				System.out.println("Option 'nodb' has no standalone function -- Program exiting in error.");
+				throw new Exception("'nodb' parameter error");
+			}
+		}
 	}
 	
 	/**
@@ -195,7 +209,7 @@ public class AvMet {
 		
 		// init and execute
 		Gunzip GZ = new Gunzip();
-		//System.out.printf("Was Zipped = %s\n", GZ.wasZipped());
+		
 		AvMet.dbFname   = GZ.unzipDB(AvMet.sourcefile,AvMet.usetemp); 
 		AvMet.waszipped = GZ.wasZipped();    // set flag to cleanup after execution
 		
@@ -292,11 +306,21 @@ public class AvMet {
 	/**
 	 * Export file processing
 	 */
-	private static void exportData() throws IOException{
+	private static void exportData() throws IOException, Exception {
 		
 		if(AvMet.export_mysql_schema){
 			AvMet.MySQL = new MySQL(AvMet.export_useprefix);
 			AvMet.MySQL.ExportSchema();
+		}
+		
+		if(AvMet.export_squawk_mysql){
+			AvMet.MySQL = new MySQL(AvMet.export_useprefix);
+			AvMet.MySQL.ExportSquawkData();
+		}
+		
+		if(AvMet.export_squawk_json){
+			AvMet.JSON = new JSON(AvMet.export_useprefix);
+			AvMet.JSON.ExportSquawkData();
 		}
 		
 		if(AvMet.export_mysql){

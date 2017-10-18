@@ -7,15 +7,12 @@
  * @since 15 October 2017
  * @author David DeMartini
  * @serial ig0003-am
- * @version 0.0.1c
+ * @version 0.0.2
  * @see http://www.ingeniigroup.com/stratux/avmet
  * @repo https://github.com/IngeniiCode/AvMet
  */
 package com.ingeniigroup.stratux.Export.File;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.ArrayList;
@@ -140,7 +137,7 @@ public class MySQL {
 			dbFile.write(compileSchemas());
 			
 			// creats load commands for squawk codes
-			dbFile.write(generate_squawk_code_inserts());
+			dbFile.write(squawk_code_mysql_inserts());
 			
 			// Close file
 			dbFile.closeOutFile();  // if you don't call close, file will be truncated or empty
@@ -153,6 +150,71 @@ public class MySQL {
 		
 		return null;  // something went wrong to reach here.. no output file written
 	}
+
+	/**
+	 * Export Squawk SQL Record Inserts
+	 * 
+	 * Generates all of the required CREATE TABLE commands and pre-loads any 
+	 * predominantly static data tables.
+	 * 
+	 * @param outfile - can define the outfile at time of export or use 
+	 *        current setting
+	 * 
+	 * @return file that data was exported to. 
+	 */
+	public String ExportSquawkData() throws FileNotFoundException, IOException, Exception { return ExportSquawkData(""); }
+	public String ExportSquawkData(String outfile_prefix ) throws FileNotFoundException, IOException, Exception {
+		
+		// determine output filename
+		String output_file = String.format("%s.squawk.sql",(!outfile_prefix.isEmpty()) ? outfile_prefix : this.outfile_prefix);
+		System.out.println("Squawk Data Outfile: " + output_file);	
+				
+		// Write to file.
+		try {
+			// Open the file
+			FileIO dbFile = new FileIO();
+			dbFile.openOutFile(output_file);
+			
+			// creats load commands for squawk codes
+			dbFile.write(squawk_code_mysql_inserts());
+			
+			// Close file
+			dbFile.closeOutFile();  // if you don't call close, file will be truncated or empty
+					
+			return output_file;
+		}
+		catch (Exception ex) {
+			System.err.println("Export Error: " + ex.getMessage());
+		}
+		
+		return null;  // something went wrong to reach here.. no output file written
+	}	
+	
+	/**
+	 * Create squawk codes for  squawk_codes table.
+	 * 
+	 * Generates required commands to load the squawk_codes table
+	 */
+	private String squawk_code_mysql_inserts(){
+		
+		List<String> squawk_codes = new ArrayList<String>();
+		int squawk_dec_max = 4095;  // this is the max squawk code 
+		
+		// Assemble the list of things
+		for(int i=0; i<=squawk_dec_max; i++){
+			int code       = Squawk.dec2oct(i);
+			String message = Squawk.getMessage(code);
+			squawk_codes.add(String.format("(%04d,'%s')",code,message));
+		}
+		
+		// Join and return!
+		String squawk_data = String.format("INSERT INTO squawk_codes (code,message) VALUES %s ON DUPLICATE KEY UPDATE code=VALUES(code), message=VALUES(message);\n",String.join(","+NL,squawk_codes));
+		
+		// Add to the schemas list.
+		return NL + "## -----   Squawk Code Loading ---- " + NL + squawk_data + NL;
+		
+	}
+
 	
 	/**
 	 *  Create icao_contact Schema 
@@ -215,31 +277,7 @@ public class MySQL {
 			+ "  INDEX `interest` (`interest`)" + NL
 			+ ")");
 	}
-	
-	/**
-	 * Create squawk codes for  squawk_codes table.
-	 * 
-	 * Generates required commands to load the squawk_codes table
-	 */
-	private String generate_squawk_code_inserts(){
-		
-		List<String> squawk_codes = new ArrayList<String>();
-		int squawk_dec_max = 4095;  // this is the max squawk code 
-		
-		// Assemble the list of things
-		for(int i=1; i<=squawk_dec_max; i++){
-			int code       = Squawk.dec2oct(i);
-			String message = Squawk.getMessage(code);
-			squawk_codes.add(String.format("(%04d,'%s')",code,message));
-		}
-		
-		// Join and return!
-		String squawk_data = String.format("INSERT INTO squawk_codes (code,message) VALUES %s ON DUPLICATE KEY UPDATE code=VALUES(code), message=VALUES(message);\n",String.join(","+NL,squawk_codes));
-		
-		// Add to the schemas list.
-		return NL + "## -----   Squawk Code Loading ---- " + NL + squawk_data + NL;
-		
-	}
+
 	
 	/**
 	 * Create tracking_log Schema 

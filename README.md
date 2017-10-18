@@ -15,10 +15,8 @@ software@ingeniigroup.com
 Announcements!
 ==============
 
-
-### 11-OCT-2017
-First Beta merged to master for user evaluations!!  Welcome to Aviation Metrics (AvMet).
- 
+### 19-OCT-2017
+Check the release notes for latest new features and caveats!! 
 
 Running AvMet
 =============
@@ -101,7 +99,14 @@ squawk table loading data.  Default output file name is __./stratix.mysql.schema
  * **export_squawk_mysql** - Generate a database Insert command file for Squawk Codes
 
    Create a MySQL Schema file with necessary CREATE TABLE command for the `squawk` table.  This also includes the 
-squawk table loading data.  Default output file name is __./stratix.mysql.load.squawk.sql__
+squawk table loading data.  Default output file name is __./stratux.mysql.squawk.sql__
+
+   Generate a MySQL database schema file, that will create the required tables if they do not
+exist, and load the squawk table with records (this will __overwrite existing squawk records__)
+
+ * **export_squawk_json** - Generate a Squawk Codes JSON file 
+
+   Create a JSON object file with current Squawk -> Message mapping.  Default output file name is __./stratix.squawk.json__
 
    Generate a MySQL database schema file, that will create the required tables if they do not
 exist, and load the squawk table with records (this will __overwrite existing squawk records__)
@@ -111,6 +116,12 @@ exist, and load the squawk table with records (this will __overwrite existing sq
 
 Release Notes
 =============
+
+### 19-OCT-2017
+New option to export existing Squawk data into a JSON data object.  This is suitable for a variety
+of applications where the translation is desired. 
+
+**export_squawk_json** - Generate a Squawk Codes JSON file
 
 ### 18-OCT-2017
 New options to allow using tool to simply export MySQL or other database configurations:

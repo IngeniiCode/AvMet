@@ -4,7 +4,7 @@
  * @since 6 October 2017
  * @author David DeMartini
  * @serial ig0003-am
- * @version 0.0.1c
+ * @version 0.0.2
  * @see http://www.ingeniigroup.com/stratux/avmet
  * @repo https://github.com/IngeniiCode/AvMet
  */
@@ -335,7 +335,7 @@ public class traffic {
 		
 		if(callsign.isEmpty()) {
 			// define query to find fastest aircraft
-			String sql  = String.format("SELECT Tail as Callsign,Reg as Tailnum, FROM traffic WHERE Icao_addr=%d AND (Tail > '' OR Reg > '') LIMIT 1",Icao_addr);
+			String sql  = String.format("SELECT Tail as Callsign,Reg as Tailnum FROM traffic WHERE Icao_addr=%d AND (Tail > '' OR Reg > '') LIMIT 1",Icao_addr);
 
 			try {
 				// prepare, execute query and get resultSet
