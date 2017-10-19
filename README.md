@@ -11,12 +11,13 @@ Ingenii Group LLC
 http://www.daviddemartini.com
 software@ingeniigroup.com
 
+Version 0.1.0
 
 Announcements!
 ==============
 
 ### 19-OCT-2017
-Check the release notes for latest new features and caveats!! 
+Check the release notes for latest new features and caveats!!  v.0.0.2 
 
 Running AvMet
 =============
@@ -119,7 +120,7 @@ Release Notes
 
 ### 19-OCT-2017
 New option to export existing Squawk data into a JSON data object.  This is suitable for a variety
-of applications where the translation is desired. 
+of applications where the translation is desired. ( v.0.0.2 )
 
 **export_squawk_json** - Generate a Squawk Codes JSON file
 
