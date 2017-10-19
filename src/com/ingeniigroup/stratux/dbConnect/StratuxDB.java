@@ -74,6 +74,7 @@ public class StratuxDB {
 		}
 		catch (Exception ex){
 			System.err.printf("Fatal Error Connecting to DB at [%s]\nError: %s\n",this.dbFname,ex.getMessage());
+			System.exit(9);
 		}
 		
 	}
@@ -223,7 +224,7 @@ public class StratuxDB {
 			//System.out.println(query);
 		} 
 		catch (SQLException ex) {
-           System.err.printf("Fatal Error: %s in %s\n",ex.getMessage(),query);
+           System.err.printf("Error: %s in %s\n",ex.getMessage(),query);
         }
 		
 		return true;
@@ -248,7 +249,7 @@ public class StratuxDB {
 			//System.out.println(query);
 		} 
 		catch (SQLException ex) {
-			System.err.printf("Fatal Error: %s in %s\n",ex.getMessage(),query);
+			System.err.printf("Error: %s in %s\n",ex.getMessage(),query);
 		}
 		
 		return true;
@@ -271,7 +272,7 @@ public class StratuxDB {
 			return true;
 		} 
 		catch (SQLException ex) {
-			System.err.printf("Fatal Error: %s\tquery: { %s }\n",ex.getMessage(),query);
+			System.err.printf("Error: %s\tquery: { %s }\n",ex.getMessage(),query);
 		}
 		
 		return false;
@@ -304,7 +305,7 @@ public class StratuxDB {
 			
 		} 
 		catch (SQLException ex) {
-			System.err.printf("Fatal Error: %s\tProblems with batch\n",ex.getMessage());
+			System.err.printf("Error: %s\tProblems with batch\n",ex.getMessage());
 		}
 		finally {
 			// finally.. we're done?
@@ -337,6 +338,7 @@ public class StratuxDB {
 		} 
 		catch (SQLException ex) {
 			System.err.printf("Fatal Error Connecting to DB at [%s]\nError: %s\n",dbURL,ex.getMessage());
+			System.exit(9);
 		}
 		
 		return false;

@@ -189,12 +189,10 @@ public class FixTrafficTable {
 			dumpTimestampDuplicates(Icao);
 		}
 		
-		// Fix Tail / Callsign records if any are missing
 		FixCallsigns(Icao);
 		
 		// Select all a specific aircraft's records 
-		//String sql = String.format("SELECT id,Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp FROM traffic WHERE Icao_addr=%d AND OnGround=0 ORDER BY Timestamp,id ASC;",Icao);
-		String sql = String.format("SELECT id,Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp FROM traffic WHERE Icao_addr=%d ORDER BY id ASC;",Icao);  // removed nasty sorting colomns 
+		String sql = String.format("SELECT id,Icao_addr,Reg,Tail,Alt,VVel,Speed,Distance,Timestamp FROM traffic WHERE Icao_addr=%d ORDER BY id ASC;",Icao);  // removed nasty sorting colomns 
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -203,28 +201,16 @@ public class FixTrafficTable {
 			// check to see if there is anything to process
 			if(!result.isBeforeFirst()){
 				// No emergencies to report
-				System.out.printf("Aircraft %d not found in table\n",Icao);
+				if(FixTrafficTable.verbose) System.out.printf("Aircraft %d not found in table\n",Icao);
 				return false;  // Bail Out!
 			}
 			
-			// Define aircraft record stack
-			Map<Integer,Object> aircraftStack = new HashMap<Integer,Object>();
-
-			// Load data into aircraft record stack <aircraftStack>
-			do {
-				if (FixTrafficTable.DB.getResultNextRecord(result)) {
-					//aircraftStack.put(result.getInt("id"),result);
-				}
-			} while (!result.isAfterLast());  // be looping..
-			
-			
-
-/*			
 			// define the variables that will persist.
 			int id             = -1;
 			int speed          = -1;
 			int altitude       = -1;
 			int distance       = -1;
+			int vertical_vel   = -1;
 			int prev_speed;
 			int prev_altitude;
 			int prev_distance;
@@ -239,13 +225,14 @@ public class FixTrafficTable {
 				
 				if (FixTrafficTable.DB.getResultNextRecord(result)) {
 					
-					id       = result.getInt("id");
-					speed    = result.getInt("speed");
-					altitude = result.getInt("Alt");
-					distance = result.getInt("Distance");
+					id           = result.getInt("id");
+					speed        = result.getInt("speed");
+					altitude     = result.getInt("Alt");
+					distance     = result.getInt("Distance");
+					vertical_vel = result.getInt("VVel");
 					
 					// test altitude
-					if(badAltitude(altitude,prev_altitude)){
+					if(badAltitude(altitude,prev_altitude,vertical_vel)){
 						if(FixTrafficTable.verbose) printDelaError("Altitude",Icao,prev_altitude,altitude);
 						delIdSql(id);
 						continue;
@@ -274,7 +261,6 @@ public class FixTrafficTable {
 				}
 				
 			} while (!result.isAfterLast());  // be looping.. 
-*/
 
 			// increment contacts counter
 			FixTrafficTable.total_contacts += FixTrafficTable.aircraft.size();
@@ -293,7 +279,7 @@ public class FixTrafficTable {
 	 *  Bad Altitude Comparitor 
 	 * 
 	 */
-	private static boolean badAltitude(int altitude,int prev_altitude){
+	private static boolean badAltitude(int altitude,int prev_altitude,int vertical_vel){
 		
 		if(prev_altitude == -1 || prev_altitude < 1000){
 			// this is a starting record.. return false;
@@ -435,6 +421,17 @@ public class FixTrafficTable {
 		// Remove records where Altitude is Zed but instriments report aircraft is in flight.
 		FixTrafficTable.DB.sqlExecute("DELETE FROM traffic WHERE Alt=0 AND OnGround=0");
 		
+		// Remove small batch records where the values seem to be insane, above 50,000 ft or 
+		// more than 1000 miles away...  that's just not going to be very belieable if there
+		// are only a small number of hits, that arbitrary number being less than 5. 
+		FixTrafficTable.DB.sqlExecute("DELETE FROM traffic WHERE id IN (" +
+			"SELECT id FROM traffic WHERE Icao_addr IN(SELECT Icao_addr as hits FROM traffic WHERE Alt>55000 GROUP BY Icao_addr HAVING count(*) < 5) and Alt>55000\n" +
+			" UNION " +
+			"SELECT id FROM traffic WHERE Icao_addr IN(SELECT Icao_addr as hits FROM traffic WHERE Alt < 0 GROUP BY Icao_addr HAVING count(*) < 5) and Alt < 0\n" +
+			" UNION " +
+			"SELECT id FROM traffic WHERE Icao_addr IN(SELECT Icao_addr as hits FROM traffic WHERE (Distance * 0.000621371) > 500 GROUP BY Icao_addr HAVING count(*) < 5) and (Distance * 0.000621371) > 500" +
+			");");
+				
 	}
 	
 	/**
