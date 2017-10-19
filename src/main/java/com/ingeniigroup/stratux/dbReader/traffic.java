@@ -92,12 +92,12 @@ public class traffic {
 	 * 
 	 * @return Object slowest contact. 
 	 */
-	public boolean getSlowest() throws SQLException{
+	public boolean getSlowest(){
 		
 		// define query to find fastest aircraft
 		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY Speed ASC LIMIT 1";
 		
-		//try {
+		try {
 			// prepare, execute query and get resultSet
 			ResultSet result = traffic.DB.getResultSet(sql);
 
@@ -106,10 +106,10 @@ public class traffic {
 				reportStat("SLOWEST:",result);
 				return true;
 			}
-		//}
-		//catch (Exception ex){
-		//	System.err.printf("getSlowest Error: %s\t%s\n",ex.getMessage(),sql);
-		//}
+		}
+		catch (Exception ex){
+			System.err.printf("getSlowest Error: %s\t%s\n",ex.getMessage(),sql);
+		}
 		
 		return false;
 	}	

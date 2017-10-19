@@ -13,26 +13,30 @@ software@ingeniigroup.com
 
 License
 =======
-This software is offered under the __Creative Commons Attribution-NonCommercial 4.0 International Public License__ 
 
 Summary:
 
-#### YOU MUST
+This software is offered under the __Creative Commons Attribution-NonCommercial 
+4.0 International Public License__ 
 
-   __Attribution__ — You must give appropriate credit, provide a link to the license, and indicate if changes were made. You may do so in any reasonable manner, but not in any way that suggests the licensor endorses you or your use.
+### YOU MUST
 
-#### YOU MAY
+   __Attribution__ — You must give appropriate credit, provide a link to the 
+license, and indicate if changes were made. You may do so in any reasonable manner, 
+but not in any way that suggests the licensor endorses you or your use.
+
+### YOU MAY
 
    __Share__ — copy and redistribute the material in any medium or format
 
    __Adapt__ — remix, transform, and build upon the material
 
-#### YOU MAY NOT
+### YOU MAY NOT
 
    __NonCommercial__ — You may not use the material for commercial purposes.
 
-   __No additional restrictions__ — You may not apply legal terms or technological measures that legally restrict others from doing anything the license permits.
-
+   __No additional restrictions__ — You may not apply legal terms or technological 
+measures that legally restrict others from doing anything the license permits.
 
 __Full text is available in file:  LICENSE.md__
 
@@ -41,8 +45,16 @@ Version 0.1.0
 Announcements!
 ==============
 
-### 19-OCT-2017
-Check the release notes for latest new features and caveats!!  v.0.0.2 
+### 1-NOV-2017
+
+__MAVIN__ -- converted project to Apache Mavi.
+
+
+### 26-OCT-2017
+*  Implemented Gross Error detection and mitigation -- this has almost completely
+eliminate extreme tracking events.  Some edge cases persist; improvements are continuing.
+
+Check the release notes for latest new features and caveats!!  v.0.1.0 
 
 Running AvMet
 =============
@@ -142,6 +154,12 @@ exist, and load the squawk table with records (this will __overwrite existing sq
 
 Release Notes
 =============
+
+### 26-OCT-2017
+Added Creative Commons Licensing file allowing Non-Commercial use of code.
+
+Implemented Gross Error detection and mitigation -- this has almost completely
+eliminate extreme tracking events.  Some edge cases persist; improvements are continuing.
 
 ### 19-OCT-2017
 New option to export existing Squawk data into a JSON data object.  This is suitable for a variety

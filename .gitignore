@@ -4,3 +4,5 @@
 
 lib/CopyLib/
 testdbs/
+/nbproject/
+/target/

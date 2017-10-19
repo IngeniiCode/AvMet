@@ -80,7 +80,7 @@ public class SquawkTest {
 	@Test
 	public void test4470() {
 		int squawk = 4470;
-		String expResult = "SR-71, YF-12, U-2 and B-57, pressure suit flights";
+		String expResult = "Fed Law Enforcement";
 		System.out.printf("%04d => %s\n",squawk,expResult);
 		String result = Squawk.getMessage(squawk);
 		assertEquals(expResult,result);
