@@ -194,7 +194,8 @@ public class FixTrafficTable {
 		FixCallsigns(Icao);
 		
 		// Select all a specific aircraft's records 
-		String sql = String.format("SELECT id,Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp FROM traffic WHERE Icao_addr=%d AND OnGround=0 ORDER BY Timestamp,id ASC;",Icao);
+		//String sql = String.format("SELECT id,Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp FROM traffic WHERE Icao_addr=%d AND OnGround=0 ORDER BY Timestamp,id ASC;",Icao);
+		String sql = String.format("SELECT id,Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp FROM traffic WHERE Icao_addr=%d ORDER BY id ASC;",Icao);  // removed nasty sorting colomns 
 		
 		try {
 			// prepare, execute query and get resultSet

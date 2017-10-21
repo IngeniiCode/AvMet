@@ -289,7 +289,6 @@ public class StratuxDB {
 		
 		try {
 			
-			if(this.verbose) System.out.printf("Processing %d batch records\n",batch.size());
 			Statement statement = this.db.createStatement();
 
 			// create an iterator
