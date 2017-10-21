@@ -7,7 +7,7 @@
  * @since 15 October 2017
  * @author David DeMartini
  * @serial ig0003-am
- * @version 0.0.2c
+ * @version 0.1.0c
  * @see http://www.ingeniigroup.com/stratux/avmet
  * @repo https://github.com/IngeniiCode/AvMet
  */
