@@ -200,7 +200,6 @@ public class StratuxDB {
 		} 
 		catch (Exception ex) {
 			System.err.printf("ERROR!!  %s\n", ex.getMessage());
-			System.err.print(ex.getStackTrace());
 		} 
 		return false;
 	}

@@ -32,7 +32,8 @@ public class Squawk {
         codes = new HashMap<Integer,String>();
    
 		/* unremarkable codes */
-		codes.put(0000, "ATTRC En Route Safety and Operations Support");  // this is in fact defined in the 7110.66E spec!
+		codes.put(0,    "");
+		codes.put(0000, "");  // there message defined for 0000 in 7110.66E spec, but I'm using an empty string
 		codes.put(0021, "VFR below 5000ft.");
 		codes.put(0022, "VFR above 5000ft.");
 		codes.put(0033, "Parachute Drop Operations");
@@ -127,7 +128,7 @@ public class Squawk {
 	 * @param squawk
 	 * @return 
 	 */
-	public static String getMessage(int squawk){
+	public static String getMessage(int squawk) {
 		
 		String message = "";
 		

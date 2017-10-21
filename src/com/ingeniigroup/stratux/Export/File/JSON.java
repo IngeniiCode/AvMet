@@ -28,9 +28,6 @@ import com.ingeniigroup.stratux.Tools.JsonMicro.JsonObject;
 public class JSON {
 	
 	private String outfile_prefix;
-		
-	// some useful consts
-	private final static char   NL            = 10;  // NewLine
 	
 	/**
 	 * Entry point to EXPORT
@@ -44,7 +41,7 @@ public class JSON {
 	}
 	public JSON(boolean timestamp_prefix){ 
 		this.outfile_prefix = (timestamp_prefix) ? String.format("./stratux.%s",DateTime.timeprefix())
-				: "./stratux.mysql";
+				: "./stratux.json";
 	}
 	public JSON(String outfile_prefix){ 
 		this.outfile_prefix   = outfile_prefix;

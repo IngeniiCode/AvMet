@@ -23,7 +23,7 @@ public class ICAO {
 	 * 
 	 * @return String Icao_Code
 	 */
-	public static String int2ICAO24(int Icao_int){
+	public static String int2ICAO24(int Icao_int) {
 		// simply reformat value and return
 		return String.format("%06X",Icao_int).toUpperCase();
 	}
@@ -35,7 +35,7 @@ public class ICAO {
 	 * 
 	 * @return int Icao_int 
 	 */
-	public static int strICAO2int(String Icao_string){
+	public static int strICAO2int(String Icao_string) {
 		return Integer.valueOf(Icao_string, 16).intValue();  // Integer.parseXX functions didn't accpet string, this worked fine.
 	}
 	

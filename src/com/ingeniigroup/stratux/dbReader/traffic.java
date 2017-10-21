@@ -14,6 +14,7 @@ import com.ingeniigroup.stratux.dbConnect.StratuxDB;
 import com.ingeniigroup.stratux.Tools.ICAO;
 import com.ingeniigroup.stratux.Tools.Squawk;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
@@ -55,19 +56,19 @@ public class traffic {
 			}
 		}
 		catch (Exception ex){
-			System.err.printf("DB Error: %s\n",ex.getMessage());
-			ex.printStackTrace();
+			System.err.printf("getFirstTime Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 	}
 	
 	/**
+	 * Return the FASTEST record in the database 
 	 * 
 	 * @return Object fastest contact. 
 	 */
 	public boolean getFastest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY speed desc limit 1";
+		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY Speed DESC LIMIT 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -80,23 +81,23 @@ public class traffic {
 			}
 		}
 		catch (Exception ex){
-			System.err.printf("DB Error: %s\n",ex.getMessage());
-			ex.printStackTrace();
+			System.err.printf("getFastest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
 		return false;
 	}
 	
 	/**
+	 * Return the SLOWEST record in the database 
 	 * 
 	 * @return Object slowest contact. 
 	 */
-	public boolean getSlowest(){
+	public boolean getSlowest() throws SQLException{
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by speed asc limit 1";
+		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY Speed ASC LIMIT 1";
 		
-		try {
+		//try {
 			// prepare, execute query and get resultSet
 			ResultSet result = traffic.DB.getResultSet(sql);
 
@@ -105,11 +106,10 @@ public class traffic {
 				reportStat("SLOWEST:",result);
 				return true;
 			}
-		}
-		catch (Exception ex){
-			System.err.printf("DB Error: %s\n",ex.getMessage());
-			ex.printStackTrace();
-		}
+		//}
+		//catch (Exception ex){
+		//	System.err.printf("getSlowest Error: %s\t%s\n",ex.getMessage(),sql);
+		//}
 		
 		return false;
 	}	
@@ -121,7 +121,7 @@ public class traffic {
 	public boolean getHighest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt desc limit 1";
+		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt desc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -134,8 +134,7 @@ public class traffic {
 			}
 		}
 		catch (Exception ex){
-			System.err.printf("DB Error: %s\n",ex.getMessage());
-			ex.printStackTrace();
+			System.err.printf("getHighest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
 		return false;
@@ -148,7 +147,7 @@ public class traffic {
 	public boolean getLowest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt asc limit 1";
+		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt asc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -161,8 +160,7 @@ public class traffic {
 			}
 		}
 		catch (Exception ex){
-			System.err.printf("DB Error: %s\n",ex.getMessage());
-			ex.printStackTrace();
+			System.err.printf("getLowest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
 		return false;
@@ -175,7 +173,7 @@ public class traffic {
 	public boolean getClosest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance asc limit 1";
+		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance asc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -188,8 +186,7 @@ public class traffic {
 			}
 		}
 		catch (Exception ex){
-			System.err.printf("DB Error: %s\n",ex.getMessage());
-			ex.printStackTrace();
+			System.err.printf("getClosest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
 		return false;
@@ -202,7 +199,7 @@ public class traffic {
 	public boolean getFurthest(){
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT DISTINCT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance desc limit 1";
+		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance desc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -215,8 +212,7 @@ public class traffic {
 			}
 		}
 		catch (Exception ex){
-			System.err.printf("DB Error: %s\n",ex.getMessage());
-			ex.printStackTrace();
+			System.err.printf("getFurthest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
 		return false;
@@ -233,7 +229,7 @@ public class traffic {
 	 */
 	public boolean reportEmergencies(){
 		
-		String sql  = "SELECT DISTINCT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk IN(7500,7600,7700,7777) order by Alt desc";
+		String sql  = "SELECT DISTINCT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk IN(7500,7600,7700,7777) order by Alt desc";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -276,22 +272,22 @@ public class traffic {
 	 */
 	public boolean reportSpecialIdents(){
 		
-		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk IN(1276,1277) GROUP BY Icao_addr"      // Air defense and SAR missions
+		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk IN(1276,1277) GROUP BY Icao_addr"      // Air defense and SAR missions
 				+ " UNION "
-				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk IN(4000,5000,5400) GROUP BY Icao_addr"     // Military / NORAD 
+				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk IN(4000,5000,5400) GROUP BY Icao_addr"     // Military / NORAD 
 				+ " UNION "
-				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 4400 AND 4500 GROUP BY Icao_addr"  // Various Law Enforcement and USAF recon
+				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 4400 AND 4500 GROUP BY Icao_addr"  // Various Law Enforcement and USAF recon
 				+ " UNION "
-				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 7501 AND 7577 GROUP BY Icao_addr"   // Special NORAD
+				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 7501 AND 7577 GROUP BY Icao_addr"   // Special NORAD
 				+ " UNION "
-				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 7601 AND 7607 GROUP BY Icao_addr"   // FAA Special Use
+				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 7601 AND 7607 GROUP BY Icao_addr"   // FAA Special Use
 				+ " UNION "
-				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 7701 AND 7707 GROUP BY Icao_addr";   // FAA Special Use
+				+ "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 7701 AND 7707 GROUP BY Icao_addr";   // FAA Special Use
 		
 		// add special cases
 		if(traffic.include_5100_5300_DOD){
 			// Possible DOD aircraft
-			sql += " UNION SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 5100 AND 5300 GROUP BY Icao_addr";
+			sql += " UNION SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Squawk BETWEEN 5100 AND 5300 GROUP BY Icao_addr";
 		}
 			
 		// execute
@@ -331,29 +327,31 @@ public class traffic {
 	 * 
 	 * @return tailnumber  
 	 */
-	private String findTail(String callsign, int Icao_addr){
-		
-		if(callsign.isEmpty()) {
-			// define query to find fastest aircraft
-			String sql  = String.format("SELECT Tail as Callsign,Reg as Tailnum FROM traffic WHERE Icao_addr=%d AND (Tail > '' OR Reg > '') LIMIT 1",Icao_addr);
+	
+	private String findTail(String callsign, int Icao_addr) throws SQLException {
 
+		// check for null pointer before checking to see if it's empty
+		if(callsign == null || callsign.isEmpty()) {
+
+			// define query to find fastest aircraft
+			String sql  = String.format("SELECT CASE WHEN Tail IS NOT NULL THEN Tail WHEN Reg IS NOT NULL THEN Reg ELSE '-------' END AS Callsign FROM traffic WHERE Icao_addr=%d AND (Tail IS NOT NULL OR Reg IS NOT NULL) LIMIT 1",Icao_addr);
+			
 			try {
 				// prepare, execute query and get resultSet
-				ResultSet result = traffic.DB.getResultSet(sql);
+				ResultSet tailresult = traffic.DB.getResultSet(sql);
 
-				// check results to see if they make any sense.
-				if (traffic.DB.getResultNextRecord(result)) {
-					// pull through Tail and if that is Empty.. use Reg.. and if that is empty.. well.. not much can be done. 
-					callsign = (result.getString("Callsign").isEmpty()) ? result.getString("Tailnum") : result.getString("Callsign");
+				if(!tailresult.getString("Callsign").isEmpty()){
+					return tailresult.getString("Callsign");
 				}
-
+				return "- - -";
+				
 			}
 			catch (Exception ex){
-				System.err.printf("DB Error: %s\n",ex.getMessage());
-				ex.printStackTrace();
+				System.err.printf("findTail Error: %s\t%s\n",ex.getMessage(),sql);
 			}
 		}
 		
+		// it was not null and not empty -- use original value
 		return callsign;
 	}
 	
@@ -367,18 +365,24 @@ public class traffic {
 	 */
 	private void reportStat(String type,ResultSet result) throws SQLException {
 		
-		int    Icao_addr = result.getInt("Icao_addr");
-		int    Altitude  = result.getInt("Alt");
-		int    Speed     = result.getInt("speed");
-		int    SqCode    = result.getInt("Squawk"); 
-		String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-		String Callsign  = findTail(result.getString("Callsign"),Icao_addr);
-		String Distance  = (result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles"));
-		String Message    = Squawk.getMessage(SqCode);
-		String SquawkCode = (SqCode > 0) ? String.format("%04d",SqCode) : "----";
-		// there was something there.
-				
-		System.out.printf("\t%13s %7s [%6s]  %s  %7d ft.  %4d kts.  %6s mi.  -  %s\n",type,Callsign,ICOA24,SquawkCode,Altitude,Speed,Distance,Message);
+		try {
+			int    Icao_addr = result.getInt("Icao_addr");
+			int    Altitude  = result.getInt("Alt");
+			int    Speed     = result.getInt("Speed");
+			int    SqCode    = result.getInt("Squawk"); 
+			String Callsign  = findTail(result.getString("Callsign"),Icao_addr);
+			String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
+			String Distance  = (result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles"));
+			String Message    = Squawk.getMessage(SqCode);
+			String SquawkCode = (SqCode > 0) ? String.format("%04d",SqCode) : "----";
+			// there was something there.
+			
+			System.out.printf("\t%13s %7s [%6s]  %s  %7d ft.  %4d kts.  %6s mi.  -  %s\n",type,Callsign,ICOA24,SquawkCode,Altitude,Speed,Distance,Message);
+		}
+		catch (Exception ex){
+			System.err.printf("reportStat %s ERROR: %s\n",type,ex.getMessage());
+		}
+		
 	}
 	
 	/**
@@ -392,7 +396,7 @@ public class traffic {
 		
 		int    Icao_addr = result.getInt("Icao_addr");
 		int    Altitude  = result.getInt("Alt");
-		int    Speed     = result.getInt("speed");
+		int    Speed     = result.getInt("Speed");
 		int    SqCode    = result.getInt("Squawk"); 
 		String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
 		String Callsign  = findTail(result.getString("Callsign"),Icao_addr);

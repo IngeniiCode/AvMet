@@ -12,14 +12,15 @@
  */
 package com.ingeniigroup.stratux.Repair;
 
-import com.ingeniigroup.stratux.Tools.ICAO;
-import com.ingeniigroup.stratux.Tools.Squawk;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -29,22 +30,22 @@ public class FixTrafficTable {
 	
 	private static StratuxDB DB;
 	private static List<Integer> aircraft;
+	private static List<String>  sql_batch_delete = new ArrayList<String>();
 	private static boolean condense;
 	private static boolean verbose;
 	private static boolean keepdupes;
 	private static int  total_contacts   = 0;
 	private static int  error_contacts   = 0;
 	private static int  deleted_contacts = 0;
-	private static int  duplicate_events = 0;
 	
 	/**
 	 * Constructor -- needs to be passed the StratuxDB object
 	 * @param dbconn 
 	 */
-	public static void Fix(StratuxDB dbconn){
+	public static void Fix(StratuxDB dbconn) {
 		Fix(dbconn,false);
 	}
-	public static void Fix(StratuxDB dbconn,boolean verbose){	
+	public static void Fix(StratuxDB dbconn,boolean verbose) {	
 		System.out.println("Scrubbing tainted data");
 		
 		FixTrafficTable.verbose  = (verbose) ? verbose : dbconn.Verbose(); // use flag or check dbconnector
@@ -68,10 +69,10 @@ public class FixTrafficTable {
 	 * 
 	 * @param dbconn 
 	 */
-	public static void Condense(StratuxDB dbconn){
+	public static void Condense(StratuxDB dbconn) {
 		Condense(dbconn,false);
 	}
-	public static void Condense(StratuxDB dbconn,boolean verbose){
+	public static void Condense(StratuxDB dbconn,boolean verbose) {
 		
 		// set the condenser flag
 		FixTrafficTable.condense = true;
@@ -88,13 +89,23 @@ public class FixTrafficTable {
 	 * 
 	 * @return boolean true | false
 	 */
-	private static boolean fixTrafficData(){
+	private static boolean fixTrafficData() {
+	
+		// remove obvious gross errors
+		fixGrossErrors();
 		
 		// create an iterator
 		Iterator<Integer> aircraftIterator = FixTrafficTable.aircraft.iterator();
+		
 		// iterate 
 		while (aircraftIterator.hasNext()) {
 			fixAircraftLog(aircraftIterator.next());
+		}
+		
+		// check batch to see if it has entries, if so then execute them
+		if(!FixTrafficTable.sql_batch_delete.isEmpty()){
+			System.out.printf("Removing %d bad traffic records\n", FixTrafficTable.sql_batch_delete.size());
+			FixTrafficTable.DB.sqlBatch(FixTrafficTable.sql_batch_delete);
 		}
 		
 		return true;
@@ -110,7 +121,7 @@ public class FixTrafficTable {
 	private static boolean dumpTimestampDuplicates(int Icao){
 		
 		// iterate through the aircraft's records, grouping by Altitude, Speed, Distance and Timestamp -- tests show this to be about 35% as aggressive is only grouping by Timestamp.
-		String sql_conservative = String.format("SELECT Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d AND OnGround=0 GROUP BY Alt,Speed,Distance,Timestamp HAVING duplicates > 0 ORDER BY Timestamp ASC;",Icao);
+		//String sql_conservative = String.format("SELECT Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d AND OnGround=0 GROUP BY Alt,Speed,Distance,Timestamp HAVING duplicates > 0 ORDER BY Timestamp ASC;",Icao);
 		
 		// more aggressive de-duplication..  doesn't really matter what it says in the duplicate timestamps, there can be only one.. 
 		String sql_aggressive = String.format("SELECT Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d AND OnGround=0 GROUP BY Timestamp HAVING duplicates > 0 ORDER BY Timestamp ASC;",Icao);
@@ -126,8 +137,7 @@ public class FixTrafficTable {
 				return false;  // Bail Out!
 			}
 			
-			// define delete batch 
-			List batch = new ArrayList<Integer>();	
+			List<String> batch = new ArrayList<String>();
 			
 			// id,Iaco_addr,Alt,Speed
 			do {
@@ -144,20 +154,20 @@ public class FixTrafficTable {
 					// add to the batch fo deletes to be performed
 					batch.add(sql);
 								
-					// increment contacts counter
-					FixTrafficTable.duplicate_events += dupecount;
 				}
 				
 			} while (!result.isAfterLast());  // be looping..
 			
 			// send batch to SQL for processing as a batch
-			if(FixTrafficTable.verbose) System.out.printf("%d -- Running %d Duplicate batches\n",Icao,batch.size());
-			FixTrafficTable.DB.sqlBatch(batch);
+			if(!batch.isEmpty()){
+				if(FixTrafficTable.verbose) System.out.printf("%d -- Removing %d event duplicates\n",Icao,batch.size());
+				FixTrafficTable.DB.sqlBatch(batch);
+			}
 			
 			return true;  // execution completed
 		}
 		catch (Exception ex){
-			System.err.printf("fixAircraftLog Error: %s\n",ex.getMessage());
+			System.err.printf("dumpTimestampDuplicates Error: %s\n",ex.getMessage());
 			ex.printStackTrace();
  		}
 		
@@ -166,21 +176,29 @@ public class FixTrafficTable {
 	
 	/**
 	 *  Fix an individual aircraft's screwed up records
+	 * 
+	 * @param Icao -  integer ICAO24 value
+	 * 
+	 * @return boolean 
 	 */
-	private static boolean fixAircraftLog(int Icao){
+	private static boolean fixAircraftLog(int Icao) {
+		
+		if(FixTrafficTable.verbose) System.out.printf("* Processing %d\n",Icao);
 		
 		if(!FixTrafficTable.keepdupes){
+			// first remove duplicates for a given aircraft
 			dumpTimestampDuplicates(Icao);
 		}
 		
+		// Fix Tail / Callsign records if any are missing
+		FixCallsigns(Icao);
+		
+		// Select all a specific aircraft's records 
 		String sql = String.format("SELECT id,Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp FROM traffic WHERE Icao_addr=%d AND OnGround=0 ORDER BY Timestamp,id ASC;",Icao);
 		
 		try {
 			// prepare, execute query and get resultSet
 			ResultSet result = FixTrafficTable.DB.getResultSet(sql);  // using aggressive filt4r 
-			
-			// define delete batch 
-			List batch = new ArrayList<Integer>();	
 			
 			// check to see if there is anything to process
 			if(!result.isBeforeFirst()){
@@ -189,6 +207,19 @@ public class FixTrafficTable {
 				return false;  // Bail Out!
 			}
 			
+			// Define aircraft record stack
+			Map<Integer,Object> aircraftStack = new HashMap<Integer,Object>();
+
+			// Load data into aircraft record stack <aircraftStack>
+			do {
+				if (FixTrafficTable.DB.getResultNextRecord(result)) {
+					//aircraftStack.put(result.getInt("id"),result);
+				}
+			} while (!result.isAfterLast());  // be looping..
+			
+			
+
+/*			
 			// define the variables that will persist.
 			int id             = -1;
 			int speed          = -1;
@@ -208,8 +239,6 @@ public class FixTrafficTable {
 				
 				if (FixTrafficTable.DB.getResultNextRecord(result)) {
 					
-					boolean del_record = false;
-					
 					id       = result.getInt("id");
 					speed    = result.getInt("speed");
 					altitude = result.getInt("Alt");
@@ -218,50 +247,35 @@ public class FixTrafficTable {
 					// test altitude
 					if(badAltitude(altitude,prev_altitude)){
 						if(FixTrafficTable.verbose) printDelaError("Altitude",Icao,prev_altitude,altitude);
-						FixTrafficTable.error_contacts++;
-						del_record = true;
+						delIdSql(id);
 						continue;
 					}
 					
 					// test speed
 					if(badSpeed(speed,prev_speed)){
 						if(FixTrafficTable.verbose) printDelaError("Speed",Icao,prev_speed,speed);
-						FixTrafficTable.error_contacts++;
-						del_record = true;
+						delIdSql(id);
 						continue;
 					}
 					
 					// test distance
 					if(badSpeed(distance,prev_distance)){
 						if(FixTrafficTable.verbose) printDelaError("Distance",Icao,prev_distance,distance);
-						FixTrafficTable.error_contacts++;
-						del_record = true;
+						delIdSql(id);
 						continue;
 					}
 					
 					// perform condense operation if selected
 					if(FixTrafficTable.condense){
 						if(isDuplicate(altitude,speed,prev_altitude,prev_speed)){
-							FixTrafficTable.deleted_contacts++;
-							del_record = true;
-							continue; 
+							delIdSql(id);
 						}
-					}
-					
-					if(del_record){
-						// syntesize the delete request and add to batch
-						batch.add(String.format("DELETE FROM traffic WHERE id=%d",id));
 					}
 				}
 				
 			} while (!result.isAfterLast());  // be looping.. 
-			
-			// send batch to SQL for processing as a batch
-			if(batch.size() > 0){
-				if(FixTrafficTable.verbose) System.out.printf("%d -- Running %d Duplicate records\n",Icao,batch.size());
-				FixTrafficTable.DB.sqlBatch(batch);
-			}
-			
+*/
+
 			// increment contacts counter
 			FixTrafficTable.total_contacts += FixTrafficTable.aircraft.size();
 			
@@ -323,6 +337,34 @@ public class FixTrafficTable {
 	}
 	
 	/**
+	 * Look for missing Tail (callsign) records and use SQL to fix them
+	 * 
+	 * This query will update the Tail (callsign) to a good stored Callsign if 
+	 * in the aircrafts log, and also removes any  Tail number pollution when it 
+	 * can be confirmed by checking equality with the Reg record.  
+	 * Example:  query will re-align these three distinct cases found in an
+	 * example aircraft
+	 * 
+	 *		10749524|ATN3853|N359AZ
+	 *		10749524|N359AZ|N359AZ
+	 *		10749524||N359AZ
+	 * 
+	 * Operation is safe for fixing records where Tail is missing from some records
+	 * and the Reg value is missing completely:
+	 * 
+	 *		7455314||
+	 *		7455314|KAL277|
+	 * 
+	 * @param Icao 
+	 */
+	private static void FixCallsigns(int Icao){
+		
+		// Fix it in one shot using some subquery action
+		FixTrafficTable.DB.sqlExecute(String.format("UPDATE traffic SET Tail=(SELECT CASE WHEN Tail IS NOT '' THEN Tail WHEN Reg IS NOT '' THEN Reg ELSE '-------' END AS Callsign FROM traffic WHERE Icao_addr=%d AND (Tail IS NOT '' OR Reg IS NOT '')) WHERE Icao_addr=%d",Icao,Icao));
+	
+	}
+	
+	/**
 	 * Detect Duplicate relevant record values
 	 * 
 	 * @param int altitude
@@ -338,6 +380,7 @@ public class FixTrafficTable {
 		}
 		return false;
 	}
+	
 	/**
 	 *  Get unique list of the aircraft addresses
 	 * 
@@ -350,7 +393,7 @@ public class FixTrafficTable {
 		FixTrafficTable.aircraft = new ArrayList<Integer>();
 		
 		// create the query and construct a command
-		String sql = "SELECT DISTINCT Icao_addr FROM traffic ORDER BY id ASC";
+		String sql = "SELECT DISTINCT Icao_addr FROM traffic ORDER BY Icao_addr ASC";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -380,6 +423,27 @@ public class FixTrafficTable {
 			ex.printStackTrace();
  		}	 
 		return false;
+	}
+	
+	/**
+	 * Remove Gross Errors
+	 * 
+	 * There are some records that are just going to be worthless
+	 */
+	private static void fixGrossErrors(){
+		
+		// Remove records where Altitude is Zed but instriments report aircraft is in flight.
+		FixTrafficTable.DB.sqlExecute("DELETE FROM traffic WHERE Alt=0 AND OnGround=0");
+		
+	}
+	
+	/**
+	 * Add the Delete ID record to stack.
+	 * @param id
+	 * @return 
+	 */
+	private static void delIdSql(int id){
+		FixTrafficTable.sql_batch_delete.add(String.format("DELETE FROM traffic WHERE id=%d",id));
 	}
 	
 	/**

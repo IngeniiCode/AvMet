@@ -35,6 +35,7 @@ import com.ingeniigroup.stratux.Export.DB.*;
 import com.ingeniigroup.stratux.Export.File.*;
 import com.ingeniigroup.stratux.Repair.FixTrafficTable;
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 /**
@@ -257,7 +258,7 @@ public class AvMet {
 	/**
 	 *  run the metrics pulls from the database
 	 */
-	private static void reportMetrics(){
+	private static void reportMetrics() throws SQLException{
 		
 		// setup the interfaces
 		traffic traffic = new traffic(AvMet.DB);
