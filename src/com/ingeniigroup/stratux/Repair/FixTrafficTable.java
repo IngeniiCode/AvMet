@@ -119,20 +119,16 @@ public class FixTrafficTable {
 	 * @return boolean  true|false
 	 */
 	private static boolean dumpTimestampDuplicates(int Icao){
-		
-		// iterate through the aircraft's records, grouping by Altitude, Speed, Distance and Timestamp -- tests show this to be about 35% as aggressive is only grouping by Timestamp.
-		//String sql_conservative = String.format("SELECT Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d AND OnGround=0 GROUP BY Alt,Speed,Distance,Timestamp HAVING duplicates > 0 ORDER BY Timestamp ASC;",Icao);
-		
+				
 		// more aggressive de-duplication..  doesn't really matter what it says in the duplicate timestamps, there can be only one.. 
 		// NOTE -- removing these unnecessary sorts improved speed by ~ 10%   
-		//String sql_aggressive = String.format("SELECT Icao_addr,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d GROUP BY Timestamp HAVING duplicates > 0 ORDER BY Timestamp ASC;",Icao);
-		String sql_aggressive = String.format("SELECT Icao_addr,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d GROUP BY Alt,Speed,Timestamp HAVING duplicates > 0",Icao);
-		
+		//String sql = String.format("SELECT Icao_addr,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d GROUP BY Timestamp HAVING duplicates > 0 ORDER BY Timestamp ASC;",Icao);
+		String sql = String.format("SELECT Icao_addr,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d GROUP BY Alt,Speed,Timestamp HAVING duplicates > 0",Icao);
 		
 		// iterate
 		try {
 			// prepare, execute query and get resultSet
-			ResultSet result = FixTrafficTable.DB.getResultSet(sql_aggressive);  // using aggressive filter
+			ResultSet result = FixTrafficTable.DB.getResultSet(sql);  // using aggressive filter
 			
 			// check to see if there is anything to process
 			if(!result.isBeforeFirst()){
@@ -153,9 +149,9 @@ public class FixTrafficTable {
 					// with  ORDER and LIMIT enabled for delete.. it requires the use 
 					// of a sub-select to feed the IDs into an outer DELET query.  
 					// issue existed as of  sqlite-jdbc-3.20.0.jar  (October 2017)
-					String sql = String.format("DELETE FROM traffic WHERE id IN(SELECT id FROM traffic WHERE Timestamp=\"%s\" AND Icao_addr=%s ORDER BY id ASC LIMIT %d)",timestamp,Icao,dupecount);
+					String delsql = String.format("DELETE FROM traffic WHERE id IN(SELECT id FROM traffic WHERE Timestamp=\"%s\" AND Icao_addr=%s ORDER BY id ASC LIMIT %d)",timestamp,Icao,dupecount);
 					// add to the batch fo deletes to be performed
-					batch.add(sql);
+					batch.add(delsql);
 								
 				}
 				
