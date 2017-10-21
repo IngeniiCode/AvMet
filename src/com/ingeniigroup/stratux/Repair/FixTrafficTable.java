@@ -124,7 +124,10 @@ public class FixTrafficTable {
 		//String sql_conservative = String.format("SELECT Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d AND OnGround=0 GROUP BY Alt,Speed,Distance,Timestamp HAVING duplicates > 0 ORDER BY Timestamp ASC;",Icao);
 		
 		// more aggressive de-duplication..  doesn't really matter what it says in the duplicate timestamps, there can be only one.. 
-		String sql_aggressive = String.format("SELECT Icao_addr,Reg,Tail,Alt,Speed,Distance,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d AND OnGround=0 GROUP BY Timestamp HAVING duplicates > 0 ORDER BY Timestamp ASC;",Icao);
+		// NOTE -- removing these unnecessary sorts improved speed by ~ 10%   
+		//String sql_aggressive = String.format("SELECT Icao_addr,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d GROUP BY Timestamp HAVING duplicates > 0 ORDER BY Timestamp ASC;",Icao);
+		String sql_aggressive = String.format("SELECT Icao_addr,Timestamp,(count(*) -1) AS duplicates FROM traffic WHERE Icao_addr=%d GROUP BY Alt,Speed,Timestamp HAVING duplicates > 0",Icao);
+		
 		
 		// iterate
 		try {
