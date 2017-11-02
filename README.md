@@ -11,35 +11,6 @@ Ingenii Group LLC
 http://www.daviddemartini.com
 software@ingeniigroup.com
 
-License
-=======
-
-Summary:
-
-This software is offered under the __Creative Commons Attribution-NonCommercial 
-4.0 International Public License__ 
-
-### YOU MUST
-
-   __Attribution__ — You must give appropriate credit, provide a link to the 
-license, and indicate if changes were made. You may do so in any reasonable manner, 
-but not in any way that suggests the licensor endorses you or your use.
-
-### YOU MAY
-
-   __Share__ — copy and redistribute the material in any medium or format
-
-   __Adapt__ — remix, transform, and build upon the material
-
-### YOU MAY NOT
-
-   __NonCommercial__ — You may not use the material for commercial purposes.
-
-   __No additional restrictions__ — You may not apply legal terms or technological 
-measures that legally restrict others from doing anything the license permits.
-
-__Full text is available in file:  LICENSE.md__
-
 Version 0.1.0
 
 Announcements!
@@ -47,7 +18,7 @@ Announcements!
 
 ### 1-NOV-2017
 
-__MAVIN__ -- converted project to Apache Mavi.
+__MAVEN__ -- converted project to Apache Maven.
 
 
 ### 26-OCT-2017
@@ -62,14 +33,14 @@ AvMet expects the first parameter to be path to STRATUX database file.  File can
 be compressed (.giz only at this time).
 
 ex:
-  *   java -jar dist/AvMet.jar  <path_to_db>
+  *   java -jar target/AvMet.jar --db=<path_to_db_file>
 
 ### Required parameter
 
-* **<path_do_db>** - Location of a valid STRATUX SQLite database,  
+* **--db=<path_do_db>** - Location of a valid STRATUX SQLite database,  
 Gzip compressed SQLite3 db file 
 
-* **nodb** - no db file.
+* **--nodb** - no db file.
 
    Perform operations that do not require an import database. Ex:  mysql scheam or 
 data loader file operations such as __export_mysql_schema__  or __export_squawk_mysql__
@@ -77,12 +48,12 @@ data loader file operations such as __export_mysql_schema__  or __export_squawk_
 ### Optional parameters
 Optional extra parameters where can be in any order after the database
 
-* **keep** - do not remove extracted db
+* **--keepdb** - do not remove extracted db
 
    Leave the uncompressed DB (other artifact files are still cleaned up). If the 
 original file was not compressed, database is  not removed so flag is not required.
  
-* **scrub** - cleanup `traffic` table before reporting
+* **--scrub** - cleanup `traffic` table before reporting
 
    Traverse the `traffic` table, and remove events that do not fit the expected 
 progression for a specific contact.  This removes transient bad that has been seen 
@@ -92,19 +63,19 @@ in majority live database samples
 dataset that have identical `Timestamp` values.  If you with to disable this 
 feature of scrub, add the __keepdupes__ flag to parameter list
 
-* **keepdupes** - do not remove duplicate `Timestamp` events
+* **--keepdupes** - do not remove duplicate `Timestamp` events
 
    Part of the __scrub__ process will remove duplicate `Timestamp` records within 
 an airframe's dataset.  This flag has no effect unless also using the __scrub__
 option
 
-* **condense** - remove similar events to save space
+* **--pack** - remove similar events (pack) to save space in database
 
    Traverse the `traffic` table, and remove events have identical Altitude, 
 Speed within a specific contact's dataset, this can condense the database by 
 40% to 75%   (11-OCT-2017 disabled due to bug)
 
-* **usetemp** - use a local scratch/temp db file
+* **--usetemp** - use a local scratch/temp db file
 
    When extracting a database from SQL, write to a local temp file.  This is most 
 useful when the source database is compressed and on a  remote or temporary device:  
@@ -113,28 +84,23 @@ output file will be  `./sqlite-stratux-temp`
    If you wish to keep the temporary database for further analysis after running
 AvMet, add the __keepdb__ option
 
- * **verbose** - increase progress reporting 
+* **--useprefix** - use a generated date/time prefix for all saved output files
+
+   When exporting data, each file will be prefixed with a date-time stamp string
+
+* **--verbose** - increase progress reporting 
 
    Report more details on processing activity.  Warning, it can be VERY verbose 
 when processing very dirty `traffic` tables
 
- * **usetemp** - write data to a local temp file.
+ * **--export_mysql** - Export data in MySQL DB Load format.
 
-   When extracting a database from SQL, write to a local temp file.  This is most 
-useful when the source database is compressed and on a remote or temporary device:  output file will be  ./sqlite-stratux-temp
-
- * **verbose** - announce activity details
-
-   Report more detailed scrubbing activity
-
- * **export_mysql** - Export data in MySQL DB Load format.
-
- * **export_mysql_schema** - Generate a Database Schema file 
+ * **--export_mysql_schema** - Generate a Database Schema file 
 
    Create a MySQL Schema file with necessary CREATE TABLE commands.  This also includes the 
 squawk table loading data.  Default output file name is __./stratix.mysql.schema.sql__
 
- * **export_squawk_mysql** - Generate a database Insert command file for Squawk Codes
+ * **--export_squawk_mysql** - Generate a database Insert command file for Squawk Codes
 
    Create a MySQL Schema file with necessary CREATE TABLE command for the `squawk` table.  This also includes the 
 squawk table loading data.  Default output file name is __./stratux.mysql.squawk.sql__
@@ -142,18 +108,25 @@ squawk table loading data.  Default output file name is __./stratux.mysql.squawk
    Generate a MySQL database schema file, that will create the required tables if they do not
 exist, and load the squawk table with records (this will __overwrite existing squawk records__)
 
- * **export_squawk_json** - Generate a Squawk Codes JSON file 
+ * **--export_squawk_json** - Generate a Squawk Codes JSON file 
 
    Create a JSON object file with current Squawk -> Message mapping.  Default output file name is __./stratix.squawk.json__
 
    Generate a MySQL database schema file, that will create the required tables if they do not
 exist, and load the squawk table with records (this will __overwrite existing squawk records__)
 
- * **export_xlsx** - Export data in  XLSX format.
+ * **--export_xlsx** - Export data in  XLSX format.
 
 
 Release Notes
 =============
+
+###  2-NOV-2017
+Project updated to generate a fat .jar.  Final target jar will integrate any required supporting code modules/jars into
+the monolithic application package (.jar)
+
+###  1-NOV-2017
+Updated project to use Apache Maven!  
 
 ### 26-OCT-2017
 Added Creative Commons Licensing file allowing Non-Commercial use of code.
@@ -283,3 +256,31 @@ Example:
  
 *NOTE: Removing the dupes seemed to resolve the *8300 Mile Range Issue* as a side-effect
 
+License
+=======
+
+Summary:
+
+This software is offered under the __Creative Commons Attribution-NonCommercial 
+4.0 International Public License__ 
+
+### YOU MUST
+
+   __Attribution__ — You must give appropriate credit, provide a link to the 
+license, and indicate if changes were made. You may do so in any reasonable manner, 
+but not in any way that suggests the licensor endorses you or your use.
+
+### YOU MAY
+
+   __Share__ — copy and redistribute the material in any medium or format
+
+   __Adapt__ — remix, transform, and build upon the material
+
+### YOU MAY NOT
+
+   __NonCommercial__ — You may not use the material for commercial purposes.
+
+   __No additional restrictions__ — You may not apply legal terms or technological 
+measures that legally restrict others from doing anything the license permits.
+
+__Full text is available in file:  LICENSE.md__

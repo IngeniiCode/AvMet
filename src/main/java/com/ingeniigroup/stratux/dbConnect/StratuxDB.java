@@ -10,7 +10,6 @@
  */
 package com.ingeniigroup.stratux.dbConnect;
 
-import com.ingeniigroup.stratux.Repair.FixTrafficTable;
 import java.io.File;
 import java.util.List;
 import java.util.ArrayList;
@@ -146,7 +145,7 @@ public class StratuxDB {
 			});
 		}
 		catch (Exception ex){
-			System.err.println("Unabled to unlink database artifacts -- you may need to clean them up individually.");
+			System.err.println("Unable to unlink database artifacts -- you may need to clean them up individually.");
 		}
 	} 
 	
