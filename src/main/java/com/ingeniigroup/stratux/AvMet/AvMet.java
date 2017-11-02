@@ -48,17 +48,16 @@ import joptsimple.OptionSet;
  */
 public class AvMet {
 	
-	private static boolean   waszipped;           // original file was gzipped
-	private static boolean   rezip;               // re-zip the file 
+	private static boolean   waszipped;        // original file was gzipped
 
-	private static String    sourcefile;          // origin database file
+	private static String    sourcefile;       // origin database file
 	private static String    dbFname;
 	
-	private static OptionSet    OPT;              // object for OptionSet
-	private static StratuxDB    DB;               // obejct for SQLite STRATUX db
-	private static MySQL        MySQL;            // object for MYSQL export
-	private static JSON         JSON;             // object for JSON export
-	private static XLSX         XLSX;             // object for XSLS export
+	private static OptionSet OPT;              // object for OptionSet
+	private static StratuxDB DB;               // obejct for SQLite STRATUX db
+	private static MySQL     MySQL;            // object for MYSQL export
+	private static JSON      JSON;             // object for JSON export
+	private static XLSX      XLSX;             // object for XSLS export
 	
 	/**
 	 * @param args the command line arguments
@@ -134,6 +133,7 @@ public class AvMet {
 			parser.accepts( "nodb"      ,"run without an input db" );
 			parser.accepts( "db"        ,"path to source STRATUX SQLite3 database file").requiredUnless( "nodb" ).withRequiredArg(); // required unless nodb used
 			parser.accepts( "keepdb"    ,"keep source database file" );
+//			parser.accepts( "rezip"     ,"re-zip extracted database file (only when extraction was performed)");
 			parser.accepts( "scrub"     ,"scrub out obviously bad data" );
 			parser.accepts( "pack"      ,"remove possitionaly duplicate entries (aggressive)" );
 			parser.accepts( "tempdb"    ,"extract to a tempoary db file ").withOptionalArg();
