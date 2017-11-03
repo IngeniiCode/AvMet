@@ -11,19 +11,14 @@ Ingenii Group LLC
 http://www.daviddemartini.com
 software@ingeniigroup.com
 
-Version 0.1.0
+Version 0.2.0
 
 Announcements!
 ==============
 
-### 1-NOV-2017
-
-__MAVEN__ -- converted project to Apache Maven.
-
-
-### 26-OCT-2017
-*  Implemented Gross Error detection and mitigation -- this has almost completely
-eliminate extreme tracking events.  Some edge cases persist; improvements are continuing.
+###  2-NOV-2017
+Project updated to generate a fat .jar.  Final target jar will integrate any required supporting code modules/jars into
+the monolithic application package (.jar)
 
 Check the release notes for latest new features and caveats!!  v.0.1.0 
 
