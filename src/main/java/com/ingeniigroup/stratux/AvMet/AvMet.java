@@ -1,4 +1,41 @@
 /**
+ *  Copyright (c) 2017  David DeMartini @ Ingenii Group LLC
+ * 
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ * 
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
+ */
+package com.ingeniigroup.stratux.AvMet;
+
+import com.ingeniigroup.stratux.dbConnect.*;
+import com.ingeniigroup.stratux.dbReader.*;
+import com.ingeniigroup.stratux.Export.DB.*;
+import com.ingeniigroup.stratux.Export.File.*;
+import com.ingeniigroup.stratux.Repair.FixTrafficTable;
+import com.ingeniigroup.stratux.ReportWriter.ReportSummary;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import static java.util.Arrays.asList;
+
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+
+/**
  * AvMet - Aviation Metrics Application
  *
  * Proof of Concept demonstrator project
@@ -27,25 +64,6 @@
  * 
  * 
  */
-package com.ingeniigroup.stratux.AvMet;
-
-import com.ingeniigroup.stratux.dbConnect.*;
-import com.ingeniigroup.stratux.dbReader.*;
-import com.ingeniigroup.stratux.Export.DB.*;
-import com.ingeniigroup.stratux.Export.File.*;
-import com.ingeniigroup.stratux.Repair.FixTrafficTable;
-
-import java.io.IOException;
-import java.sql.SQLException;
-import static java.util.Arrays.asList;
-
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-
-
-/**
- * @author David DeMartini - Ingenii Group LLC
- */
 public class AvMet {
 	
 	private static boolean   waszipped;        // original file was gzipped
@@ -53,11 +71,11 @@ public class AvMet {
 	private static String    sourcefile;       // origin database file
 	private static String    dbFname;
 	
-	private static OptionSet OPT;              // object for OptionSet
-	private static StratuxDB DB;               // obejct for SQLite STRATUX db
-	private static MySQL     MySQL;            // object for MYSQL export
-	private static JSON      JSON;             // object for JSON export
-	private static XLSX      XLSX;             // object for XSLS export
+	private static OptionSet     OPT;              // object for OptionSet
+	private static StratuxDB     DB;               // obejct for SQLite STRATUX db
+	private static MySQL         MySQL;            // object for MYSQL export
+	private static JSON          JSON;             // object for JSON export
+	private static XLSX          XLSX;             // object for XSLS export
 	
 	/**
 	 * @param args the command line arguments
@@ -129,6 +147,7 @@ public class AvMet {
 		OptionParser parser = new OptionParser();
 
 		try {			
+			
 			// configure the object 
 			parser.accepts( "nodb"      ,"run without an input db" );
 			parser.accepts( "db"        ,"path to source STRATUX SQLite3 database file").requiredUnless( "nodb" ).withRequiredArg(); // required unless nodb used
@@ -140,14 +159,21 @@ public class AvMet {
 			parser.accepts( "keepdupes" ,"retain duplicate traffic records, only has impact when --scrub used" );
 			parser.accepts( "verbose"   ,"be noisy" );
 			parser.accepts( "useprefix" ,"use a date-time stamp for exported files" ).withOptionalArg();
+
 			// MySQL Export Flags
 //			parser.accepts( "export_mysql",         "-- not currently implemented --" );
 			parser.accepts( "export_mysql_schema",  "export MySQL CREATE TABLE statements to build database" );
+
 			// Squawk Exports
-			parser.accepts( "export_squawk_mysql",  "export MySQL INSERTS to populate the squawk lookup table" );
+			parser.accepts( "export_squawk_mysql",  "export MySQL INSERTS to populate the Squawk lookup table" );
 			parser.accepts( "export_squawk_json",   "export Squawk codes into a Json data object" );
+
 			// XLSX Export Flags
-//			parser.accepts( "export_xlsx",          "-- not currently implemented --" );
+			parser.accepts( "export_xls",    "export the daily summary report in XLS format" );
+			parser.accepts( "export_xls_to", "export / append output data to specific file").withRequiredArg();
+
+			// JavaScript Export Flags
+//			parser.accepts( "export_map_points",    "export Google Maps compatible map points for flight path" );
 
 			// Enable Help Options
 			parser.acceptsAll( asList( "h", "?" ), "show help" ).forHelp();
@@ -217,47 +243,11 @@ public class AvMet {
 	private static void reportMetrics() throws SQLException{
 		
 		// setup the interfaces
-		traffic traffic = new traffic(AvMet.DB);
+		ReportSummary SUM = new ReportSummary(AvMet.DB);
 		
-		// Display start time
-		traffic.getFirstTime();
+		// now do some printing with a report writer object of some sort?
 		
-		// Highest speed 
-		traffic.getFastest(); 
-
-		// Slowest speed ( greater than 25 kts)
-		traffic.getSlowest();
-
-		// Highest altitude
-		traffic.getHighest();
-				
-		// Lowest altitude ( greater than 0 )
-		traffic.getLowest();
-
-		// Most contact events
-		
-
-		// Fewest contact events
-		
-
-		// Closest contact
-		traffic.getClosest();
-		
-		// Furthest contact
-		traffic.getFurthest();
-		
-		// Squawk counts
-		
-
-		// Emergency Squawk events
-		traffic.reportEmergencies();
-		
-		// Non-Emergency special Squawk events
-		traffic.reportSpecialIdents();
-				
-		// Flyover events (less than 1nm range)
-		
-
+	
 	}
 	
 	/**
@@ -285,8 +275,11 @@ public class AvMet {
 			AvMet.MySQL.ExportData();
 		}
 		
-		if(OPT.has("export_xlsx")){
-			AvMet.XLSX = new XLSX(OPT.has("useprefix"));
+		if(OPT.has("export_xlsx") || OPT.has("export_xls_to")){
+			AvMet.XLSX = new XLSX(OPT.has("export_xls_to"));
+			if(OPT.has("export_xls_to")){
+				AvMet.XLSX.useExisting(OPT.valueOf("export_xls_to").toString());
+			}
 			AvMet.XLSX.ExportData();
 		}
 		

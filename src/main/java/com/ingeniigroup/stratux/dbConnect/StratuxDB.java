@@ -1,12 +1,23 @@
 /**
- *  STRATUX  SQLite3 database interaction utility
+ *  Copyright (c) 2017  David DeMartini @ Ingenii Group LLC
  * 
- * @since 6 October 2017
- * @author David DeMartini
- * @serial com.ingeniigroup.stratux.avmet.04
- * @version 0.2.0
- * @see http://www.ingeniigroup.com/stratux/avmet
- * @repo https://github.com/IngeniiCode/AvMet
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ * 
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
  */
 package com.ingeniigroup.stratux.dbConnect;
 
@@ -21,8 +32,14 @@ import java.sql.DriverManager;
 import java.util.Iterator;
 
 /**
- *
- * @author david
+ *  STRATUX  SQLite3 database interaction utility
+ * 
+ * @since 6 October 2017
+ * @author David DeMartini
+ * @serial com.ingeniigroup.stratux.avmet.04
+ * @version 0.2.0
+ * @see http://www.ingeniigroup.com/stratux/avmet
+ * @repo https://github.com/IngeniiCode/AvMet
  */
 public class StratuxDB {
 	
@@ -134,7 +151,7 @@ public class StratuxDB {
 		
 		try {
 		
-			System.out.println("Cleaning up artifact files..");
+			if(verbose) System.out.println("Cleaning up artifact files.."); 
 			
 			files.forEach(filename -> {
 				File unwanted = new File(filename);
@@ -145,7 +162,7 @@ public class StratuxDB {
 			});
 		}
 		catch (Exception ex){
-			System.err.println("Unable to unlink database artifacts -- you may need to clean them up individually.");
+			System.err.printf("Unable to unlink database artifacts -- you may need to clean them up individually.\tERR: %s\n",ex.getMessage());
 		}
 	} 
 	

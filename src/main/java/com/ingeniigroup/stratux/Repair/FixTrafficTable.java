@@ -1,14 +1,23 @@
 /**
- * SQLite STRATUX <traffic> table repair utility
+ *  Copyright (c) 2017  David DeMartini @ Ingenii Group LLC
  * 
- * Centralized file testing methods
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
  * 
- * @since 12 October 2017
- * @author David DeMartini
- * @serial com.ingeniigroup.stratux.avmet.04
- * @version 0.2.0
- * @see http://www.ingeniigroup.com/stratux/avmet
- * @repo https://github.com/IngeniiCode/AvMet
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
  */
 package com.ingeniigroup.stratux.Repair;
 
@@ -20,8 +29,16 @@ import com.ingeniigroup.stratux.dbConnect.StratuxDB;
 import java.sql.ResultSet;
 
 /**
- *
- * @author david
+ * SQLite STRATUX <traffic> table repair utility
+ * 
+ * Centralized file testing methods
+ * 
+ * @since 12 October 2017
+ * @author David DeMartini
+ * @serial com.ingeniigroup.stratux.avmet.04
+ * @version 0.2.0
+ * @see http://www.ingeniigroup.com/stratux/avmet
+ * @repo https://github.com/IngeniiCode/AvMet
  */
 public class FixTrafficTable {
 	
@@ -32,7 +49,6 @@ public class FixTrafficTable {
 	private static boolean verbose;
 	private static boolean keepdupes;
 	private static int  total_contacts   = 0;
-	private static int  error_contacts   = 0;
 	private static int  deleted_contacts = 0;
 	
 	/**
@@ -57,7 +73,7 @@ public class FixTrafficTable {
 		fixTrafficData();
 		
 		// announce completion of this state in processing
-		System.out.printf("Processed %d records, removed %d errors\n",FixTrafficTable.total_contacts,FixTrafficTable.error_contacts);
+		System.out.printf("Processed %d records\n",FixTrafficTable.total_contacts);
 		
 	}
 	
@@ -273,8 +289,14 @@ public class FixTrafficTable {
 	}
 
 	/**
-	 *  Bad Altitude Comparitor 
+	 * Bad Altitude Comparator 
 	 * 
+	 * Detect and remove ridiculous altitude values from database
+	 * 
+	 * @param altitude
+	 * @param prev_altitude
+	 * @param vertical_vel
+	 * @return 
 	 */
 	private static boolean badAltitude(int altitude,int prev_altitude,int vertical_vel){
 		
@@ -296,9 +318,14 @@ public class FixTrafficTable {
 		
 	}
 	
-	/** Bad Speed Comparitor
+	/**
+	 * Bad Speed Comparator
 	 * 
+	 * Remove excessive speed delta records
 	 * 
+	 * @param speed
+	 * @param prev_speed
+	 * @return 
 	 */
 	private static boolean badSpeed(int speed, int prev_speed){
 		if(prev_speed == -1 || prev_speed < 100){
@@ -422,11 +449,11 @@ public class FixTrafficTable {
 		// more than 1000 miles away...  that's just not going to be very belieable if there
 		// are only a small number of hits, that arbitrary number being less than 5. 
 		FixTrafficTable.DB.sqlExecute("DELETE FROM traffic WHERE id IN (" +
-			"SELECT id FROM traffic WHERE Icao_addr IN(SELECT Icao_addr as hits FROM traffic WHERE Alt>55000 GROUP BY Icao_addr HAVING count(*) < 5) and Alt>55000\n" +
+			"SELECT id FROM traffic WHERE Icao_addr IN(SELECT Icao_addr AS hits FROM traffic WHERE Alt>55000 GROUP BY Icao_addr HAVING count(*) < 5) and Alt>55000\n" +
 			" UNION " +
-			"SELECT id FROM traffic WHERE Icao_addr IN(SELECT Icao_addr as hits FROM traffic WHERE Alt < 0 GROUP BY Icao_addr HAVING count(*) < 5) and Alt < 0\n" +
+			"SELECT id FROM traffic WHERE Icao_addr IN(SELECT Icao_addr AS hits FROM traffic WHERE Alt < 0 GROUP BY Icao_addr HAVING count(*) < 5) and Alt < 0\n" +
 			" UNION " +
-			"SELECT id FROM traffic WHERE Icao_addr IN(SELECT Icao_addr as hits FROM traffic WHERE (Distance * 0.000621371) > 500 GROUP BY Icao_addr HAVING count(*) < 5) and (Distance * 0.000621371) > 500" +
+			"SELECT id FROM traffic WHERE Icao_addr IN(SELECT Icao_addr AS hits FROM traffic WHERE (Distance * 0.000621371) > 500 GROUP BY Icao_addr HAVING count(*) < 5) and (Distance * 0.000621371) > 500" +
 			");");
 				
 	}

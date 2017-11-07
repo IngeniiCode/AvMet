@@ -16,11 +16,14 @@ Version 0.2.0
 Announcements!
 ==============
 
+### 13-NOV-2017
+Project now using a more liberal OSS license.  See LICENSE.md for details.
+
 ###  2-NOV-2017
 Project updated to generate a fat .jar.  Final target jar will integrate any required supporting code modules/jars into
 the monolithic application package (.jar)
 
-Check the release notes for latest new features and caveats!!  v.0.1.0 
+Check the release notes for latest new features and caveats!!  v.0.2.0 
 
 Running AvMet
 =============
@@ -110,11 +113,48 @@ exist, and load the squawk table with records (this will __overwrite existing sq
    Generate a MySQL database schema file, that will create the required tables if they do not
 exist, and load the squawk table with records (this will __overwrite existing squawk records__)
 
- * **--export_xlsx** - Export data in  XLSX format.
+ * **--export_xls** - Enabled XLS workbook exporting (minimal flag).
 
+   Create an XLS workbook of the day's summary data.
+
+ * **--export_xls_to=<outfile>** - Write/Append XLSX data out to specific file
+   
+   Write or append the output data to specific file.  Creates new file is it does not
+already exist; appends to workbook using new day-specific tabs if valid XLS file. 
 
 Release Notes
 =============
+
+### 13-NOV-2017
+Scrapped the complex and restrictive Creative Commons license, and replaced it 
+with a simpler one, that allows commercial and non-commercial re-use, as long as
+attribution is provided for the work done.
+
+###  3-NOV-2017
+Adding Excel (XLSX) integration requires 3rd party libraries.  Although ease of 
+use is nice, my primary concern is WEIGHT of the code!
+
+Results of testing the impact of integration of these packages:
+
+__Pre Apache-POI Excell integration__
+  -rw-r--r-- 1 david staff    74,257 Nov  2 17:08 AvMet-0.1.0.jar
+  -rw-r--r-- 1 david staff  6,772,749 Nov  2 17:08 AvMet.jar
+
+__Post Apache-POI Excell integration__
+  -rw-r--r-- 1 david staff    74,538 Nov  3 07:51 AvMet-0.1.0.jar
+  -rw-r--r-- 1 david staff 20,393,477 Nov  3 07:51 AvMet.jar
+
+__Post JExcelAPI Integration__
+  -rw-r--r-- 1 david staff    74,521 Nov  3 07:54 AvMet-0.1.0.jar
+  -rw-r--r-- 1 david staff  7,865,204 Nov  3 07:54 AvMet.jar
+
+The results are quite clear.  Despite the added complexity of programming 
+JXL vs. the POI solution, the impact of adding POI to the final .jar is more than
+I find acceptable.  
+
+
+
+
 
 ###  2-NOV-2017
 Project updated to generate a fat .jar.  Final target jar will integrate any required supporting code modules/jars into

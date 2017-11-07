@@ -1,13 +1,25 @@
 /**
- * STRATUX Database - traffic table interface   
+ *  Copyright (c) 2017  David DeMartini @ Ingenii Group LLC
  * 
- * @since 6 October 2017
- * @author David DeMartini
- * @serial com.ingeniigroup.stratux.avmet.04
- * @version 0.2.0
- * @see http://www.ingeniigroup.com/stratux/avmet
- * @repo https://github.com/IngeniiCode/AvMet
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ * 
+ *  The above copyright notice and this permission notice shall be included in all
+ *  copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ *  SOFTWARE.
  */
+
 package com.ingeniigroup.stratux.dbReader;
 
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
@@ -18,14 +30,21 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
 /**
- *
- * @author David DeMartini 
+ * STRATUX Database - traffic table interface   
+ * 
+ * @since 6 October 2017
+ * @author David DeMartini
+ * @serial com.ingeniigroup.stratux.avmet.04
+ * @version 0.2.0
+ * @see http://www.ingeniigroup.com/stratux/avmet
+ * @repo https://github.com/IngeniiCode/AvMet
  */
 public class traffic {
 
 	private static StratuxDB DB;
-	private static boolean verbose;
-	private static boolean include_5100_5300_DOD;  // future feature to re-include 5100-5300 range as DOD aircraft
+	private static String    start_time;
+	private static String    end_time;
+	private static boolean   include_5100_5300_DOD;  // future feature to re-include 5100-5300 range as DOD aircraft
 	
 	/**
 	 * Constructor
@@ -37,22 +56,25 @@ public class traffic {
 	}
 	
 	/**
-	 * Get dataset start time from traffic database
-	 * 
-	 * @return  String timestamp  
+	 * Start the Report display
+	 *   
 	 */
-	public void getFirstTime(){
-		
+	public void startReport(){
+				
 		// define query to find fastest aircraft
-		String sql  = "SELECT MIN(timestamp) as timestamp FROM traffic";
+		String sql  = "SELECT substr(MIN(timestamp),0,20) AS start_time, substr(MAX(timestamp),0,20) AS end_time FROM traffic";
 		
 		try {
 			// prepare, execute query and get resultSet
 			ResultSet result = traffic.DB.getResultSet(sql);
-
+			
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				System.out.printf("\tStart: %s\n\t-----------------------------------------\n",result.getString("timestamp"));
+				start_time = result.getString("start_time");
+				end_time   = result.getString("end_time");
+				System.out.println("============================================================================");
+				System.out.printf("\t%s UTC   -->   %s UTC\n",start_time,end_time);
+				System.out.println("\t--------------------------------------------------------------------");
 			}
 		}
 		catch (Exception ex){
