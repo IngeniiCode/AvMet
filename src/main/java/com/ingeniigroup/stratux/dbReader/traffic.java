@@ -28,6 +28,8 @@ import com.ingeniigroup.stratux.Tools.Squawk;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * STRATUX Database - traffic table interface   
@@ -42,9 +44,9 @@ import java.sql.SQLException;
 public class traffic {
 
 	private static StratuxDB DB;
-	private static String    start_time;
-	private static String    end_time;
 	private static boolean   include_5100_5300_DOD;  // future feature to re-include 5100-5300 range as DOD aircraft
+	public  static String    start_time;   // expose for use by other things
+	public  static String    end_time;     // expose for use by other things
 	
 	/**
 	 * Constructor
@@ -72,9 +74,9 @@ public class traffic {
 			if (traffic.DB.getResultNextRecord(result)) {
 				start_time = result.getString("start_time");
 				end_time   = result.getString("end_time");
-				System.out.println("============================================================================");
-				System.out.printf("\t%s UTC   -->   %s UTC\n",start_time,end_time);
-				System.out.println("\t--------------------------------------------------------------------");
+//				System.out.println("============================================================================");
+//				System.out.printf("\t%s UTC   -->   %s UTC\n",start_time,end_time);
+//				System.out.println("\t--------------------------------------------------------------------");
 			}
 		}
 		catch (Exception ex){
@@ -87,7 +89,9 @@ public class traffic {
 	 * 
 	 * @return Object fastest contact. 
 	 */
-	public boolean getFastest(){
+	public HashMap getFastest(){
+		
+		HashMap data = new HashMap();
 		
 		// define query to find fastest aircraft
 		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY Speed DESC LIMIT 1";
@@ -98,15 +102,14 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				reportStat("FASTEST:",result);
-				return true;
+				data = map("FASTEST:",result);
 			}
 		}
 		catch (Exception ex){
 			System.err.printf("getFastest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
-		return false;
+		return data;
 	}
 	
 	/**
@@ -385,7 +388,7 @@ public class traffic {
 	 * 
 	 * @throws SQLException 
 	 */
-	private void reportStat(String type,ResultSet result) throws SQLException {
+	private void reportStat(String label,ResultSet result) throws SQLException {
 		
 		try {
 			int    Icao_addr = result.getInt("Icao_addr");
@@ -399,14 +402,49 @@ public class traffic {
 			String SquawkCode = (SqCode > 0) ? String.format("%04d",SqCode) : "----";
 			// there was something there.
 			
-			System.out.printf("\t%13s %7s [%6s]  %s  %7d ft.  %4d kts.  %6s mi.  -  %s\n",type,Callsign,ICOA24,SquawkCode,Altitude,Speed,Distance,Message);
+			System.out.printf("\t%13s %7s [%6s]  %s  %7d ft.  %4d kts.  %6s mi.  -  %s\n",label,Callsign,ICOA24,SquawkCode,Altitude,Speed,Distance,Message);
 		}
 		catch (Exception ex){
-			System.err.printf("reportStat %s ERROR: %s\n",type,ex.getMessage());
+			System.err.printf("reportStat %s ERROR: %s\n",label,ex.getMessage());
 		}
 		
 	}
 	
+	/**
+	 * 
+	 * @param type
+	 * @param result
+	 * @return
+	 * @throws SQLException 
+	 */
+	private HashMap map(String label,ResultSet result) throws SQLException {
+	
+		HashMap map = new HashMap();
+		
+		try {
+			
+			int Icao_addr = result.getInt("Icao_addr");
+			int SqCode    = result.getInt("Squawk");
+			
+			map.put("Label",label);
+			map.put("Icao_addr",Icao_addr);
+			map.put("Altitude", result.getInt("Alt"));
+			map.put("Speed",result.getInt("Speed"));
+			map.put("SqCode",SqCode);
+			map.put("Callsign",findTail(result.getString("Callsign"),Icao_addr));
+			map.put("ICOA24",ICAO.int2ICAO24(Icao_addr));
+			map.put("Distance",(result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles")));
+			map.put("Message",Squawk.getMessage(SqCode));
+			map.put("SquawkCode",(SqCode > 0) ? String.format("%04d",SqCode) : "----");
+
+		}
+		catch (Exception ex){
+			System.err.printf("traffic.map ERROR: %s\n",ex.getMessage());
+		}
+	
+		return map;
+	}
+
 	/**
 	 * Standardized Squawk Event Statistic String Formatter
 	 * 

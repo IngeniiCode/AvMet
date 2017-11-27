@@ -24,8 +24,16 @@ package com.ingeniigroup.stratux.ReportWriter;
 
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
 import com.ingeniigroup.stratux.AvMet.AvMet;
+import com.ingeniigroup.stratux.Tools.ICAO;
+import com.ingeniigroup.stratux.Tools.Squawk;
 import com.ingeniigroup.stratux.dbReader.traffic;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * AvMet - Summary Report Generator
@@ -39,10 +47,14 @@ import java.sql.SQLException;
  */
 public class ReportSummary {
 	
-	private static StratuxDB DB;
-	private static String    start_time;
-	private static String    end_time;
-
+	private StratuxDB  DB;
+	private String     start_time;
+	private String     end_time;
+	/* data containers */
+	private List<HashMap>  General; 
+	private List<HashMap>  Emergency;
+	private List<HashMap>  Special;
+	
 	/**
 	 * CONSTRUCTOR
 	 * 
@@ -51,11 +63,16 @@ public class ReportSummary {
 	 */
 	public ReportSummary(StratuxDB db) throws SQLException  {
 		
+		// setup
+		General   = new ArrayList<HashMap>();
+		Emergency = new ArrayList<HashMap>();
+		Special   = new ArrayList<HashMap>();
+		
 		// import the connection
 		DB = db;  
 		
 		// execute the get()
-		get();
+		getMetrics();
 	}
 	
 	/**
@@ -63,25 +80,27 @@ public class ReportSummary {
 	 *  modules
 	 * 
 	 */
-	private void get() throws SQLException {
+	private void getMetrics() throws SQLException {
 		
 		// setup the interfaces
 		traffic traffic = new traffic(DB);
 		
 		// Display start time
 		traffic.startReport();
+		start_time = traffic.start_time;
+		end_time   = traffic.end_time;
 		
 		// Highest speed 
-		traffic.getFastest(); 
+		General.add(traffic.getFastest());
 
 		// Slowest speed ( greater than 25 kts)
-		traffic.getSlowest();
+		//General.add(traffic.getSlowest());
 
 		// Highest altitude
-		traffic.getHighest();
+		//General.add(traffic.getHighest());
 				
 		// Lowest altitude ( greater than 0 )
-		traffic.getLowest();
+		//General.add(traffic.getLowest());
 
 		// Most contact events
 		
@@ -90,24 +109,76 @@ public class ReportSummary {
 		
 
 		// Closest contact
-		traffic.getClosest();
+		//General.add(traffic.getClosest());
 		
 		// Furthest contact
-		traffic.getFurthest();
+		//General.add(traffic.getFurthest());
 		
 		// Squawk counts
 		
 
 		// Emergency Squawk events
-		traffic.reportEmergencies();
+		//Emergency.add(traffic.reportEmergencies());
 		
 		// Non-Emergency special Squawk events
-		traffic.reportSpecialIdents();
+		//Special.add(traffic.reportSpecialIdents());
 				
 		// Flyover events (less than 1nm range)
 		
-
 	}
 	
+	/**
+	 * Standardized Event Statistic String Formatter
+	 * 
+	 * @param String type
+	 * @param ResultSet result
+	 * 
+	 * @throws SQLException 
+	 */
+	private void printStat(HashMap item) throws SQLException {
+		
+		try {
+			String Label       = item.get("Label").toString();
+			int    Icao_addr  = Integer.parseInt(item.get("Icao_addr").toString());
+			int    Altitude   = Integer.parseInt(item.get("Alt").toString());
+			int    Speed      = Integer.parseInt(item.get("Speed").toString());
+			int    SqCode     = Integer.parseInt(item.get("Squawk").toString());
+			float  DistMi     = Float.parseFloat(item.get("Dist_miles").toString());
+			String Callsign   = item.get("Callsign").toString();
+			String ICOA24     = item.get("ICOA24").toString();  // convert the integer into expected format
+			String Distance   = ((DistMi) < 5.0) ? String.format("%.02f",DistMi) : String.format("%f",DistMi);
+			String Message    = Squawk.getMessage(SqCode);
+			String SquawkCode = (SqCode > 0) ? String.format("%04d",SqCode) : "----";
+			// there was something there.
+			
+			System.out.printf("\t%13s %7s [%6s]  %s  %7d ft.  %4d kts.  %6s mi.  -  %s\n",Label,Callsign,ICOA24,SquawkCode,Altitude,Speed,Distance,Message);
+		}
+		catch (Exception ex){
+			System.err.printf("reportStat ERROR: %s\n",ex.getMessage());
+		}
+		
+	}
 	
+	/**
+	 *  Write the data to STDOUT
+	 */
+	public void STDOUT() throws SQLException {
+		
+		// Print out the summary header block
+		System.out.println("============================================================================");
+		System.out.printf("\t%s UTC   -->   %s UTC\n",traffic.start_time,traffic.end_time);
+		System.out.println("\t--------------------------------------------------------------------");
+		
+		// Print out the General metrics if it has entries
+		if(!General.isEmpty()){
+			Iterator<HashMap> itr = General.iterator();
+
+			// iterate 
+			while (itr.hasNext()) { 
+				HashMap item = itr.next();
+				printStat(item);
+			}
+			
+		}
+	}
 }

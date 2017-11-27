@@ -246,6 +246,7 @@ public class AvMet {
 		ReportSummary SUM = new ReportSummary(AvMet.DB);
 		
 		// now do some printing with a report writer object of some sort?
+		SUM.STDOUT();  // write report to STDOUT
 		
 	
 	}

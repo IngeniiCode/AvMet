@@ -154,9 +154,6 @@ JXL vs. the POI solution, the impact of adding POI to the final .jar is more tha
 I find acceptable.  
 
 
-
-
-
 ###  2-NOV-2017
 Project updated to generate a fat .jar.  Final target jar will integrate any required supporting code modules/jars into
 the monolithic application package (.jar)
@@ -168,7 +165,7 @@ Updated project to use Apache Maven!
 Added Creative Commons Licensing file allowing Non-Commercial use of code.
 
 Implemented Gross Error detection and mitigation -- this has almost completely
-eliminate extreme tracking events.  Some edge cases persist; improvements are continuing.
+eliminated extreme tracking events.  Some edge cases persist; improvements are continuing.
 
 ### 19-OCT-2017
 New option to export existing Squawk data into a JSON data object.  This is suitable for a variety
