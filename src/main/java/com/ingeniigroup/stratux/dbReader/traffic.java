@@ -43,10 +43,13 @@ import java.util.HashMap;
  */
 public class traffic {
 
+	// storage
 	private static StratuxDB DB;
 	private static boolean   include_5100_5300_DOD;  // future feature to re-include 5100-5300 range as DOD aircraft
 	public  static String    start_time;   // expose for use by other things
 	public  static String    end_time;     // expose for use by other things
+	// const
+	private final static String SELECT_TRAFFIC = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic";
 	
 	/**
 	 * Constructor
@@ -74,9 +77,6 @@ public class traffic {
 			if (traffic.DB.getResultNextRecord(result)) {
 				start_time = result.getString("start_time");
 				end_time   = result.getString("end_time");
-//				System.out.println("============================================================================");
-//				System.out.printf("\t%s UTC   -->   %s UTC\n",start_time,end_time);
-//				System.out.println("\t--------------------------------------------------------------------");
 			}
 		}
 		catch (Exception ex){
@@ -91,10 +91,11 @@ public class traffic {
 	 */
 	public HashMap getFastest(){
 		
+		// local storage for the data map
 		HashMap data = new HashMap();
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY Speed DESC LIMIT 1";
+		String sql  = SELECT_TRAFFIC + " WHERE Speed_valid=1 AND OnGround=0 ORDER BY Speed DESC LIMIT 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -117,10 +118,13 @@ public class traffic {
 	 * 
 	 * @return Object slowest contact. 
 	 */
-	public boolean getSlowest(){
+	public HashMap getSlowest(){
+		
+		// local storage for the data map
+		HashMap data = new HashMap();
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 ORDER BY Speed ASC LIMIT 1";
+		String sql  = SELECT_TRAFFIC + " WHERE Speed_valid=1 AND OnGround=0 ORDER BY Speed ASC LIMIT 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -128,25 +132,27 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				reportStat("SLOWEST:",result);
-				return true;
+				data = map("SLOWEST:",result);
 			}
 		}
 		catch (Exception ex){
 			System.err.printf("getSlowest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
-		return false;
+		return data;
 	}	
 	
 	/**
 	 * 
 	 * @return Object highest altitude contact. 
 	 */
-	public boolean getHighest(){
+	public HashMap getHighest(){
+		
+		// local storage for the data map
+		HashMap data = new HashMap();
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt desc limit 1";
+		String sql  = SELECT_TRAFFIC + " WHERE Speed_valid=1 AND OnGround=0 order by Alt desc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -154,25 +160,27 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				reportStat("HIGHEST:",result);
-				return true;
+				data = map("HIGHEST:",result);
 			}
 		}
 		catch (Exception ex){
 			System.err.printf("getHighest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
-		return false;
+		return data;
 	}
 	
 	/**
 	 * 
 	 * @return Object highest altitude contact. 
 	 */
-	public boolean getLowest(){
+	public HashMap getLowest(){
+		
+		// local storage for the data map
+		HashMap data = new HashMap();
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Alt asc limit 1";
+		String sql  = SELECT_TRAFFIC + " WHERE Speed_valid=1 AND OnGround=0 order by Alt asc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -180,51 +188,27 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				reportStat("LOWEST:",result);
-				return true;
+				data = map("LOWEST:",result);
 			}
 		}
 		catch (Exception ex){
 			System.err.printf("getLowest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
-		return false;
+		return data;
 	}
 	
 	/**
 	 * 
 	 * @return Object closest off-ground contact. 
 	 */
-	public boolean getClosest(){
+	public HashMap getClosest(){
+		
+		// local storage for the data map
+		HashMap data = new HashMap();
 		
 		// define query to find fastest aircraft
-		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance asc limit 1";
-		
-		try {
-			// prepare, execute query and get resultSet
-			ResultSet result = traffic.DB.getResultSet(sql);
-
-			// check results to see if they make any sense.
-			if (traffic.DB.getResultNextRecord(result)) {		
-				reportStat("CLOSEST:",result);
-				return true;
-			}
-		}
-		catch (Exception ex){
-			System.err.printf("getClosest Error: %s\t%s\n",ex.getMessage(),sql);
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * 
-	 * @return Object closest off-ground contact. 
-	 */
-	public boolean getFurthest(){
-		
-		// define query to find fastest aircraft
-		String sql  = "SELECT Icao_addr,Tail as Callsign,Reg as Tailnum,Squawk,Alt,Speed,(Distance * 0.000621371) as Dist_miles FROM traffic WHERE Speed_valid=1 AND OnGround=0 order by Distance desc limit 1";
+		String sql  = SELECT_TRAFFIC + " WHERE Speed_valid=1 AND OnGround=0 order by Distance asc limit 1";
 		
 		try {
 			// prepare, execute query and get resultSet
@@ -232,15 +216,43 @@ public class traffic {
 
 			// check results to see if they make any sense.
 			if (traffic.DB.getResultNextRecord(result)) {
-				reportStat("FURTHEST:",result);
-				return true;
+				data = map("CLOSEST:",result);
+			}
+			
+		}
+		catch (Exception ex){
+			System.err.printf("getClosest Error: %s\t%s\n",ex.getMessage(),sql);
+		}
+		
+		return data;
+	}
+	
+	/**
+	 * 
+	 * @return Object closest off-ground contact. 
+	 */
+	public HashMap getFurthest(){
+		
+		// local storage for the data map
+		HashMap data = new HashMap();
+		
+		// define query to find fastest aircraft
+		String sql  = SELECT_TRAFFIC + " WHERE Speed_valid=1 AND OnGround=0 order by Distance desc limit 1";
+		
+		try {
+			// prepare, execute query and get resultSet
+			ResultSet result = traffic.DB.getResultSet(sql);
+
+			// check results to see if they make any sense.
+			if (traffic.DB.getResultNextRecord(result)) {
+				data = map("FURTHEST:",result);
 			}
 		}
 		catch (Exception ex){
 			System.err.printf("getFurthest Error: %s\t%s\n",ex.getMessage(),sql);
 		}
 		
-		return false;
+		return data;
 	}
 	
 	/**
@@ -381,36 +393,6 @@ public class traffic {
 	}
 	
 	/**
-	 * Standardized Event Statistic String Formatter
-	 * 
-	 * @param String type
-	 * @param ResultSet result
-	 * 
-	 * @throws SQLException 
-	 */
-	private void reportStat(String label,ResultSet result) throws SQLException {
-		
-		try {
-			int    Icao_addr = result.getInt("Icao_addr");
-			int    Altitude  = result.getInt("Alt");
-			int    Speed     = result.getInt("Speed");
-			int    SqCode    = result.getInt("Squawk"); 
-			String Callsign  = findTail(result.getString("Callsign"),Icao_addr);
-			String ICOA24    = ICAO.int2ICAO24(Icao_addr);  // convert the integer into expected format
-			String Distance  = (result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles"));
-			String Message    = Squawk.getMessage(SqCode);
-			String SquawkCode = (SqCode > 0) ? String.format("%04d",SqCode) : "----";
-			// there was something there.
-			
-			System.out.printf("\t%13s %7s [%6s]  %s  %7d ft.  %4d kts.  %6s mi.  -  %s\n",label,Callsign,ICOA24,SquawkCode,Altitude,Speed,Distance,Message);
-		}
-		catch (Exception ex){
-			System.err.printf("reportStat %s ERROR: %s\n",label,ex.getMessage());
-		}
-		
-	}
-	
-	/**
 	 * 
 	 * @param type
 	 * @param result
@@ -432,7 +414,7 @@ public class traffic {
 			map.put("Speed",result.getInt("Speed"));
 			map.put("SqCode",SqCode);
 			map.put("Callsign",findTail(result.getString("Callsign"),Icao_addr));
-			map.put("ICOA24",ICAO.int2ICAO24(Icao_addr));
+			map.put("ICA024",ICAO.int2ICAO24(Icao_addr));
 			map.put("Distance",(result.getInt("Dist_miles") < 5) ? String.format("%.02f",result.getFloat("Dist_miles")) : String.format("%d",result.getInt("Dist_miles")));
 			map.put("Message",Squawk.getMessage(SqCode));
 			map.put("SquawkCode",(SqCode > 0) ? String.format("%04d",SqCode) : "----");

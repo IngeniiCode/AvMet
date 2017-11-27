@@ -17,6 +17,17 @@ Version 0.2.0
 Announcements!
 ==============
 
+### 30-NOV-2017
+Progress Bar implementation replaces spinner effect.  Providing a visual indicator 
+of how much scrubbing is to be done and how much has been completed helps me 
+understand how long the tool might run, and also provided early indication of a
+possible process hang.
+
+### 27-NOV-2017
+Added a cute little spinner feature that shows an old-school spinning character
+when the --scrub option is in use, but not showing verbose output.  It's just a 
+visual que that the application is actually still running. 
+
 ### 13-NOV-2017
 Project now using a more liberal OSS license.  See LICENSE.md for details.
 
@@ -125,6 +136,15 @@ already exist; appends to workbook using new day-specific tabs if valid XLS file
 
 Release Notes
 =============
+
+### 30-NOV-2017
+Discovered that there would be occasional corruption in the Reg/Tail numbers of 
+the __traffic__ table.  The most recent example was an entry of '00000000' as a 
+Tail number.  This overran the expected text width of 7 chars in the output stream. 
+As a results a new Util.trunc function was added to provide a method of preventing 
+unexpected overruns.  Further data analysis of the Reg/Tail fields might indicate that 
+the Reg/Tail field needs to be increased; the table field is type TEXT, without a 
+max width, so data sampling will be necessary to truly assess the issue. (ToDo).
 
 ### 13-NOV-2017
 Scrapped the complex and restrictive Creative Commons license, and replaced it 

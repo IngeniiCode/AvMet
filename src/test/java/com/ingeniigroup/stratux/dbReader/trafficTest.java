@@ -75,9 +75,9 @@ public class trafficTest {
 	public void testGetSlowest() {
 		System.out.println("getSlowest");
 		traffic instance = new traffic(trafficTest.DB);
-		boolean result = instance.getSlowest();
+		HashMap result = instance.getSlowest();
 		// TODO review the generated test code and remove the default call to fail.
-		assertTrue(result);
+		//assertTrue(result);
 	}
 
 	/**
@@ -87,9 +87,9 @@ public class trafficTest {
 	public void testGetHighest() {
 		System.out.println("getHighest");
 		traffic instance = new traffic(trafficTest.DB);
-		boolean result = instance.getHighest();
+		HashMap result = instance.getHighest();
 		// TODO review the generated test code and remove the default call to fail.
-		assertTrue(result);
+		//assertTrue(result);
 	}
 
 	/**
