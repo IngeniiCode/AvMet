@@ -26,10 +26,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
+import com.ingeniigroup.stratux.Tools.ProgressBar;
 import java.sql.ResultSet;
 
 /**
- * SQLite STRATUX <traffic> table repair utility
+ * SQLite STRATUX traffic table repair utility
  * 
  * Centralized file testing methods
  * 
@@ -53,6 +54,7 @@ public class FixTrafficTable {
 	
 	/**
 	 * Constructor -- needs to be passed the StratuxDB object
+	 * 
 	 * @param dbconn 
 	 */
 	public static void Fix(StratuxDB dbconn) {
@@ -100,6 +102,8 @@ public class FixTrafficTable {
 	/**
 	 * Construct an iteration wrapper to call the individual aircraft repair processes.
 	 * 
+	 * NOTE: Status bar output does not occur when operating in verbose mode.
+	 * 
 	 * @return boolean true | false
 	 */
 	private static boolean fixTrafficData() {
@@ -110,10 +114,17 @@ public class FixTrafficTable {
 		// create an iterator
 		Iterator<Integer> aircraftIterator = FixTrafficTable.aircraft.iterator();
 		
+		if (!verbose) {
+			ProgressBar.start(FixTrafficTable.aircraft.size());  // start bar with recsize
+		}  
+		
 		// iterate 
 		while (aircraftIterator.hasNext()) {
 			fixAircraftLog(aircraftIterator.next());
+			if (!verbose) ProgressBar.next();  // increment progress bar progress
 		}
+	
+		if (!verbose) ProgressBar.done();  // end progress bar
 		
 		// check batch to see if it has entries, if so then execute them
 		if(!FixTrafficTable.sql_batch_delete.isEmpty()){

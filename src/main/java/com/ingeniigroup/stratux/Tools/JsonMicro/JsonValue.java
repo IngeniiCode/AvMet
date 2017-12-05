@@ -476,7 +476,7 @@ public abstract class JsonValue implements Serializable {
 
   /**
    * Indicates whether some other object is "equal to" this one according to the contract specified
-   * in {@link Object#equals(Object)}.
+   * 
    * <p>
    * Two JsonValues are considered equal if and only if they represent the same JSON text. As a
    * consequence, two given JsonObjects may be different even though they contain the same set of

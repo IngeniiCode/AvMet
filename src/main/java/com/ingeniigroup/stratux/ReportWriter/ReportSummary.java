@@ -23,16 +23,12 @@
 package com.ingeniigroup.stratux.ReportWriter;
 
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
-import com.ingeniigroup.stratux.AvMet.AvMet;
-import com.ingeniigroup.stratux.Tools.ICAO;
-import com.ingeniigroup.stratux.Tools.Squawk;
 import com.ingeniigroup.stratux.dbReader.traffic;
-import java.sql.ResultSet;
+import com.ingeniigroup.stratux.Tools.Util;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.HashMap;
 
 /**
@@ -94,13 +90,13 @@ public class ReportSummary {
 		General.add(traffic.getFastest());
 
 		// Slowest speed ( greater than 25 kts)
-		//General.add(traffic.getSlowest());
+		General.add(traffic.getSlowest());
 
 		// Highest altitude
-		//General.add(traffic.getHighest());
+		General.add(traffic.getHighest());
 				
 		// Lowest altitude ( greater than 0 )
-		//General.add(traffic.getLowest());
+		General.add(traffic.getLowest());
 
 		// Most contact events
 		
@@ -109,10 +105,10 @@ public class ReportSummary {
 		
 
 		// Closest contact
-		//General.add(traffic.getClosest());
+		General.add(traffic.getClosest());
 		
 		// Furthest contact
-		//General.add(traffic.getFurthest());
+		General.add(traffic.getFurthest());
 		
 		// Squawk counts
 		
@@ -137,28 +133,72 @@ public class ReportSummary {
 	 */
 	private void printStat(HashMap item) throws SQLException {
 		
-		try {
-			String Label       = item.get("Label").toString();
-			int    Icao_addr  = Integer.parseInt(item.get("Icao_addr").toString());
-			int    Altitude   = Integer.parseInt(item.get("Alt").toString());
-			int    Speed      = Integer.parseInt(item.get("Speed").toString());
-			int    SqCode     = Integer.parseInt(item.get("Squawk").toString());
-			float  DistMi     = Float.parseFloat(item.get("Dist_miles").toString());
-			String Callsign   = item.get("Callsign").toString();
-			String ICOA24     = item.get("ICOA24").toString();  // convert the integer into expected format
-			String Distance   = ((DistMi) < 5.0) ? String.format("%.02f",DistMi) : String.format("%f",DistMi);
-			String Message    = Squawk.getMessage(SqCode);
-			String SquawkCode = (SqCode > 0) ? String.format("%04d",SqCode) : "----";
-			// there was something there.
+		String Label      = Util.trunc(13,item.get("Label").toString());
+		int    Icao_addr  = Integer.parseInt(item.get("Icao_addr").toString());
+		int    Altitude   = Integer.parseInt(item.get("Altitude").toString());
+		int    Speed      = Integer.parseInt(item.get("Speed").toString());
+		int    SqCode     = Integer.parseInt(item.get("SqCode").toString());
+		float  DistMi     = Float.parseFloat(item.get("Distance").toString());
+		String Callsign   = Util.trunc(7,item.get("Callsign").toString());
+		String ICOA24     = Util.trunc(6,item.get("ICA024").toString());  // convert the integer into expected format
+		String Distance   = Util.trunc(6,((DistMi) < 5.0) ? String.format("%.02f",DistMi) : String.format("%.02f",DistMi));
+		String Message    = item.get("Message").toString();
+		String SquawkCode = Util.trunc(4,(SqCode > 0) ? String.format("%04d",SqCode) : "----");
+		// there was something there.
 			
-			System.out.printf("\t%13s %7s [%6s]  %s  %7d ft.  %4d kts.  %6s mi.  -  %s\n",Label,Callsign,ICOA24,SquawkCode,Altitude,Speed,Distance,Message);
-		}
-		catch (Exception ex){
-			System.err.printf("reportStat ERROR: %s\n",ex.getMessage());
-		}
+		System.out.printf("\t%13s %7s [%6s]  %4s  %7d ft.  %4d kts.  %6s mi.  -  %s\n",Label,Callsign,ICOA24,SquawkCode,Altitude,Speed,Distance,Message);
 		
 	}
-	
+
+	/**
+	 * Emergency Event Statistic String Formatter
+	 * 
+	 * @param String type
+	 * @param ResultSet result
+	 * 
+	 * @throws SQLException  
+	 */
+	private void printSquawkEvent(HashMap item) throws SQLException {
+		
+		String Label      = item.get("Label").toString();
+		int    Icao_addr  = Integer.parseInt(item.get("Icao_addr").toString());
+		int    Altitude   = Integer.parseInt(item.get("Altitude").toString());
+		int    Speed      = Integer.parseInt(item.get("Speed").toString());
+		int    SqCode     = Integer.parseInt(item.get("SqCode").toString());
+		float  DistMi     = Float.parseFloat(item.get("Distance").toString());
+		String Callsign   = item.get("Callsign").toString();
+		String ICOA24     = item.get("ICA024").toString();  // convert the integer into expected format
+		String Distance   = ((DistMi) < 5.0) ? String.format("%.02f",DistMi) : String.format("%.02f",DistMi);
+		String Message    = item.get("Message").toString();
+		String SquawkCode = (SqCode > 0) ? String.format("%04d",SqCode) : "----";
+
+		// special string formatting
+		String fmt_prefix    = "\u001b["; //NOI18N
+		String fmt_suffix    = "m";
+		String fmt_separator = ";";
+		String fmt_closer    = fmt_prefix + fmt_suffix;
+		String fmt_escape    = fmt_prefix;
+		String fmt_bold      = fmt_prefix + "1" + fmt_suffix;
+		String color_red     = "31";
+		String color_yellow  = "33";
+				
+		switch(Label.toLowerCase()){
+			case "emergnecy":
+			case "emergency:":
+				fmt_escape = fmt_prefix + color_red + fmt_separator + "1" + fmt_suffix;   // red!
+				break;
+			default:
+				fmt_escape = fmt_prefix + color_yellow + fmt_separator + "1" + fmt_suffix;     // bright yellow
+		}
+		
+		String fmtLabel       = String.format("%s%10s%s",fmt_bold,Label,fmt_closer);
+		String fmtMessage     = String.format("%s%s%s",fmt_escape,Message,fmt_closer);
+		String fmtSquawkCode  = (SqCode > 0) ? String.format("%s%04d%s",fmt_escape,SquawkCode,fmt_closer) : "----";
+		
+		System.out.printf("\t%13s %7s [%6s]  %s  %7d ft.  %4d kts.  %6s mi.  -  %s\n",fmtLabel,Callsign,ICOA24,fmtSquawkCode,Altitude,Speed,Distance,fmtMessage);
+
+	}
+
 	/**
 	 *  Write the data to STDOUT
 	 */
@@ -171,14 +211,21 @@ public class ReportSummary {
 		
 		// Print out the General metrics if it has entries
 		if(!General.isEmpty()){
-			Iterator<HashMap> itr = General.iterator();
-
 			// iterate 
+			Iterator<HashMap> itr = General.iterator();
 			while (itr.hasNext()) { 
 				HashMap item = itr.next();
 				printStat(item);
 			}
-			
+		}
+		// Print out the Emergency metrics if it has entries
+		if(!Emergency.isEmpty()){
+			// iterate 
+			Iterator<HashMap> itr = Emergency.iterator();
+			while (itr.hasNext()) { 
+				HashMap item = itr.next();
+				printSquawkEvent(item);
+			}
 		}
 	}
 }
