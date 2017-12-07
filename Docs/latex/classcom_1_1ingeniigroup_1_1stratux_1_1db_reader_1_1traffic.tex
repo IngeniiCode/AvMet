@@ -1,0 +1,181 @@
+\hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic}{}\section{com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic Class Reference}
+\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic}\index{com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic@{com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_aa4c163ca10b3c2aff7230ff2ba7c21ce}{traffic} (\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b}{Stratux\+DB} dbconn)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a0f3716cdec2ed740193c1eb6a9b27c7f}{start\+Report} ()
+\item 
+Hash\+Map \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a37aeda815f87a0372de47287bbca7da2}{get\+Fastest} ()
+\item 
+Hash\+Map \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_aa6e868fb542d86d449f3095278573083}{get\+Slowest} ()
+\item 
+Hash\+Map \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a07b8e7ee8d7947a97c0000fff25d72bc}{get\+Highest} ()
+\item 
+Hash\+Map \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a230429a0b0684b49607537723a282b0f}{get\+Lowest} ()
+\item 
+Hash\+Map \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a4b20d5d540543bfbfe05541b7ccdfe53}{get\+Closest} ()
+\item 
+Hash\+Map \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_ac5c07f120883de09096e633d3894adef}{get\+Furthest} ()
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_addd30d342a8fb1f30bb2bffa18318a6d}{report\+Emergencies} ()
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a6603e1971f8d06595c1183b5fde80e70}{report\+Special\+Idents} ()
+\end{DoxyCompactItemize}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static String \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_ad47f5610906ba3d470324a5a41a8d7b0}{start\+\_\+time}
+\item 
+static String \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a441e8ac57ead230dc826d74bcc935032}{end\+\_\+time}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+S\+T\+R\+A\+T\+UX Database -\/ traffic table interface
+
+\begin{DoxySince}{Since}
+6 October 2017 
+\end{DoxySince}
+\begin{DoxyAuthor}{Author}
+David De\+Martini  com.\+ingeniigroup.\+stratux.\+avmet.\+04 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+2.\+0 
+\end{DoxyVersion}
+\begin{DoxySeeAlso}{See also}
+\href{http://www.ingeniigroup.com/stratux/avmet}{\tt http\+://www.\+ingeniigroup.\+com/stratux/avmet}  \href{https://github.com/IngeniiCode/AvMet}{\tt https\+://github.\+com/\+Ingenii\+Code/\+Av\+Met} 
+\end{DoxySeeAlso}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_aa4c163ca10b3c2aff7230ff2ba7c21ce}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_aa4c163ca10b3c2aff7230ff2ba7c21ce}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!traffic@{traffic}}
+\index{traffic@{traffic}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{traffic()}{traffic()}}
+{\footnotesize\ttfamily com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+traffic (\begin{DoxyParamCaption}\item[{\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b}{Stratux\+DB}}]{dbconn }\end{DoxyParamCaption})}
+
+Constructor
+
+
+\begin{DoxyParams}{Parameters}
+{\em dbconn} & -\/ dbconnector class object \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a4b20d5d540543bfbfe05541b7ccdfe53}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a4b20d5d540543bfbfe05541b7ccdfe53}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!get\+Closest@{get\+Closest}}
+\index{get\+Closest@{get\+Closest}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{get\+Closest()}{getClosest()}}
+{\footnotesize\ttfamily Hash\+Map com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+get\+Closest (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+Object closest off-\/ground contact. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a37aeda815f87a0372de47287bbca7da2}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a37aeda815f87a0372de47287bbca7da2}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!get\+Fastest@{get\+Fastest}}
+\index{get\+Fastest@{get\+Fastest}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{get\+Fastest()}{getFastest()}}
+{\footnotesize\ttfamily Hash\+Map com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+get\+Fastest (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return the F\+A\+S\+T\+E\+ST record in the database
+
+\begin{DoxyReturn}{Returns}
+Object fastest contact. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_ac5c07f120883de09096e633d3894adef}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_ac5c07f120883de09096e633d3894adef}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!get\+Furthest@{get\+Furthest}}
+\index{get\+Furthest@{get\+Furthest}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{get\+Furthest()}{getFurthest()}}
+{\footnotesize\ttfamily Hash\+Map com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+get\+Furthest (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+Object closest off-\/ground contact. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a07b8e7ee8d7947a97c0000fff25d72bc}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a07b8e7ee8d7947a97c0000fff25d72bc}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!get\+Highest@{get\+Highest}}
+\index{get\+Highest@{get\+Highest}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{get\+Highest()}{getHighest()}}
+{\footnotesize\ttfamily Hash\+Map com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+get\+Highest (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+Object highest altitude contact. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a230429a0b0684b49607537723a282b0f}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a230429a0b0684b49607537723a282b0f}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!get\+Lowest@{get\+Lowest}}
+\index{get\+Lowest@{get\+Lowest}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{get\+Lowest()}{getLowest()}}
+{\footnotesize\ttfamily Hash\+Map com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+get\+Lowest (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+\begin{DoxyReturn}{Returns}
+Object highest altitude contact. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_aa6e868fb542d86d449f3095278573083}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_aa6e868fb542d86d449f3095278573083}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!get\+Slowest@{get\+Slowest}}
+\index{get\+Slowest@{get\+Slowest}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{get\+Slowest()}{getSlowest()}}
+{\footnotesize\ttfamily Hash\+Map com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+get\+Slowest (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return the S\+L\+O\+W\+E\+ST record in the database
+
+\begin{DoxyReturn}{Returns}
+Object slowest contact. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_addd30d342a8fb1f30bb2bffa18318a6d}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_addd30d342a8fb1f30bb2bffa18318a6d}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!report\+Emergencies@{report\+Emergencies}}
+\index{report\+Emergencies@{report\+Emergencies}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{report\+Emergencies()}{reportEmergencies()}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+report\+Emergencies (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Check Squawk codes to see if any emergencies where announced.
+
+$<$\+Codes$>$
+\begin{DoxyItemize}
+\item 7500 -\/ Hijacking
+\item 7600 -\/ Radio Failure
+\item 7700 -\/ General Emergency
+\item 7777 -\/ Military Intercept Operations 
+\end{DoxyItemize}\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a6603e1971f8d06595c1183b5fde80e70}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a6603e1971f8d06595c1183b5fde80e70}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!report\+Special\+Idents@{report\+Special\+Idents}}
+\index{report\+Special\+Idents@{report\+Special\+Idents}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{report\+Special\+Idents()}{reportSpecialIdents()}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+report\+Special\+Idents (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Check Squawk codes to see if any interesting squawks in use
+
+$<$\+Codes$>$
+\begin{DoxyItemize}
+\item 7400 -\/ U\+AV Lost Ground Link
+\item 7500 -\/ Hijacking
+\item 7600 -\/ Radio Failure
+\item 7700 -\/ General Emergency
+\item 7777 -\/ Military Intercept Operations 
+\end{DoxyItemize}\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a0f3716cdec2ed740193c1eb6a9b27c7f}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a0f3716cdec2ed740193c1eb6a9b27c7f}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!start\+Report@{start\+Report}}
+\index{start\+Report@{start\+Report}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{start\+Report()}{startReport()}}
+{\footnotesize\ttfamily void com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+start\+Report (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Start the Report display 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a441e8ac57ead230dc826d74bcc935032}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_a441e8ac57ead230dc826d74bcc935032}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!end\+\_\+time@{end\+\_\+time}}
+\index{end\+\_\+time@{end\+\_\+time}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{end\+\_\+time}{end\_time}}
+{\footnotesize\ttfamily String com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+end\+\_\+time\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_ad47f5610906ba3d470324a5a41a8d7b0}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_reader_1_1traffic_ad47f5610906ba3d470324a5a41a8d7b0}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}!start\+\_\+time@{start\+\_\+time}}
+\index{start\+\_\+time@{start\+\_\+time}!com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic@{com\+::ingeniigroup\+::stratux\+::db\+Reader\+::traffic}}
+\subsubsection{\texorpdfstring{start\+\_\+time}{start\_time}}
+{\footnotesize\ttfamily String com.\+ingeniigroup.\+stratux.\+db\+Reader.\+traffic.\+start\+\_\+time\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+main/java/com/ingeniigroup/stratux/db\+Reader/\hyperlink{traffic_8java}{traffic.\+java}\end{DoxyCompactItemize}

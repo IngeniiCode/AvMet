@@ -1,0 +1,297 @@
+\hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{}\section{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler$<$ A, O $>$ Class Template Reference}
+\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}\index{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler$<$ A, O $>$@{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler$<$ A, O $>$}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aed388437756c3880e84bffd35da6cc6d}{start\+Null} ()
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa8096823d8b0aa7841be6eb213cf90cc}{end\+Null} ()
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_abfc34f316f80d52368b046f1073d23f3}{start\+Boolean} ()
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a2b0cf30d38b4fe1b30224f2da6b1cf47}{end\+Boolean} (boolean value)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a994bb1e2a71dedbec221b5d8d56e0d03}{start\+String} ()
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_ae3111ade860fb1882621cfca98062ddb}{end\+String} (String string)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa092122e9575ce99623937237357ec14}{start\+Number} ()
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa939647044a5d27c58b5a173cbab612d}{end\+Number} (String string)
+\item 
+A \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a573309df4295cb6a107c2936aa75bb85}{start\+Array} ()
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a7581918f0280246021ef7a412799c83e}{end\+Array} (A array)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a03ddf36555b07749d572a8cd198ba560}{start\+Array\+Value} (A array)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a9422ede722201e9dad0ad76cdb39337d}{end\+Array\+Value} (A array)
+\item 
+O \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aeabcd8c9629a3266d432eaada3e62a01}{start\+Object} ()
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a69a20ab01f45047859cc918bb04b4610}{end\+Object} (O object)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a8b8821ca4e2ce2a3eb344bd1d9d2a7b9}{start\+Object\+Name} (O object)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_af58e640747c6782ac1052c2307d82e24}{end\+Object\+Name} (O object, String name)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a914e825b6dbf28fff7794ebfc3f56d36}{start\+Object\+Value} (O object, String name)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a257cc5c99fdcc737abe43c218ada5a10}{end\+Object\+Value} (O object, String name)
+\end{DoxyCompactItemize}
+\subsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_location}{Location} \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_acf54207d456ddecc995f69bcfa22b1dd}{get\+Location} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A handler for parser events. Instances of this class can be given to a \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser}{Json\+Parser}. The parser will then call the methods of the given handler while reading the input. 
+
+The default implementations of these methods do nothing. Subclasses may override only those methods they are interested in. They can use {\ttfamily \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_acf54207d456ddecc995f69bcfa22b1dd}{get\+Location()}} to access the current character position of the parser at any point. The {\ttfamily start$\ast$} methods will be called while the location points to the first character of the parsed element. The {\ttfamily end$\ast$} methods will be called while the location points to the character position that directly follows the last character of the parsed element. Example\+: 
+
+
+\begin{DoxyPre}
+["lorem ipsum"]
+ ^            ^
+ startString  endString
+\end{DoxyPre}
+ 
+
+Subclasses that build an object representation of the parsed J\+S\+ON can return arbitrary handler objects for J\+S\+ON arrays and J\+S\+ON objects in \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a573309df4295cb6a107c2936aa75bb85}{start\+Array()} and \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aeabcd8c9629a3266d432eaada3e62a01}{start\+Object()}. These handler objects will then be provided in all subsequent parser events for this particular array or object. They can be used to keep track the elements of a J\+S\+ON array or object. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em $<$\+A$>$} & The type of handlers used for J\+S\+ON arrays \\
+\hline
+{\em $<$\+O$>$} & The type of handlers used for J\+S\+ON objects \\
+\hline
+\end{DoxyParams}
+\begin{DoxySeeAlso}{See also}
+\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser}{Json\+Parser} 
+\end{DoxySeeAlso}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a7581918f0280246021ef7a412799c83e}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a7581918f0280246021ef7a412799c83e}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!end\+Array@{end\+Array}}
+\index{end\+Array@{end\+Array}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{end\+Array()}{endArray()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.end\+Array (\begin{DoxyParamCaption}\item[{A}]{array }\end{DoxyParamCaption})}
+
+Indicates the end of an array in the J\+S\+ON input. This method will be called after reading the closing square bracket character ({\ttfamily \textquotesingle{}\mbox{]}\textquotesingle{}}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em array} & the array handler returned from \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a573309df4295cb6a107c2936aa75bb85}{start\+Array()}, or {\ttfamily null} if not provided \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a9422ede722201e9dad0ad76cdb39337d}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a9422ede722201e9dad0ad76cdb39337d}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!end\+Array\+Value@{end\+Array\+Value}}
+\index{end\+Array\+Value@{end\+Array\+Value}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{end\+Array\+Value()}{endArrayValue()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.end\+Array\+Value (\begin{DoxyParamCaption}\item[{A}]{array }\end{DoxyParamCaption})}
+
+Indicates the end of an array element in the J\+S\+ON input. This method will be called after reading the last character of the element value, just after the {\ttfamily end} method for the specific element type (like \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_ae3111ade860fb1882621cfca98062ddb}{end\+String()}, \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa939647044a5d27c58b5a173cbab612d}{end\+Number()}, etc.).
+
+
+\begin{DoxyParams}{Parameters}
+{\em array} & the array handler returned from \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a573309df4295cb6a107c2936aa75bb85}{start\+Array()}, or {\ttfamily null} if not provided \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a2b0cf30d38b4fe1b30224f2da6b1cf47}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a2b0cf30d38b4fe1b30224f2da6b1cf47}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!end\+Boolean@{end\+Boolean}}
+\index{end\+Boolean@{end\+Boolean}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{end\+Boolean()}{endBoolean()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.end\+Boolean (\begin{DoxyParamCaption}\item[{boolean}]{value }\end{DoxyParamCaption})}
+
+Indicates the end of a boolean literal ({\ttfamily true} or {\ttfamily false}) in the J\+S\+ON input. This method will be called after reading the last character of the literal.
+
+
+\begin{DoxyParams}{Parameters}
+{\em value} & the parsed boolean value \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa8096823d8b0aa7841be6eb213cf90cc}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa8096823d8b0aa7841be6eb213cf90cc}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!end\+Null@{end\+Null}}
+\index{end\+Null@{end\+Null}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{end\+Null()}{endNull()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.end\+Null (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Indicates the end of a {\ttfamily null} literal in the J\+S\+ON input. This method will be called after reading the last character of the literal. \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa939647044a5d27c58b5a173cbab612d}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa939647044a5d27c58b5a173cbab612d}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!end\+Number@{end\+Number}}
+\index{end\+Number@{end\+Number}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{end\+Number()}{endNumber()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.end\+Number (\begin{DoxyParamCaption}\item[{String}]{string }\end{DoxyParamCaption})}
+
+Indicates the end of a number in the J\+S\+ON input. This method will be called after reading the last character of the number.
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & the parsed number string \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a69a20ab01f45047859cc918bb04b4610}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a69a20ab01f45047859cc918bb04b4610}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!end\+Object@{end\+Object}}
+\index{end\+Object@{end\+Object}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{end\+Object()}{endObject()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.end\+Object (\begin{DoxyParamCaption}\item[{O}]{object }\end{DoxyParamCaption})}
+
+Indicates the end of an object in the J\+S\+ON input. This method will be called after reading the closing curly bracket character ({\ttfamily \textquotesingle{}\}\textquotesingle{}}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & the object handler returned from \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aeabcd8c9629a3266d432eaada3e62a01}{start\+Object()}, or null if not provided \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_af58e640747c6782ac1052c2307d82e24}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_af58e640747c6782ac1052c2307d82e24}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!end\+Object\+Name@{end\+Object\+Name}}
+\index{end\+Object\+Name@{end\+Object\+Name}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{end\+Object\+Name()}{endObjectName()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.end\+Object\+Name (\begin{DoxyParamCaption}\item[{O}]{object,  }\item[{String}]{name }\end{DoxyParamCaption})}
+
+Indicates the end of an object member name in the J\+S\+ON input. This method will be called after reading the closing quote character ({\ttfamily \textquotesingle{}\char`\"{}\textquotesingle{}}) of the member name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & the object handler returned from \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aeabcd8c9629a3266d432eaada3e62a01}{start\+Object()}, or null if not provided \\
+\hline
+{\em name} & the parsed member name \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a257cc5c99fdcc737abe43c218ada5a10}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a257cc5c99fdcc737abe43c218ada5a10}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!end\+Object\+Value@{end\+Object\+Value}}
+\index{end\+Object\+Value@{end\+Object\+Value}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{end\+Object\+Value()}{endObjectValue()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.end\+Object\+Value (\begin{DoxyParamCaption}\item[{O}]{object,  }\item[{String}]{name }\end{DoxyParamCaption})}
+
+Indicates the end of an object member value in the J\+S\+ON input. This method will be called after reading the last character of the member value, just after the {\ttfamily end} method for the specific member type (like \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_ae3111ade860fb1882621cfca98062ddb}{end\+String()}, \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa939647044a5d27c58b5a173cbab612d}{end\+Number()}, etc.).
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & the object handler returned from \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aeabcd8c9629a3266d432eaada3e62a01}{start\+Object()}, or null if not provided \\
+\hline
+{\em name} & the parsed member name \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_ae3111ade860fb1882621cfca98062ddb}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_ae3111ade860fb1882621cfca98062ddb}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!end\+String@{end\+String}}
+\index{end\+String@{end\+String}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{end\+String()}{endString()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.end\+String (\begin{DoxyParamCaption}\item[{String}]{string }\end{DoxyParamCaption})}
+
+Indicates the end of a string in the J\+S\+ON input. This method will be called after reading the closing double quote character ({\ttfamily \textquotesingle{}"\textquotesingle{}}).
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & the parsed string \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_acf54207d456ddecc995f69bcfa22b1dd}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_acf54207d456ddecc995f69bcfa22b1dd}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!get\+Location@{get\+Location}}
+\index{get\+Location@{get\+Location}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{get\+Location()}{getLocation()}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_location}{Location} \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.get\+Location (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+Returns the current parser location.
+
+\begin{DoxyReturn}{Returns}
+the current parser location 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a573309df4295cb6a107c2936aa75bb85}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a573309df4295cb6a107c2936aa75bb85}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!start\+Array@{start\+Array}}
+\index{start\+Array@{start\+Array}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{start\+Array()}{startArray()}}
+{\footnotesize\ttfamily A \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.start\+Array (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Indicates the beginning of an array in the J\+S\+ON input. This method will be called when reading the opening square bracket character ({\ttfamily \textquotesingle{}\mbox{[}\textquotesingle{}}). 
+
+This method may return an object to handle subsequent parser events for this array. This array handler will then be provided in all calls to \hyperlink{}{start\+Array\+Value()}, \hyperlink{}{end\+Array\+Value()}, and \hyperlink{}{end\+Array()} for this array. 
+
+\begin{DoxyReturn}{Returns}
+a handler for this array, or {\ttfamily null} if not needed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a03ddf36555b07749d572a8cd198ba560}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a03ddf36555b07749d572a8cd198ba560}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!start\+Array\+Value@{start\+Array\+Value}}
+\index{start\+Array\+Value@{start\+Array\+Value}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{start\+Array\+Value()}{startArrayValue()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.start\+Array\+Value (\begin{DoxyParamCaption}\item[{A}]{array }\end{DoxyParamCaption})}
+
+Indicates the beginning of an array element in the J\+S\+ON input. This method will be called when reading the first character of the element, just before the call to the {\ttfamily start} method for the specific element type (\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a994bb1e2a71dedbec221b5d8d56e0d03}{start\+String()}, \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa092122e9575ce99623937237357ec14}{start\+Number()}, etc.).
+
+
+\begin{DoxyParams}{Parameters}
+{\em array} & the array handler returned from \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a573309df4295cb6a107c2936aa75bb85}{start\+Array()}, or {\ttfamily null} if not provided \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_abfc34f316f80d52368b046f1073d23f3}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_abfc34f316f80d52368b046f1073d23f3}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!start\+Boolean@{start\+Boolean}}
+\index{start\+Boolean@{start\+Boolean}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{start\+Boolean()}{startBoolean()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.start\+Boolean (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Indicates the beginning of a boolean literal ({\ttfamily true} or {\ttfamily false}) in the J\+S\+ON input. This method will be called when reading the first character of the literal. \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aed388437756c3880e84bffd35da6cc6d}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aed388437756c3880e84bffd35da6cc6d}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!start\+Null@{start\+Null}}
+\index{start\+Null@{start\+Null}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{start\+Null()}{startNull()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.start\+Null (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Indicates the beginning of a {\ttfamily null} literal in the J\+S\+ON input. This method will be called when reading the first character of the literal. \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa092122e9575ce99623937237357ec14}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aa092122e9575ce99623937237357ec14}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!start\+Number@{start\+Number}}
+\index{start\+Number@{start\+Number}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{start\+Number()}{startNumber()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.start\+Number (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Indicates the beginning of a number in the J\+S\+ON input. This method will be called when reading the first character of the number. \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aeabcd8c9629a3266d432eaada3e62a01}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aeabcd8c9629a3266d432eaada3e62a01}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!start\+Object@{start\+Object}}
+\index{start\+Object@{start\+Object}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{start\+Object()}{startObject()}}
+{\footnotesize\ttfamily O \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.start\+Object (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Indicates the beginning of an object in the J\+S\+ON input. This method will be called when reading the opening curly bracket character ({\ttfamily \textquotesingle{}\{\textquotesingle{}}). 
+
+This method may return an object to handle subsequent parser events for this object. This object handler will be provided in all calls to \hyperlink{}{start\+Object\+Name()}, \hyperlink{}{end\+Object\+Name()}, \hyperlink{}{start\+Object\+Value()}, \hyperlink{}{end\+Object\+Value()}, and \hyperlink{}{end\+Object()} for this object. 
+
+\begin{DoxyReturn}{Returns}
+a handler for this object, or {\ttfamily null} if not needed 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a8b8821ca4e2ce2a3eb344bd1d9d2a7b9}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a8b8821ca4e2ce2a3eb344bd1d9d2a7b9}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!start\+Object\+Name@{start\+Object\+Name}}
+\index{start\+Object\+Name@{start\+Object\+Name}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{start\+Object\+Name()}{startObjectName()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.start\+Object\+Name (\begin{DoxyParamCaption}\item[{O}]{object }\end{DoxyParamCaption})}
+
+Indicates the beginning of the name of an object member in the J\+S\+ON input. This method will be called when reading the opening quote character (\textquotesingle{}"\textquotesingle{}) of the member name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & the object handler returned from \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aeabcd8c9629a3266d432eaada3e62a01}{start\+Object()}, or {\ttfamily null} if not provided \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a914e825b6dbf28fff7794ebfc3f56d36}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a914e825b6dbf28fff7794ebfc3f56d36}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!start\+Object\+Value@{start\+Object\+Value}}
+\index{start\+Object\+Value@{start\+Object\+Value}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{start\+Object\+Value()}{startObjectValue()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.start\+Object\+Value (\begin{DoxyParamCaption}\item[{O}]{object,  }\item[{String}]{name }\end{DoxyParamCaption})}
+
+Indicates the beginning of the name of an object member in the J\+S\+ON input. This method will be called when reading the opening quote character (\textquotesingle{}"\textquotesingle{}) of the member name.
+
+
+\begin{DoxyParams}{Parameters}
+{\em object} & the object handler returned from \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_aeabcd8c9629a3266d432eaada3e62a01}{start\+Object()}, or {\ttfamily null} if not provided \\
+\hline
+{\em name} & the member name \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a994bb1e2a71dedbec221b5d8d56e0d03}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler_a994bb1e2a71dedbec221b5d8d56e0d03}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}!start\+String@{start\+String}}
+\index{start\+String@{start\+String}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Handler}}
+\subsubsection{\texorpdfstring{start\+String()}{startString()}}
+{\footnotesize\ttfamily void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Handler}$<$ A, O $>$.start\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Indicates the beginning of a string in the J\+S\+ON input. This method will be called when reading the opening double quote character ({\ttfamily \textquotesingle{}"\textquotesingle{}}). 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+main/java/com/ingeniigroup/stratux/\+Tools/\+Json\+Micro/\hyperlink{_json_handler_8java}{Json\+Handler.\+java}\end{DoxyCompactItemize}

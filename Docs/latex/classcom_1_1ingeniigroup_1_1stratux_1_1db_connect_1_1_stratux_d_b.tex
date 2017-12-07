@@ -1,0 +1,268 @@
+\hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b}{}\section{com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+DB Class Reference}
+\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b}\index{com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+DB@{com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+DB}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a88abbece32528e7f968cf631abada29d}{Stratux\+DB} (String db\+Fname)
+\item 
+\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a262ca6924cdac40e202102213c7e217e}{Stratux\+DB} (String db\+Fname, boolean verbose)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a3266867c1ec4338f4324440116140324}{init\+DB} (String db\+Fname, boolean verbose)
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a39aebddb50494a6d2c228b6df180ed75}{Connected} ()
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_aa590098f5a32abc988bd52985b2e1282}{Keep\+Dupes} ()
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a8688142956ed7581a645da10c25a8197}{Keep\+Dupes} (boolean keepdupes)
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a3a3d9da8dd899bb33aa69b1edfc30971}{Verbose} ()
+\item 
+Connection \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a64f5441f879b6d52bd4c5903db34eda3}{db} ()
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a96d41551a9e34f248e73d0e6b44a0300}{Cleanup} ()
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a14a0619669525324b71954015e681983}{Cleanup} (boolean delete\+D\+Bfile)
+\item 
+Result\+Set \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a72b53be8e33efb394803391c08d16597}{get\+Result\+Set} (String sql)
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a13feda62749be8dcefbce61d44157fdb}{get\+Result\+Next\+Record} (Result\+Set result)
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_ac5a0af625918fe6b7fd588ac258da7e5}{delete\+Record} (String table, String primary\+\_\+field, int record\+\_\+id)
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_abd06900f0caa50a3b1f1cfe57ae700ee}{delete\+Record} (String table, String primary\+\_\+field, String record\+\_\+id)
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a989eb70be919681871c2569d6875085f}{sql\+Execute} (String query)
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_aa2cb302f6c9ac8488fc2287b4486c5d3}{sql\+Batch} (List$<$ String $>$ batch)
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a260c201ffd08c4e30c1fc5e3acdebf31}{Connect} ()  throws Class\+Not\+Found\+Exception 
+\item 
+boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a4da09c50c25ddd96bcbdc11057561dc6}{Disonnect} ()
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+S\+T\+R\+A\+T\+UX S\+Q\+Lite3 database interaction utility
+
+\begin{DoxySince}{Since}
+6 October 2017 
+\end{DoxySince}
+\begin{DoxyAuthor}{Author}
+David De\+Martini  com.\+ingeniigroup.\+stratux.\+avmet.\+04 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+2.\+0 
+\end{DoxyVersion}
+\begin{DoxySeeAlso}{See also}
+\href{http://www.ingeniigroup.com/stratux/avmet}{\tt http\+://www.\+ingeniigroup.\+com/stratux/avmet}  \href{https://github.com/IngeniiCode/AvMet}{\tt https\+://github.\+com/\+Ingenii\+Code/\+Av\+Met} 
+\end{DoxySeeAlso}
+
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a88abbece32528e7f968cf631abada29d}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a88abbece32528e7f968cf631abada29d}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Stratux\+DB@{Stratux\+DB}}
+\index{Stratux\+DB@{Stratux\+DB}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Stratux\+D\+B()}{StratuxDB()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Stratux\+DB (\begin{DoxyParamCaption}\item[{String}]{db\+Fname }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a262ca6924cdac40e202102213c7e217e}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a262ca6924cdac40e202102213c7e217e}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Stratux\+DB@{Stratux\+DB}}
+\index{Stratux\+DB@{Stratux\+DB}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Stratux\+D\+B()}{StratuxDB()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Stratux\+DB (\begin{DoxyParamCaption}\item[{String}]{db\+Fname,  }\item[{boolean}]{verbose }\end{DoxyParamCaption})}
+
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a96d41551a9e34f248e73d0e6b44a0300}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a96d41551a9e34f248e73d0e6b44a0300}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Cleanup@{Cleanup}}
+\index{Cleanup@{Cleanup}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Cleanup()}{Cleanup()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily void com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Cleanup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Cleanup
+
+Remove the sqlite3 artifacts after a database is opened.
+
+Files are suffixed with -\/wal \& -\/shm \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a14a0619669525324b71954015e681983}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a14a0619669525324b71954015e681983}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Cleanup@{Cleanup}}
+\index{Cleanup@{Cleanup}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Cleanup()}{Cleanup()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily void com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Cleanup (\begin{DoxyParamCaption}\item[{boolean}]{delete\+D\+Bfile }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a260c201ffd08c4e30c1fc5e3acdebf31}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a260c201ffd08c4e30c1fc5e3acdebf31}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Connect@{Connect}}
+\index{Connect@{Connect}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Connect()}{Connect()}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Connect (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws Class\+Not\+Found\+Exception}
+
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a39aebddb50494a6d2c228b6df180ed75}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a39aebddb50494a6d2c228b6df180ed75}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Connected@{Connected}}
+\index{Connected@{Connected}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Connected()}{Connected()}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Connected (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return flag indicating db is open for business \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a64f5441f879b6d52bd4c5903db34eda3}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a64f5441f879b6d52bd4c5903db34eda3}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!db@{db}}
+\index{db@{db}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{db()}{db()}}
+{\footnotesize\ttfamily Connection com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+db (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return the connection object \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_ac5a0af625918fe6b7fd588ac258da7e5}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_ac5a0af625918fe6b7fd588ac258da7e5}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!delete\+Record@{delete\+Record}}
+\index{delete\+Record@{delete\+Record}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{delete\+Record()}{deleteRecord()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+delete\+Record (\begin{DoxyParamCaption}\item[{String}]{table,  }\item[{String}]{primary\+\_\+field,  }\item[{int}]{record\+\_\+id }\end{DoxyParamCaption})}
+
+Delete a record from table where record\+\_\+id is an int
+
+
+\begin{DoxyParams}{Parameters}
+{\em table} & \\
+\hline
+{\em primary\+\_\+field} & \\
+\hline
+{\em record\+\_\+id} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_abd06900f0caa50a3b1f1cfe57ae700ee}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_abd06900f0caa50a3b1f1cfe57ae700ee}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!delete\+Record@{delete\+Record}}
+\index{delete\+Record@{delete\+Record}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{delete\+Record()}{deleteRecord()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+delete\+Record (\begin{DoxyParamCaption}\item[{String}]{table,  }\item[{String}]{primary\+\_\+field,  }\item[{String}]{record\+\_\+id }\end{DoxyParamCaption})}
+
+Delete a record from table where record\+\_\+id is an String
+
+
+\begin{DoxyParams}{Parameters}
+{\em table} & \\
+\hline
+{\em primary\+\_\+field} & \\
+\hline
+{\em record\+\_\+id} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a4da09c50c25ddd96bcbdc11057561dc6}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a4da09c50c25ddd96bcbdc11057561dc6}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Disonnect@{Disonnect}}
+\index{Disonnect@{Disonnect}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Disonnect()}{Disonnect()}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Disonnect (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Disconnect from DB \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a13feda62749be8dcefbce61d44157fdb}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a13feda62749be8dcefbce61d44157fdb}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!get\+Result\+Next\+Record@{get\+Result\+Next\+Record}}
+\index{get\+Result\+Next\+Record@{get\+Result\+Next\+Record}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{get\+Result\+Next\+Record()}{getResultNextRecord()}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+get\+Result\+Next\+Record (\begin{DoxyParamCaption}\item[{Result\+Set}]{result }\end{DoxyParamCaption})}
+
+
+\begin{DoxyParams}{Parameters}
+{\em result} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a72b53be8e33efb394803391c08d16597}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a72b53be8e33efb394803391c08d16597}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!get\+Result\+Set@{get\+Result\+Set}}
+\index{get\+Result\+Set@{get\+Result\+Set}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{get\+Result\+Set()}{getResultSet()}}
+{\footnotesize\ttfamily Result\+Set com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+get\+Result\+Set (\begin{DoxyParamCaption}\item[{String}]{sql }\end{DoxyParamCaption})}
+
+\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a72b53be8e33efb394803391c08d16597}{get\+Result\+Set()}
+
+Create Statement, prepare and execute Query (sql), test for valid Result\+Set handle, return if !null, throw exceptions if null
+
+
+\begin{DoxyParams}{Parameters}
+{\em sql} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+valid result set 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a3266867c1ec4338f4324440116140324}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a3266867c1ec4338f4324440116140324}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!init\+DB@{init\+DB}}
+\index{init\+DB@{init\+DB}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{init\+D\+B()}{initDB()}}
+{\footnotesize\ttfamily void com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+init\+DB (\begin{DoxyParamCaption}\item[{String}]{db\+Fname,  }\item[{boolean}]{verbose }\end{DoxyParamCaption})}
+
+Make the required DB connections
+
+
+\begin{DoxyParams}{Parameters}
+{\em String} & db\+Fname -\/ filename of S\+Q\+Lite3 database file (or archive) \\
+\hline
+{\em boolean} & verbose -\/ flag determines verbosity \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_aa590098f5a32abc988bd52985b2e1282}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_aa590098f5a32abc988bd52985b2e1282}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Keep\+Dupes@{Keep\+Dupes}}
+\index{Keep\+Dupes@{Keep\+Dupes}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Keep\+Dupes()}{KeepDupes()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Keep\+Dupes (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Set / Clear keepdupes flag \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a8688142956ed7581a645da10c25a8197}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a8688142956ed7581a645da10c25a8197}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Keep\+Dupes@{Keep\+Dupes}}
+\index{Keep\+Dupes@{Keep\+Dupes}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Keep\+Dupes()}{KeepDupes()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Keep\+Dupes (\begin{DoxyParamCaption}\item[{boolean}]{keepdupes }\end{DoxyParamCaption})}
+
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_aa2cb302f6c9ac8488fc2287b4486c5d3}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_aa2cb302f6c9ac8488fc2287b4486c5d3}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!sql\+Batch@{sql\+Batch}}
+\index{sql\+Batch@{sql\+Batch}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{sql\+Batch()}{sqlBatch()}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+sql\+Batch (\begin{DoxyParamCaption}\item[{List$<$ String $>$}]{batch }\end{DoxyParamCaption})}
+
+S\+QL Do Update
+
+
+\begin{DoxyParams}{Parameters}
+{\em String} & sql -- query to blindly execute\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean true$\vert$false 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Class\+Not\+Found\+Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a989eb70be919681871c2569d6875085f}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a989eb70be919681871c2569d6875085f}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!sql\+Execute@{sql\+Execute}}
+\index{sql\+Execute@{sql\+Execute}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{sql\+Execute()}{sqlExecute()}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+sql\+Execute (\begin{DoxyParamCaption}\item[{String}]{query }\end{DoxyParamCaption})}
+
+S\+QL Do Update
+
+
+\begin{DoxyParams}{Parameters}
+{\em String} & sql -- query to blindly execute\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean true$\vert$false 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em Class\+Not\+Found\+Exception} & \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a3a3d9da8dd899bb33aa69b1edfc30971}\label{classcom_1_1ingeniigroup_1_1stratux_1_1db_connect_1_1_stratux_d_b_a3a3d9da8dd899bb33aa69b1edfc30971}} 
+\index{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}!Verbose@{Verbose}}
+\index{Verbose@{Verbose}!com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB@{com\+::ingeniigroup\+::stratux\+::db\+Connect\+::\+Stratux\+DB}}
+\subsubsection{\texorpdfstring{Verbose()}{Verbose()}}
+{\footnotesize\ttfamily boolean com.\+ingeniigroup.\+stratux.\+db\+Connect.\+Stratux\+D\+B.\+Verbose (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+Return verbosity flag 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+main/java/com/ingeniigroup/stratux/db\+Connect/\hyperlink{_stratux_d_b_8java}{Stratux\+D\+B.\+java}\end{DoxyCompactItemize}

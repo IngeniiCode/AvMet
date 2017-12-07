@@ -42,24 +42,24 @@ public class ProgressBar {
 	private static int barwidth         = 40;   // width of the bar with boundries
 	private static int barvalue         = 40;   // the representative value of the bar
 	private static int curr_possition   = 0;    // keep track of the current bar location
-	private static String backspc       = "\b"; // backspace char
-	private static String fillchar      = " ";  // configurable fill character
-	private static String blockchar     = "=";  // configurable blocking character
+	private static String backspc       = "\b"; // backspace char string
+	private static String fillchar      = ".";  // configurable fill character string
+	private static String blockchar     = "=";  // configurable blocking character string
 	// pulsing char rotator
 	private static final Map<Integer,String> pulsechar;  
 	static {
         pulsechar = new HashMap<Integer,String>();
-		/* rotater chars */
-		pulsechar.put(0, "+" + backspc);
-		pulsechar.put(1, "-" + backspc);
-   };    
+            /* rotater chars */
+            pulsechar.put(0, "+" + backspc);
+            pulsechar.put(1, "-" + backspc);
+        };    
 	
 	/**
 	 * Mechanism to define a bar width other than the default
 	 * @param width 
 	 */
 	public static void width(int width) { 
-		barwidth = width;
+            barwidth = width;
 	}
 	
 	/**
@@ -67,11 +67,11 @@ public class ProgressBar {
 	 * @param maxval 
 	 */
 	public static void start(int maxval){
-		barvalue = maxval;
-		startBar();
+            barvalue = maxval;
+            startBar();
 	} 
 	public static void start() { 
-		startBar();
+            startBar();
 	}
 	
 	/**
@@ -106,12 +106,13 @@ public class ProgressBar {
 		counter++;  // increment
 		//System.out.printf("%s",pulsechar.get(counter%2));  // pulse
 		float percent_complete = (float)counter / (float)barvalue;
-		int possition = Math.round(percent_complete * barwidth);
+		int possition          = (int)(percent_complete * barwidth);
+                
 		if(possition > curr_possition){
 			curr_possition = possition;
 			System.out.print(blockchar);
 		}
-		
+                
 		// pulse until end of bar reached
 		if(curr_possition < barwidth){
 			System.out.printf("%s",pulsechar.get(counter%2));  // pulse
@@ -120,10 +121,11 @@ public class ProgressBar {
 	
 	/**
 	 * Finish the status bar animation and newline
+         * 
 	 */
 	public static void done(){
 		counter   = 0;
-		System.out.println("");
+		System.out.println("]");  // originally just a blank, but Win10 console erases with backspace so this is one fix
 	}
 	
 	/**

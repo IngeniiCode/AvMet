@@ -1,0 +1,104 @@
+\hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser}{}\section{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Parser Class Reference}
+\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser}\index{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Parser@{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Parser}}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_ae2fafb01643d85df5586344fbe5e9bea}{Json\+Parser} (\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{Json\+Handler}$<$?, ?$>$ handler)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_a641caf8fbf7c1f870c1bad17681a2b53}{parse} (String string)
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_a3a957c2de9bf6dc85e55f1a40962f7d8}{parse} (Reader reader)  throws I\+O\+Exception 
+\item 
+void \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_aa299f60ac314414ea90ec546c60061e3}{parse} (Reader reader, int buffersize)  throws I\+O\+Exception 
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+A streaming parser for J\+S\+ON text. The parser reports all events to a given handler. 
+
+\subsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_ae2fafb01643d85df5586344fbe5e9bea}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_ae2fafb01643d85df5586344fbe5e9bea}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser}!Json\+Parser@{Json\+Parser}}
+\index{Json\+Parser@{Json\+Parser}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser}}
+\subsubsection{\texorpdfstring{Json\+Parser()}{JsonParser()}}
+{\footnotesize\ttfamily com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Parser.\+Json\+Parser (\begin{DoxyParamCaption}\item[{\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_handler}{Json\+Handler}$<$?, ?$>$}]{handler }\end{DoxyParamCaption})}
+
+Creates a new \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser}{Json\+Parser} with the given handler. The parser will report all parser events to this handler.
+
+
+\begin{DoxyParams}{Parameters}
+{\em handler} & the handler to process parser events \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_a641caf8fbf7c1f870c1bad17681a2b53}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_a641caf8fbf7c1f870c1bad17681a2b53}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser}!parse@{parse}}
+\index{parse@{parse}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser}}
+\subsubsection{\texorpdfstring{parse()}{parse()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily void com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Parser.\+parse (\begin{DoxyParamCaption}\item[{String}]{string }\end{DoxyParamCaption})}
+
+Parses the given input string. The input must contain a valid J\+S\+ON value, optionally padded with whitespace.
+
+
+\begin{DoxyParams}{Parameters}
+{\em string} & the input string, must be valid J\+S\+ON \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_parse_exception}{Parse\+Exception}} & if the input is not valid J\+S\+ON \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_a3a957c2de9bf6dc85e55f1a40962f7d8}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_a3a957c2de9bf6dc85e55f1a40962f7d8}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser}!parse@{parse}}
+\index{parse@{parse}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser}}
+\subsubsection{\texorpdfstring{parse()}{parse()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily void com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Parser.\+parse (\begin{DoxyParamCaption}\item[{Reader}]{reader }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+Reads the entire input from the given reader and parses it as J\+S\+ON. The input must contain a valid J\+S\+ON value, optionally padded with whitespace. 
+
+Characters are read in chunks into a default-\/sized input buffer. Hence, wrapping a reader in an additional {\ttfamily Buffered\+Reader} likely won\textquotesingle{}t improve reading performance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em reader} & the reader to read the input from \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em I\+O\+Exception} & if an I/O error occurs in the reader \\
+\hline
+{\em \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_parse_exception}{Parse\+Exception}} & if the input is not valid J\+S\+ON \\
+\hline
+\end{DoxyExceptions}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_aa299f60ac314414ea90ec546c60061e3}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_json_parser_aa299f60ac314414ea90ec546c60061e3}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser}!parse@{parse}}
+\index{parse@{parse}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Json\+Parser}}
+\subsubsection{\texorpdfstring{parse()}{parse()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily void com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Json\+Parser.\+parse (\begin{DoxyParamCaption}\item[{Reader}]{reader,  }\item[{int}]{buffersize }\end{DoxyParamCaption}) throws I\+O\+Exception}
+
+Reads the entire input from the given reader and parses it as J\+S\+ON. The input must contain a valid J\+S\+ON value, optionally padded with whitespace. 
+
+Characters are read in chunks into an input buffer of the given size. Hence, wrapping a reader in an additional {\ttfamily Buffered\+Reader} likely won\textquotesingle{}t improve reading performance. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em reader} & the reader to read the input from \\
+\hline
+{\em buffersize} & the size of the input buffer in chars \\
+\hline
+\end{DoxyParams}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em I\+O\+Exception} & if an I/O error occurs in the reader \\
+\hline
+{\em \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_parse_exception}{Parse\+Exception}} & if the input is not valid J\+S\+ON \\
+\hline
+\end{DoxyExceptions}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+main/java/com/ingeniigroup/stratux/\+Tools/\+Json\+Micro/\hyperlink{_json_parser_8java}{Json\+Parser.\+java}\end{DoxyCompactItemize}

@@ -1,0 +1,47 @@
+\hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config}{}\section{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Writer\+Config Class Reference}
+\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config}\index{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Writer\+Config@{com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Writer\+Config}}
+Inheritance diagram for com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Writer\+Config\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config}
+\end{center}
+\end{figure}
+\subsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+static \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config}{Writer\+Config} \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config_acbe1131a47b5eb8d820e2dcf510eb094}{M\+I\+N\+I\+M\+AL}
+\item 
+static \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config}{Writer\+Config} \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config_a5c3039548293a626942b43322b47dc3c}{P\+R\+E\+T\+T\+Y\+\_\+\+P\+R\+I\+NT} = \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_pretty_print_a3a475018a91dd9eb940b4890b83ac4cf}{Pretty\+Print.\+indent\+With\+Spaces}(2)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Controls the formatting of the J\+S\+ON output. Use one of the available constants. 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config_acbe1131a47b5eb8d820e2dcf510eb094}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config_acbe1131a47b5eb8d820e2dcf510eb094}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Writer\+Config@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Writer\+Config}!M\+I\+N\+I\+M\+AL@{M\+I\+N\+I\+M\+AL}}
+\index{M\+I\+N\+I\+M\+AL@{M\+I\+N\+I\+M\+AL}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Writer\+Config@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Writer\+Config}}
+\subsubsection{\texorpdfstring{M\+I\+N\+I\+M\+AL}{MINIMAL}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config}{Writer\+Config} com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Writer\+Config.\+M\+I\+N\+I\+M\+AL\hspace{0.3cm}{\ttfamily [static]}}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}
+= \textcolor{keyword}{new} WriterConfig() \{
+    @Override
+    JsonWriter createWriter(Writer writer) \{
+      \textcolor{keywordflow}{return} \textcolor{keyword}{new} JsonWriter(writer);
+    \}
+  \}
+\end{DoxyCode}
+Write J\+S\+ON in its minimal form, without any additional whitespace. This is the default. \mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config_a5c3039548293a626942b43322b47dc3c}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config_a5c3039548293a626942b43322b47dc3c}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Writer\+Config@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Writer\+Config}!P\+R\+E\+T\+T\+Y\+\_\+\+P\+R\+I\+NT@{P\+R\+E\+T\+T\+Y\+\_\+\+P\+R\+I\+NT}}
+\index{P\+R\+E\+T\+T\+Y\+\_\+\+P\+R\+I\+NT@{P\+R\+E\+T\+T\+Y\+\_\+\+P\+R\+I\+NT}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Writer\+Config@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Json\+Micro\+::\+Writer\+Config}}
+\subsubsection{\texorpdfstring{P\+R\+E\+T\+T\+Y\+\_\+\+P\+R\+I\+NT}{PRETTY\_PRINT}}
+{\footnotesize\ttfamily \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_writer_config}{Writer\+Config} com.\+ingeniigroup.\+stratux.\+Tools.\+Json\+Micro.\+Writer\+Config.\+P\+R\+E\+T\+T\+Y\+\_\+\+P\+R\+I\+NT = \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_json_micro_1_1_pretty_print_a3a475018a91dd9eb940b4890b83ac4cf}{Pretty\+Print.\+indent\+With\+Spaces}(2)\hspace{0.3cm}{\ttfamily [static]}}
+
+Write J\+S\+ON in pretty-\/print, with each value on a separate line and an indentation of two spaces. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+main/java/com/ingeniigroup/stratux/\+Tools/\+Json\+Micro/\hyperlink{_writer_config_8java}{Writer\+Config.\+java}\end{DoxyCompactItemize}

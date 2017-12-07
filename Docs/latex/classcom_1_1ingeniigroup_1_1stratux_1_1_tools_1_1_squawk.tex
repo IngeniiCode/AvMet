@@ -1,0 +1,98 @@
+\hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk}{}\section{com.\+ingeniigroup.\+stratux.\+Tools.\+Squawk Class Reference}
+\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk}\index{com.\+ingeniigroup.\+stratux.\+Tools.\+Squawk@{com.\+ingeniigroup.\+stratux.\+Tools.\+Squawk}}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static String \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk_a402f182028ce4abcdc73a74ee029897f}{get\+Message} (int squawk)
+\item 
+static int \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk_a5a9f9bf68e5f1846ee5eb8c1362d2285}{dec2oct} (int decint)
+\item 
+static int \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk_ad3bb6928421e825b9362cfe4fc96649f}{oct2dec} (int octint)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+\hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk}{Squawk} Code conversion / translation \& alerting utility
+
+N\+O\+TE\+: These codes have been updated to comply with Order 7110.\+66E US Airspace Beacon Allocation Plan\+: \href{https://www.faa.gov/documentlibrary/media/order/final_order_7110_66e_nbcap.pdf}{\tt https\+://www.\+faa.\+gov/documentlibrary/media/order/final\+\_\+order\+\_\+7110\+\_\+66e\+\_\+nbcap.\+pdf}
+
+Codes update 17-\/\+O\+C\+T-\/2017
+
+\begin{DoxySince}{Since}
+6 October 2017 
+\end{DoxySince}
+\begin{DoxyAuthor}{Author}
+David De\+Martini  com.\+ingeniigroup.\+stratux.\+avmet.\+04 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+2.\+0 
+\end{DoxyVersion}
+\begin{DoxySeeAlso}{See also}
+\href{http://www.ingeniigroup.com/stratux/avmet}{\tt http\+://www.\+ingeniigroup.\+com/stratux/avmet}  \href{https://github.com/IngeniiCode/AvMet}{\tt https\+://github.\+com/\+Ingenii\+Code/\+Av\+Met} 
+\end{DoxySeeAlso}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk_a5a9f9bf68e5f1846ee5eb8c1362d2285}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk_a5a9f9bf68e5f1846ee5eb8c1362d2285}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk}!dec2oct@{dec2oct}}
+\index{dec2oct@{dec2oct}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk}}
+\subsubsection{\texorpdfstring{dec2oct()}{dec2oct()}}
+{\footnotesize\ttfamily static int com.\+ingeniigroup.\+stratux.\+Tools.\+Squawk.\+dec2oct (\begin{DoxyParamCaption}\item[{int}]{decint }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert a decimal value to the correct numerics for a \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk}{Squawk} code octal.
+
+
+\begin{DoxyParams}{Parameters}
+{\em octint} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+octnum 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk_a402f182028ce4abcdc73a74ee029897f}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk_a402f182028ce4abcdc73a74ee029897f}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk}!get\+Message@{get\+Message}}
+\index{get\+Message@{get\+Message}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk}}
+\subsubsection{\texorpdfstring{get\+Message()}{getMessage()}}
+{\footnotesize\ttfamily static String com.\+ingeniigroup.\+stratux.\+Tools.\+Squawk.\+get\+Message (\begin{DoxyParamCaption}\item[{int}]{squawk }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Return the translated \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk}{Squawk} message
+
+Check \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk}{Squawk} codes to see if any emergencies where announced.
+
+$<$\+Codes$>$
+\begin{DoxyItemize}
+\item 7500 -\/ Hijacking
+\item 7600 -\/ Radio Failure
+\item 7700 -\/ General Emergency
+\item 7777 -\/ Military Intercept Operations
+\end{DoxyItemize}
+
+
+\begin{DoxyParams}{Parameters}
+{\em squawk} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk_ad3bb6928421e825b9362cfe4fc96649f}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_squawk_ad3bb6928421e825b9362cfe4fc96649f}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk}!oct2dec@{oct2dec}}
+\index{oct2dec@{oct2dec}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+Squawk}}
+\subsubsection{\texorpdfstring{oct2dec()}{oct2dec()}}
+{\footnotesize\ttfamily static int com.\+ingeniigroup.\+stratux.\+Tools.\+Squawk.\+oct2dec (\begin{DoxyParamCaption}\item[{int}]{octint }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Convert an octal value to the correct int value
+
+
+\begin{DoxyParams}{Parameters}
+{\em octint} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+decint 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+main/java/com/ingeniigroup/stratux/\+Tools/\hyperlink{_squawk_8java}{Squawk.\+java}\end{DoxyCompactItemize}

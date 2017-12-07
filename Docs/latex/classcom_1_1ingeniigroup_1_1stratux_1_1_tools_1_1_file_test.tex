@@ -1,0 +1,91 @@
+\hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test}{}\section{com.\+ingeniigroup.\+stratux.\+Tools.\+File\+Test Class Reference}
+\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test}\index{com.\+ingeniigroup.\+stratux.\+Tools.\+File\+Test@{com.\+ingeniigroup.\+stratux.\+Tools.\+File\+Test}}
+\subsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test_a8a15050b9f5f142a250a44caa7295cd3}{test4file} (String filename)  throws File\+Not\+Found\+Exception 
+\item 
+static boolean \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test_a68b4f72c2de683eddba260bd8ec483ed}{looks\+Zipped} (String filename)
+\item 
+static String \hyperlink{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test_ab8a9306a5851446eac08e2570c54166b}{strip\+Extention} (String filename)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+File Testing Package
+
+Centralized file testing methods
+
+\begin{DoxySince}{Since}
+16 October 2017 
+\end{DoxySince}
+\begin{DoxyAuthor}{Author}
+David De\+Martini  com.\+ingeniigroup.\+stratux.\+avmet.\+04 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Version}
+0.\+2.\+0 
+\end{DoxyVersion}
+\begin{DoxySeeAlso}{See also}
+\href{http://www.ingeniigroup.com/stratux/avmet}{\tt http\+://www.\+ingeniigroup.\+com/stratux/avmet}  \href{https://github.com/IngeniiCode/AvMet}{\tt https\+://github.\+com/\+Ingenii\+Code/\+Av\+Met} 
+\end{DoxySeeAlso}
+
+
+\subsection{Member Function Documentation}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test_a68b4f72c2de683eddba260bd8ec483ed}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test_a68b4f72c2de683eddba260bd8ec483ed}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test}!looks\+Zipped@{looks\+Zipped}}
+\index{looks\+Zipped@{looks\+Zipped}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test}}
+\subsubsection{\texorpdfstring{looks\+Zipped()}{looksZipped()}}
+{\footnotesize\ttfamily static boolean com.\+ingeniigroup.\+stratux.\+Tools.\+File\+Test.\+looks\+Zipped (\begin{DoxyParamCaption}\item[{String}]{filename }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Check to see if the filename passed looks like it\textquotesingle{}s zipped.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test_ab8a9306a5851446eac08e2570c54166b}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test_ab8a9306a5851446eac08e2570c54166b}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test}!strip\+Extention@{strip\+Extention}}
+\index{strip\+Extention@{strip\+Extention}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test}}
+\subsubsection{\texorpdfstring{strip\+Extention()}{stripExtention()}}
+{\footnotesize\ttfamily static String com.\+ingeniigroup.\+stratux.\+Tools.\+File\+Test.\+strip\+Extention (\begin{DoxyParamCaption}\item[{String}]{filename }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+Strip off the filenames extention and return rest of the string as the \textquotesingle{}reduced\textquotesingle{} filename
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+filename 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test_a8a15050b9f5f142a250a44caa7295cd3}\label{classcom_1_1ingeniigroup_1_1stratux_1_1_tools_1_1_file_test_a8a15050b9f5f142a250a44caa7295cd3}} 
+\index{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test}!test4file@{test4file}}
+\index{test4file@{test4file}!com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test@{com\+::ingeniigroup\+::stratux\+::\+Tools\+::\+File\+Test}}
+\subsubsection{\texorpdfstring{test4file()}{test4file()}}
+{\footnotesize\ttfamily static boolean com.\+ingeniigroup.\+stratux.\+Tools.\+File\+Test.\+test4file (\begin{DoxyParamCaption}\item[{String}]{filename }\end{DoxyParamCaption}) throws File\+Not\+Found\+Exception\hspace{0.3cm}{\ttfamily [static]}}
+
+Encased function to check for existence of the file, toss errors if not found.
+
+
+\begin{DoxyParams}{Parameters}
+{\em filename} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+boolean 
+\end{DoxyReturn}
+
+\begin{DoxyExceptions}{Exceptions}
+{\em File\+Not\+Found\+Exception} & \\
+\hline
+\end{DoxyExceptions}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+main/java/com/ingeniigroup/stratux/\+Tools/\hyperlink{_file_test_8java}{File\+Test.\+java}\end{DoxyCompactItemize}
