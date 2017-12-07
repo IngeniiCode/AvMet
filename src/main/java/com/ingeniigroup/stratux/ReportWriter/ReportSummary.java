@@ -22,14 +22,15 @@
 
 package com.ingeniigroup.stratux.ReportWriter;
 
+import com.ingeniigroup.stratux.Tools.Util;
 import com.ingeniigroup.stratux.dbConnect.StratuxDB;
 import com.ingeniigroup.stratux.dbReader.traffic;
-import com.ingeniigroup.stratux.Tools.Util;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.HashMap;
+import joptsimple.OptionSet;
 
 /**
  * AvMet - Summary Report Generator
@@ -46,6 +47,7 @@ public class ReportSummary {
 	private StratuxDB  DB;
 	private String     start_time;
 	private String     end_time;
+        private OptionSet  OPT;
 	/* data containers */
 	private List<HashMap>  General; 
 	private List<HashMap>  Emergency;
@@ -57,6 +59,7 @@ public class ReportSummary {
 	 * @param db StratuxDB 
 	 * @throws java.sql.SQLException
 	 */
+        
 	public ReportSummary(StratuxDB db) throws SQLException  {
 		
 		// setup
@@ -70,7 +73,7 @@ public class ReportSummary {
 		// execute the get()
 		getMetrics();
 	}
-	
+        
 	/**
 	 *  Collect the metrics into internal map to be used by report writing
 	 *  modules

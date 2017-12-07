@@ -21,17 +21,13 @@
  */
 package com.ingeniigroup.stratux.AvMet;
 
-import com.ingeniigroup.stratux.dbConnect.*;
-import com.ingeniigroup.stratux.dbReader.*;
-import com.ingeniigroup.stratux.Export.DB.*;
 import com.ingeniigroup.stratux.Export.File.*;
 import com.ingeniigroup.stratux.Repair.FixTrafficTable;
 import com.ingeniigroup.stratux.ReportWriter.ReportSummary;
-
+import com.ingeniigroup.stratux.dbConnect.*;
 import java.io.IOException;
 import java.sql.SQLException;
 import static java.util.Arrays.asList;
-
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 
@@ -85,10 +81,8 @@ public class AvMet {
 		// define the opt object
 		OptionParser Parse = initParser();
 		try {
-			
 			// perform the options parsing
 			AvMet.OPT = Parse.parse(args);  // parse those args!
-			
 		} 
 		catch (Exception ex) {
 			// something didn't work out in the parser checking -- display help
@@ -158,6 +152,8 @@ public class AvMet {
 			parser.accepts( "tempdb"    ,"extract to a tempoary db file ").withOptionalArg();
 			parser.accepts( "keepdupes" ,"retain duplicate traffic records, only has impact when --scrub used" );
 			parser.accepts( "verbose"   ,"be noisy" );
+                        parser.accepts( "terse"     ,"minimal output to screen / STDOUT" );
+                        parser.accepts( "nosummary" ,"do not perform any of the summary calculation operations");
 			parser.accepts( "useprefix" ,"use a date-time stamp for exported files" ).withOptionalArg();
 
 			// MySQL Export Flags
@@ -242,11 +238,16 @@ public class AvMet {
 	 */
 	private static void reportMetrics() throws SQLException{
 		
-		// setup the interfaces
-		ReportSummary SUM = new ReportSummary(AvMet.DB);
-		
-		// now do some printing with a report writer object of some sort?
-		SUM.STDOUT();  // write report to STDOUT
+                if(!OPT.has("nosummary")){
+                    // setup the interfaces
+                    ReportSummary SUM = new ReportSummary(AvMet.DB);
+                    
+                    // now do some printing with a report writer object of some sort?
+                    if(!OPT.has("terse")) { 
+                        SUM.STDOUT();
+                    }
+                }
+		  // write report to STDOUT is not in terse mode
 		
 	
 	}

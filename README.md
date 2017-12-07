@@ -16,17 +16,9 @@ Version 0.2.0
 
 Announcements!
 ==============
-
-### 30-NOV-2017
-Progress Bar implementation replaces spinner effect.  Providing a visual indicator 
-of how much scrubbing is to be done and how much has been completed helps me 
-understand how long the tool might run, and also provided early indication of a
-possible process hang.
-
-### 27-NOV-2017
-Added a cute little spinner feature that shows an old-school spinning character
-when the --scrub option is in use, but not showing verbose output.  It's just a 
-visual que that the application is actually still running. 
+### 07-DEC-2017
+Added switch to quiet down output to STDOUT / console.  --terse  
+Added switch to bypass summary computations  --nosummary 
 
 ### 13-NOV-2017
 Project now using a more liberal OSS license.  See LICENSE.md for details.
@@ -100,6 +92,10 @@ AvMet, add the __keepdb__ option
 
 * **--verbose** - increase progress reporting 
 
+* **--terse** - do not display any summary reporting to console / STDOUT
+
+* **--nosummary** - do not perform any of the summary computations 
+
    Report more details on processing activity.  Warning, it can be VERY verbose 
 when processing very dirty `traffic` tables
 
@@ -136,6 +132,10 @@ already exist; appends to workbook using new day-specific tabs if valid XLS file
 
 Release Notes
 =============
+
+### 07-DEC-2017
+Added switch to quiet down output to STDOUT / console.  --terse  
+Added switch to bypass summary computations  --nosummary 
 
 ### 30-NOV-2017
 Discovered that there would be occasional corruption in the Reg/Tail numbers of 
